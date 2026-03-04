@@ -83,15 +83,3 @@ The **Youth Job & Internship Finder** is a web-based platform designed to connec
 - Empowered students with accessible opportunities and progress tracking.
 
 ---
-
-## 7. Next Steps
-- Define **database schema** (users, companies, jobs, applications, reviews).
-- Create **wireframes** for student, company, and admin dashboards.
-- Draft **API endpoints** for authentication, job posting, application management.
-- Plan **deployment strategy** (GlassFish/Payara server setup).
-
----
-
-👉 This document is your **foundation**. As development begins, you can expand it into a full **Software Requirements Specification (SRS)** with detailed use cases, ER diagrams, and API contracts.
-
-Would you like me to **extend this into a full SRS template** (with sections like functional requirements, non-functional requirements, and use case diagrams) so your team can use it directly for onboarding and planning?
