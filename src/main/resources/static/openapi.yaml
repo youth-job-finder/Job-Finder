@@ -1,0 +1,398 @@
+openapi: 3.0.3
+info:
+  title: Youth Job & Internship Finder API
+  version: 1.0.0
+  description: >
+    REST API for connecting students with verified companies offering jobs and internships.
+    Includes authentication, job postings, applications, reviews, and admin oversight.
+
+servers:
+  - url: http://localhost:8080/api
+    description: Local development server
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    Student:
+      type: object
+      properties:
+        studentId: { type: integer }
+        name: { type: string }
+        email: { type: string }
+        cvUrl: { type: string }
+
+    Company:
+      type: object
+      properties:
+        companyId: { type: integer }
+        name: { type: string }
+        registrationNumber: { type: string }
+        email: { type: string }
+        url: { type: string }
+        status: { type: string, enum: [pending, approved, rejected] }
+
+    Job:
+      type: object
+      properties:
+        jobId: { type: integer }
+        companyId: { type: integer }
+        title: { type: string }
+        description: { type: string }
+        location: { type: string }
+        requirements:
+          type: array
+          items: { type: string }
+        duration: { type: string }
+        postedDate: { type: string, format: date }
+
+    Application:
+      type: object
+      properties:
+        applicationId: { type: integer }
+        studentId: { type: integer }
+        jobId: { type: integer }
+        status: { type: string, enum: [applied, under review, accepted, rejected] }
+        appliedDate: { type: string, format: date }
+
+    Review:
+      type: object
+      properties:
+        reviewId: { type: integer }
+        studentId: { type: integer }
+        companyId: { type: integer }
+        rating: { type: integer }
+        comment: { type: string }
+        reviewDate: { type: string, format: date }
+
+  responses:
+    ErrorResponse:
+      description: Standard error response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              error:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  type:
+                    type: string
+                    example: BadRequest
+                  message:
+                    type: string
+                    example: "Missing required field: jobId"
+security:
+  - bearerAuth: []
+
+paths:
+  /auth/register:
+    post:
+      summary: Register a new user (student or company)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                role: { type: string, enum: [STUDENT, COMPANY] }
+                name: { type: string }
+                email: { type: string }
+                password: { type: string }
+      responses:
+        '201':
+          description: Registration successful
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+
+  /auth/login:
+    post:
+      summary: Authenticate user and return JWT
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email: { type: string }
+                password: { type: string }
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token: { type: string }
+                  role: { type: string }
+                  expiresIn: { type: integer }
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+
+  /jobs:
+    get:
+      summary: Search and filter jobs
+      parameters:
+        - in: query
+          name: page
+          schema: { type: integer, default: 0 }
+        - in: query
+          name: size
+          schema: { type: integer, default: 10 }
+        - in: query
+          name: sort
+          schema: { type: string, default: postedDate }
+        - in: query
+          name: order
+          schema: { type: string, enum: [asc, desc], default: desc }
+        - in: query
+          name: location
+          schema: { type: string }
+        - in: query
+          name: category
+          schema: { type: string }
+        - in: query
+          name: keywords
+          schema: { type: string }
+      responses:
+        '200':
+          description: Job list with pagination
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Job'
+                  pagination:
+                    type: object
+                    properties:
+                      page: { type: integer }
+                      size: { type: integer }
+                      totalItems: { type: integer }
+                      totalPages: { type: integer }
+
+    post:
+      summary: Post a new job (company only)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Job'
+      responses:
+        '201':
+          description: Job posted successfully
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+
+  /applications:
+    post:
+      summary: Submit a job application (student only)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                studentId: { type: integer }
+                jobId: { type: integer }
+      responses:
+        '201':
+          description: Application submitted
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+
+  /applications/{id}:
+    put:
+      summary: Update application status (company/admin)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status: { type: string, enum: [applied, under review, accepted, rejected] }
+      responses:
+        '200':
+          description: Application status updated
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+
+  /reviews:
+    post:
+      summary: Submit a company review (student only)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Review'
+      responses:
+        '201':
+          description: Review submitted
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+
+    get:
+      summary: Get reviews for a company
+      parameters:
+        - in: query
+          name: companyId
+          schema: { type: integer }
+      responses:
+        '200':
+          description: List of reviews
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Review'
+
+  /admin/companies/pending:
+    get:
+      summary: List companies awaiting approval
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Pending companies
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Company'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+
+  /admin/companies/{id}/approve:
+    put:
+      summary: Approve a company registration
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Company approved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Company'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+
+  /admin/companies/{id}/reject:
+    put:
+      summary: Reject a company registration
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Company rejected
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Company'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+
+  /admin/analytics:
+    get:
+      summary: System-wide analytics
+      security:
+        - bearerAuth: [ ]
+      responses:
+        '200':
+          description: Analytics data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  activeUsers:
+                    type: integer
+                    description: Total number of active users (students + companies)
+                    example: 1200
+                  flaggedCompanies:
+                    type: integer
+                    description: Number of companies flagged for suspicious activity
+                    example: 15
+                  totalJobs:
+                    type: integer
+                    description: Total number of job postings on the platform
+                    example: 350
+                  totalApplications:
+                    type: integer
+                    description: Total number of applications submitted
+                    example: 2200
+                  jobPostingTrends:
+                    type: array
+                    description: Monthly job posting statistics
+                    items:
+                      type: object
+                      properties:
+                        month:
+                          type: string
+                          description: Month label (e.g., "2026-02")
+                          example: "2026-02"
+                        postings:
+                          type: integer
+                          description: Number of job postings in that month
+                          example: 45
+                  applicationSuccessRate:
+                    type: number
+                    format: float
+                    description: Percentage of applications resulting in acceptance
+                    example: 12.5
+                  topCategories:
+                    type: array
+                    description: Most popular job categories
+                    items:
+                      type: object
+                      properties:
+                        category:
+                          type: string
+                          description: Job category name
+                          example: "IT"
+                        postings:
+                          type: integer
+                          description: Number of postings in this category
+                          example: 120
