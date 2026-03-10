@@ -10,6 +10,54 @@ We follow a **Git Flow style workflow** with three key branch types:
 - **`develop`** → Integration branch where features are merged before release.
 - **feature branches** → Short-lived branches for specific tasks or bug fixes.
 
+## In Git workflows, **`main`** and **`develop`** serve very different purposes, and together they help balance stability with ongoing development:
+
+---
+
+## 🌟 Main Branch
+- **Purpose**: Always contains **production-ready code**.
+- **Characteristics**:
+    - Code here has passed reviews, testing, and QA.
+    - Represents the version currently deployed or ready to deploy.
+    - Protected: contributors don’t commit directly; changes arrive via Pull Requests.
+- **Analogy**: Think of `main` as the “release shelf” — only polished, stable features are placed here.
+
+---
+
+## 🔧 Develop Branch
+- **Purpose**: Acts as the **integration branch** where features are merged before release.
+- **Characteristics**:
+    - Developers branch off `develop` to create feature branches.
+    - Serves as a shared testing environment.
+    - Once stable, `develop` is merged into `main` for release.
+- **Analogy**: `develop` is the “workbench” — features are assembled and tested here before being shipped.
+
+---
+
+## 📊 Comparison Table
+
+| Branch   | Role                        | Who Works Here | Stability Level |
+|----------|-----------------------------|----------------|-----------------|
+| `main`   | Production-ready code       | Release managers, CI/CD | Very stable |
+| `develop`| Integration/testing branch  | All developers | Moderately stable |
+
+---
+
+## 🚀 Typical Workflow
+1. Developer creates a **feature branch** from `develop`.
+2. Work is done and merged back into `develop`.
+3. Once `develop` is stable and tested, it’s merged into `main`.
+4. `main` is then deployed to production.
+
+---
+
+This separation ensures that `main` stays clean and reliable, while `develop` gives the team freedom to integrate and test new work without breaking production.
+
+---
+
+👉 Would you like me to also illustrate this with a **Mermaid diagram** showing how `main`, `develop`, and feature branches interact visually?
+
+
 This guide explains how to contribute step by step.
 
 ---
