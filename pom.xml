@@ -51,6 +51,6 @@
                 <version>3.4.0</version>
             </plugin>
         </plugins>
-        <finalName>Jobify</finalName>
+        <finalName>Jobfinder</finalName>
     </build>
 </project>
