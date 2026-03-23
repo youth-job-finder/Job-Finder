@@ -7,7 +7,7 @@
 
     <persistence-unit name="youth-job-finder" transaction-type="JTA">
         <!-- Reference the JDBC resource you created in GlassFish -->
-        <jta-data-source>jdbc/youth_job_finder</jta-data-source>
+        <jta-data-source>jdbc/MySQLPool</jta-data-source>
 
         <!-- Explicitly list your entity classes -->
         <class>com.jakartaee.jobfinder.entity.Company</class>

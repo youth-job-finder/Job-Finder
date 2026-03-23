@@ -1,5 +1,5 @@
-asadmin.bat undeploy Jobfinder
+asadmin.bat undeploy jobfinder
 
 mvn.cmd clean package
 
-asadmin.bat deploy target/Jobfinder.war
+asadmin.bat deploy target/jobfinder.war
