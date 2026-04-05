@@ -167,7 +167,7 @@ public class CompanyRegistrationService {
         if (normalizedUrl.startsWith("https://")) {
             boolean lenientValid = checkUrlSecure(normalizedUrl, true);
             if (lenientValid) {
-                MainLogger.logWarn("CompanyRegistrationService", "URL verified with lenient SSL: " + normalizedUrl);
+                MainLogger.logInfo("CompanyRegistrationService", "URL verified with lenient SSL: " + normalizedUrl);
                 return true;
             }
         }
@@ -177,7 +177,7 @@ public class CompanyRegistrationService {
             String httpUrl = "http://" + normalizedUrl.substring(8);
             boolean httpValid = checkUrlSecure(httpUrl, false);
             if (httpValid) {
-                MainLogger.logWarn("CompanyRegistrationService", "URL verified via HTTP fallback: " + httpUrl);
+                MainLogger.logInfo("CompanyRegistrationService", "URL verified via HTTP fallback: " + httpUrl);
                 return true;
             }
         }
