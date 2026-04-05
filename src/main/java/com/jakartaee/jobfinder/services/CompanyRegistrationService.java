@@ -12,9 +12,11 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 
+import javax.net.ssl.*;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.cert.X509Certificate;
 import java.time.LocalDateTime;
 
 @ApplicationScoped
@@ -137,6 +139,7 @@ public class CompanyRegistrationService {
 
     /**
      * Verifies a company URL by attempting an HTTP connection.
+     * Handles SSL issues, redirects, and various server responses.
      *
      * @param urlString The URL to verify
      * @return true if URL is accessible and returns valid response
@@ -152,37 +155,80 @@ public class CompanyRegistrationService {
             normalizedUrl = "https://" + normalizedUrl;
         }
 
-        // Try HEAD request first (lighter), fallback to GET if HEAD not supported
-        if (checkUrlWithHead(normalizedUrl)) {
+        MainLogger.logInfo("CompanyRegistrationService", "Starting URL verification for: " + normalizedUrl);
+
+        // Try HTTPS first with standard SSL
+        boolean httpsValid = checkUrlSecure(normalizedUrl, false);
+        if (httpsValid) {
             return true;
         }
-        
-        // Fallback to GET request if HEAD fails
-        return checkUrlWithGet(normalizedUrl);
+
+        // If HTTPS fails due to SSL issues, try with lenient SSL (for dev/testing)
+        if (normalizedUrl.startsWith("https://")) {
+            boolean lenientValid = checkUrlSecure(normalizedUrl, true);
+            if (lenientValid) {
+                MainLogger.logWarn("CompanyRegistrationService", "URL verified with lenient SSL: " + normalizedUrl);
+                return true;
+            }
+        }
+
+        // Fallback to HTTP if HTTPS completely fails
+        if (normalizedUrl.startsWith("https://")) {
+            String httpUrl = "http://" + normalizedUrl.substring(8);
+            boolean httpValid = checkUrlSecure(httpUrl, false);
+            if (httpValid) {
+                MainLogger.logWarn("CompanyRegistrationService", "URL verified via HTTP fallback: " + httpUrl);
+                return true;
+            }
+        }
+
+        MainLogger.logAuthenticationError("CompanyRegistrationService", "URL_VERIFICATION",
+                "All verification attempts failed", normalizedUrl);
+        return false;
     }
 
-    private boolean checkUrlWithHead(String urlString) {
+    private boolean checkUrlSecure(String urlString, boolean lenientSsl) {
         HttpURLConnection connection = null;
         try {
             URL url = new URL(urlString);
+            
+            if (lenientSsl && urlString.startsWith("https://")) {
+                // Create lenient SSL context that trusts all certificates
+                SSLContext sc = SSLContext.getInstance("SSL");
+                sc.init(null, getTrustAllCerts(), new java.security.SecureRandom());
+                HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+                HttpsURLConnection.setDefaultHostnameVerifier((hostname, session) -> true);
+            }
+            
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("HEAD");
-            connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36");
-            connection.setConnectTimeout(10000); // 10 seconds
-            connection.setReadTimeout(10000); // 10 seconds
+            connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36");
+            connection.setConnectTimeout(15000); // 15 seconds
+            connection.setReadTimeout(15000); // 15 seconds
             connection.setInstanceFollowRedirects(true);
-
+            connection.setDoInput(true);
+            
             int responseCode = connection.getResponseCode();
-            // Accept 200-399 as valid responses
             boolean success = responseCode >= 200 && responseCode < 400;
+            
             if (success) {
-                MainLogger.logServiceOperation("CompanyRegistrationService", "URL_VERIFICATION_HEAD",
+                MainLogger.logServiceOperation("CompanyRegistrationService", 
+                        lenientSsl ? "URL_VERIFICATION_LENIENT" : "URL_VERIFICATION_HEAD",
                         true, "URL: " + urlString + " (HTTP " + responseCode + ")");
+            } else if (responseCode == 405) {
+                // Method not allowed, try GET
+                return checkUrlWithGet(urlString, lenientSsl);
             }
             return success;
 
+        } catch (SSLHandshakeException e) {
+            MainLogger.logInfo("CompanyRegistrationService", "SSL handshake failed for " + urlString + ": " + e.getMessage());
+            return false;
         } catch (IOException e) {
-            MainLogger.logInfo("CompanyRegistrationService", "HEAD request failed for " + urlString + ": " + e.getMessage());
+            MainLogger.logInfo("CompanyRegistrationService", "Connection failed for " + urlString + ": " + e.getMessage());
+            return false;
+        } catch (Exception e) {
+            MainLogger.logInfo("CompanyRegistrationService", "Unexpected error for " + urlString + ": " + e.getMessage());
             return false;
         } finally {
             if (connection != null) {
@@ -191,38 +237,58 @@ public class CompanyRegistrationService {
         }
     }
 
-    private boolean checkUrlWithGet(String urlString) {
+    private boolean checkUrlWithGet(String urlString, boolean lenientSsl) {
         HttpURLConnection connection = null;
         try {
             URL url = new URL(urlString);
+            
+            if (lenientSsl && urlString.startsWith("https://")) {
+                SSLContext sc = SSLContext.getInstance("SSL");
+                sc.init(null, getTrustAllCerts(), new java.security.SecureRandom());
+                HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+                HttpsURLConnection.setDefaultHostnameVerifier((hostname, session) -> true);
+            }
+            
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
-            connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36");
-            connection.setConnectTimeout(10000); // 10 seconds
-            connection.setReadTimeout(10000); // 10 seconds
+            connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36");
+            connection.setConnectTimeout(15000);
+            connection.setReadTimeout(15000);
             connection.setInstanceFollowRedirects(true);
+            connection.setDoInput(true);
 
             int responseCode = connection.getResponseCode();
-            // Accept 200-399 as valid responses
             boolean success = responseCode >= 200 && responseCode < 400;
+            
             if (success) {
-                MainLogger.logServiceOperation("CompanyRegistrationService", "URL_VERIFICATION_GET",
+                MainLogger.logServiceOperation("CompanyRegistrationService",
+                        lenientSsl ? "URL_VERIFICATION_GET_LENIENT" : "URL_VERIFICATION_GET",
                         true, "URL: " + urlString + " (HTTP " + responseCode + ")");
-            } else {
-                MainLogger.logAuthenticationError("CompanyRegistrationService", "URL_VERIFICATION_GET",
-                        "HTTP " + responseCode, urlString);
             }
             return success;
 
-        } catch (IOException e) {
-            MainLogger.logAuthenticationError("CompanyRegistrationService", "URL_VERIFICATION_GET",
-                    "Exception: " + e.getMessage(), urlString);
+        } catch (Exception e) {
+            MainLogger.logInfo("CompanyRegistrationService", "GET request failed for " + urlString + ": " + e.getMessage());
             return false;
         } finally {
             if (connection != null) {
                 connection.disconnect();
             }
         }
+    }
+
+    private TrustManager[] getTrustAllCerts() {
+        return new TrustManager[]{
+            new X509TrustManager() {
+                public X509Certificate[] getAcceptedIssuers() {
+                    return new X509Certificate[0];
+                }
+                public void checkClientTrusted(X509Certificate[] certs, String authType) {
+                }
+                public void checkServerTrusted(X509Certificate[] certs, String authType) {
+                }
+            }
+        };
     }
 
     /**
