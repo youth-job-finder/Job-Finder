@@ -10,12 +10,14 @@ import com.jakartaee.jobfinder.entity.status.Status;
 import com.jakartaee.jobfinder.entity.User;
 import com.jakartaee.jobfinder.logging.MainLogger;
 import com.jakartaee.jobfinder.security.utils.BCryptHashAlgorithm;
+import com.jakartaee.jobfinder.services.CompanyRegistrationService;
 import jakarta.annotation.PostConstruct;
 import jakarta.ejb.Singleton;
 import jakarta.ejb.Startup;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +39,9 @@ public class CompanyDataInitializer {
     @Inject
     private BCryptHashAlgorithm passwordHasher;
 
+    @Inject
+    private CompanyRegistrationService companyRegistrationService;
+
     @Transactional
     public void init() {
         MainLogger.logInfo(INITIALIZER_NAME, "Starting default company data initialization");
@@ -57,6 +62,10 @@ public class CompanyDataInitializer {
             }
             if (passwordHasher == null) {
                 MainLogger.logError(INITIALIZER_NAME, "PasswordHasher is null - dependency injection failed");
+                return;
+            }
+            if (companyRegistrationService == null) {
+                MainLogger.logError(INITIALIZER_NAME, "CompanyRegistrationService is null - dependency injection failed");
                 return;
             }
 
@@ -115,6 +124,18 @@ public class CompanyDataInitializer {
         google.setLocation("Mountain View, California, USA");
         google.setCompanyAdmin(googleAdmin);
         google.setStatus(Status.APPROVED);
+        
+        // Verify Google URL
+        String googleUrl = "https://www.google.com";
+        boolean googleUrlValid = companyRegistrationService.verifyCompanyUrl(googleUrl);
+        google.setUrlVerified(googleUrlValid);
+        if (googleUrlValid) {
+            google.setUrlVerifiedAt(LocalDateTime.now());
+            MainLogger.logInfo(INITIALIZER_NAME, "Google URL verified successfully: " + googleUrl);
+        } else {
+            MainLogger.logError(INITIALIZER_NAME, "Google URL verification failed: " + googleUrl);
+        }
+        
         google = companyDAO.create(google);
 
         MainLogger.logInfo(INITIALIZER_NAME, "Created Google company");
@@ -162,6 +183,18 @@ public class CompanyDataInitializer {
         amazon.setLocation("Seattle, Washington, USA");
         amazon.setCompanyAdmin(amazonAdmin);
         amazon.setStatus(Status.APPROVED);
+        
+        // Verify Amazon URL
+        String amazonUrl = "https://www.amazon.com";
+        boolean amazonUrlValid = companyRegistrationService.verifyCompanyUrl(amazonUrl);
+        amazon.setUrlVerified(amazonUrlValid);
+        if (amazonUrlValid) {
+            amazon.setUrlVerifiedAt(LocalDateTime.now());
+            MainLogger.logInfo(INITIALIZER_NAME, "Amazon URL verified successfully: " + amazonUrl);
+        } else {
+            MainLogger.logError(INITIALIZER_NAME, "Amazon URL verification failed: " + amazonUrl);
+        }
+        
         amazon = companyDAO.create(amazon);
 
         MainLogger.logInfo(INITIALIZER_NAME, "Created Amazon company");
