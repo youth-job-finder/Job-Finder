@@ -1,6 +1,15 @@
 package com.jakartaee.jobfinder.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "reviews")
@@ -27,6 +36,9 @@ public class Review {
     @Column(name = "comment", length = 500)   // optional, with max length
     private String comment;
 
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime created_at;
+
     // Required no-arg constructor for JPA
     public Review() {}
 
@@ -43,6 +55,7 @@ public class Review {
         this.company = company;
         this.rating = rating;
         this.comment = comment;
+        this.created_at = LocalDateTime.now();
     }
 
     // Getters and setters
@@ -85,5 +98,13 @@ public class Review {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public LocalDateTime getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(LocalDateTime created_at) {
+        this.created_at = LocalDateTime.now();
     }
 }

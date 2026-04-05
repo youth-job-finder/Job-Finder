@@ -1,6 +1,16 @@
 package com.jakartaee.jobfinder.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+
+import jakarta.persistence.PrePersist;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "jobs")
@@ -18,14 +28,23 @@ public class Job {
     @Column(name = "job_title", nullable = false)
     private String jobTitle;
 
-    @Column(name = "job_description", nullable = false)
+    @Column(name = "job_description", nullable = false, columnDefinition = "TEXT")
     private String jobDescription;
 
     @Column(name = "physical_address", nullable = false)
     private String physicalAddress;
 
-    @Column(name = "job_requirements", nullable = false)
+    @Column(name = "job_requirements", nullable = false, columnDefinition = "TEXT")
     private String jobRequirements;
+
+    @Column(name = "salary_range", length = 100)
+    private String salaryRange;
+
+    @Column(name = "job_type", length = 50)
+    private String jobType;
+
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime created_at;
 
     // Required no-arg constructor for JPA
     public Job() {}
@@ -38,6 +57,7 @@ public class Job {
         this.jobDescription = jobDescription;
         this.physicalAddress = physicalAddress;
         this.jobRequirements = jobRequirements;
+        this.created_at = LocalDateTime.now();
     }
 
     // Getters and setters
@@ -88,5 +108,41 @@ public class Job {
 
     public void setJobRequirements(String jobRequirements) {
         this.jobRequirements = jobRequirements;
+    }
+
+    public String getSalaryRange() {
+        return salaryRange;
+    }
+
+    public void setSalaryRange(String salaryRange) {
+        this.salaryRange = salaryRange;
+    }
+
+    public String getJobType() {
+        return jobType;
+    }
+
+    public void setJobType(String jobType) {
+        this.jobType = jobType;
+    }
+
+    public LocalDateTime getCreated_at() {
+        return created_at;
+    }
+
+    // Alias for JSP EL compatibility (createdAt -> getCreatedAt)
+    public LocalDateTime getCreatedAt() {
+        return created_at;
+    }
+
+    public void setCreated_at(LocalDateTime created_at) {
+        this.created_at = created_at;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        if (created_at == null) {
+            created_at = LocalDateTime.now();
+        }
     }
 }

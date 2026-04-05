@@ -8,6 +8,7 @@
 package com.jakartaee.jobfinder.dao;
 
 import com.jakartaee.jobfinder.entity.Review;
+import com.jakartaee.jobfinder.entity.Company;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -96,6 +97,22 @@ public class ReviewDAO {
         if (review != null) {
             em.remove(review);
         }
+    }
+
+    // --- CUSTOM QUERY (Find by Company) ---
+    /**
+     * Finds all Review entities for a specific company.
+     *
+     * @param company the Company entity
+     * @return a list of Review entities for the company
+     */
+    public List<Review> findByCompany(Company company) {
+        TypedQuery<Review> query = em.createQuery(
+                "SELECT r FROM Review r WHERE r.company = :company",
+                Review.class
+        );
+        query.setParameter("company", company);
+        return query.getResultList();
     }
 
     // --- CUSTOM QUERY (Find by Company ID) ---

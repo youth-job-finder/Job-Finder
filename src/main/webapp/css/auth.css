@@ -1,0 +1,822 @@
+/**
+ * Unified Authentication Pages Stylesheet
+ * Provides consistent styling across all auth pages:
+ * - Login
+ * - User Signup
+ * - Company Registration
+ * - Password Reset (Request & Form)
+ * - Signup Options
+ * - Verification Result
+ */
+
+/* ===== BASE CONTAINER STYLES ===== */
+.auth-section,
+.login-section,
+.signup-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 75vh;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    padding: 2rem;
+}
+
+.auth-container,
+.login-container,
+.signup-container,
+.reset-container,
+.verification-container {
+    max-width: 480px;
+    width: 100%;
+    margin: 60px auto;
+    padding: 2.5rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* ===== HEADER STYLES ===== */
+.auth-header,
+.login-header,
+.reset-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.auth-header h1,
+.login-header h1,
+.reset-title,
+.verification-title {
+    color: #2c3e50;
+    font-size: 1.75rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.auth-header h2,
+.signup-container h2 {
+    color: #2c3e50;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    text-align: center;
+}
+
+.auth-header p,
+.login-header p,
+.reset-subtitle,
+.form-description {
+    color: #7f8c8d;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+/* Icon styles for headers */
+.auth-icon,
+.reset-icon,
+.verification-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.reset-icon {
+    color: #667eea;
+}
+
+.verification-icon.success-icon {
+    color: #27ae60;
+}
+
+.verification-icon.error-icon {
+    color: #e74c3c;
+}
+
+/* ===== FORM STYLES ===== */
+.auth-form,
+.login-form,
+.signup-form,
+.reset-form {
+    width: 100%;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #2c3e50;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group input[type="url"],
+.form-group select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background-color: #fafafa;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #667eea;
+    background-color: white;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.form-group input::placeholder {
+    color: #aaa;
+}
+
+/* Required field indicator */
+.required {
+    color: #e74c3c;
+}
+
+/* Form hints */
+.form-hint {
+    display: block;
+    margin-top: 0.25rem;
+    font-size: 0.8rem;
+    color: #7f8c8d;
+}
+
+/* Checkbox styling */
+.checkbox-group {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+}
+
+.checkbox-group input[type="checkbox"] {
+    margin-top: 0.25rem;
+    width: 1.2rem;
+    height: 1.2rem;
+    cursor: pointer;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+/* Form sections */
+.form-section {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #ecf0f1;
+}
+
+.form-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.form-section h3 {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.section-description {
+    color: #7f8c8d;
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+}
+
+/* ===== BUTTON STYLES ===== */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.875rem 1.5rem;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    color: #fff;
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.btn-secondary {
+    background: #95a5a6;
+    color: #fff;
+    border: 1px solid #7f8c8d;
+}
+
+.btn-secondary:hover {
+    background: #7f8c8d;
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.btn:disabled,
+.btn[disabled] {
+    background: #95a5a6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+    opacity: 0.7;
+}
+
+.btn-block {
+    width: 100%;
+}
+
+.auth-icon {
+    color: #667eea;
+}
+
+.auth-icon i {
+    font-size: 3rem;
+}
+
+/* ===== CONSISTENT LINK STYLES ===== */
+.auth-link,
+.auth-link-secondary {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.auth-link:hover,
+.auth-link-secondary:hover {
+    color: #764ba2;
+    text-decoration: underline;
+}
+
+.auth-link-secondary {
+    font-size: 0.9rem;
+}
+
+/* ===== LOGIN BUTTON SPECIFIC ===== */
+.login-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.875rem 1.5rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    font-weight: 600;
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    width: 100%;
+}
+
+.login-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.login-btn:active {
+    transform: translateY(0);
+}
+
+/* ===== FORM FOOTER CONSISTENCY ===== */
+.form-footer {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #ecf0f1;
+}
+
+.form-footer p {
+    margin-bottom: 0.75rem;
+    font-size: 0.9rem;
+    color: #7f8c8d;
+}
+
+.form-footer p:last-child {
+    margin-bottom: 0;
+}
+
+/* ===== ALERT STYLES ===== */
+.alert {
+    padding: 1rem 1.25rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.95rem;
+}
+
+.alert-success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.alert-error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.alert-info {
+    background: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+}
+
+.alert-warning {
+    background: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeaa7;
+}
+
+/* ===== FOOTER & LINKS ===== */
+.auth-footer,
+.login-footer,
+.form-footer,
+.back-link {
+    text-align: center;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #ecf0f1;
+}
+
+.auth-footer p,
+.login-footer p,
+.form-footer p,
+.login-prompt {
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    color: #7f8c8d;
+}
+
+.auth-footer a,
+.login-footer a,
+.form-footer a,
+.back-link a {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.auth-footer a:hover,
+.login-footer a:hover,
+.form-footer a:hover,
+.back-link a:hover {
+    color: #764ba2;
+    text-decoration: underline;
+}
+
+/* ===== PASSWORD STRENGTH ===== */
+.password-strength {
+    margin-top: 0.5rem;
+    height: 4px;
+    background: #ecf0f1;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.password-strength-bar {
+    height: 100%;
+    transition: width 0.3s ease, background-color 0.3s ease;
+    width: 0%;
+}
+
+.strength-weak { background: #e74c3c; width: 33%; }
+.strength-medium { background: #f39c12; width: 66%; }
+.strength-strong { background: #27ae60; width: 100%; }
+
+.password-requirements {
+    margin-top: 0.75rem;
+    font-size: 0.85rem;
+    color: #7f8c8d;
+}
+
+.requirement {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.25rem;
+}
+
+.requirement.met {
+    color: #27ae60;
+}
+
+/* Additional password validation states */
+.requirement.valid {
+    color: #28a745;
+}
+
+.requirement.invalid {
+    color: #dc3545;
+}
+
+.requirement i {
+    font-size: 0.8rem;
+    width: 16px;
+    margin-right: 4px;
+}
+
+.requirement.valid i {
+    color: #28a745;
+}
+
+.requirement.invalid i {
+    color: #dc3545;
+}
+
+/* Password match indicator */
+.password-match {
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+}
+
+.password-match.match {
+    color: #28a745;
+}
+
+.password-match.mismatch {
+    color: #dc3545;
+}
+
+/* ===== LOADING SPINNER ===== */
+.loading {
+    display: none;
+    text-align: center;
+    margin-top: 1rem;
+    color: #7f8c8d;
+    font-size: 0.9rem;
+}
+
+.spinner {
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #667eea;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite;
+    display: inline-block;
+    margin-right: 0.5rem;
+    vertical-align: middle;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ===== INFO BOX ===== */
+.info-box {
+    background: #e3f2fd;
+    border: 1px solid #90caf9;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.info-box h4 {
+    color: #1565c0;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.info-box ol,
+.info-box ul {
+    margin-left: 1.25rem;
+    color: #444;
+    font-size: 0.9rem;
+}
+
+.info-box li {
+    margin-bottom: 0.5rem;
+}
+
+/* ===== SIGNUP OPTIONS ===== */
+.signup-options {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 75vh;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    padding: 2rem;
+}
+
+.option-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    max-width: 800px;
+    width: 100%;
+}
+
+.option-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.option-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+}
+
+.option-card h3 {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+}
+
+.option-card p {
+    color: #7f8c8d;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+}
+
+/* ===== VERIFICATION PAGE ===== */
+.verification-container {
+    text-align: center;
+    padding: 3rem 2.5rem;
+}
+
+.verification-message {
+    color: #555;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 1.5rem 0;
+}
+
+.action-buttons {
+    margin-top: 2rem;
+}
+
+.action-buttons .btn {
+    margin: 0.5rem;
+}
+
+.resend-section {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid #ecf0f1;
+}
+
+.resend-section h3 {
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+}
+
+.resend-form {
+    display: flex;
+    gap: 0.5rem;
+    max-width: 400px;
+    margin: 1rem auto;
+}
+
+.resend-form input {
+    flex: 1;
+    padding: 0.75rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+}
+
+.resend-message {
+    margin-top: 1rem;
+}
+
+/* ===== RESPONSIVE - Multiple breakpoints for better window size sensitivity ===== */
+@media (max-width: 992px) {
+    .auth-container,
+    .login-container,
+    .signup-container,
+    .reset-container,
+    .verification-container {
+        max-width: 450px;
+        margin: 40px auto;
+        padding: 2rem;
+    }
+    
+    .auth-section,
+    .login-section,
+    .signup-section,
+    .signup-options {
+        padding: 1.5rem;
+    }
+    
+    .auth-header h1,
+    .login-header h1,
+    .reset-title,
+    .verification-title {
+        font-size: 1.6rem;
+    }
+    
+    .option-cards {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+    }
+}
+
+@media (max-width: 768px) {
+    .auth-container,
+    .login-container,
+    .signup-container,
+    .reset-container,
+    .verification-container {
+        max-width: 400px;
+        margin: 30px auto;
+        padding: 1.75rem;
+    }
+    
+    .auth-section,
+    .login-section,
+    .signup-section,
+    .signup-options {
+        min-height: auto;
+        padding: 1.25rem;
+    }
+    
+    .btn {
+        padding: 0.8rem 1.25rem;
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .auth-container,
+    .login-container,
+    .signup-container,
+    .reset-container,
+    .verification-container {
+        margin: 20px auto;
+        padding: 1.5rem;
+        border-radius: 8px;
+    }
+
+    .auth-section,
+    .login-section,
+    .signup-section,
+    .signup-options {
+        min-height: auto;
+        padding: 1rem;
+    }
+
+    .btn {
+        padding: 0.75rem 1rem;
+        font-size: 0.95rem;
+    }
+
+    .resend-form {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    .auth-container,
+    .login-container,
+    .signup-container,
+    .reset-container,
+    .verification-container {
+        margin: 15px auto;
+        padding: 1.25rem;
+        border-radius: 8px;
+    }
+    
+    .auth-header h1,
+    .login-header h1,
+    .reset-title,
+    .verification-title {
+        font-size: 1.35rem;
+    }
+    
+    .auth-header p,
+    .login-header p,
+    .reset-subtitle,
+    .form-description {
+        font-size: 0.85rem;
+    }
+    
+    .auth-icon,
+    .reset-icon,
+    .verification-icon {
+        font-size: 2.25rem;
+    }
+    
+    .form-group {
+        margin-bottom: 1.25rem;
+    }
+    
+    .form-group label {
+        font-size: 0.85rem;
+    }
+    
+    .form-group input[type="text"],
+    .form-group input[type="email"],
+    .form-group input[type="password"],
+    .form-group input[type="url"],
+    .form-group select {
+        padding: 10px 12px;
+        font-size: 0.9rem;
+    }
+    
+    .btn {
+        padding: 0.7rem 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .alert {
+        padding: 0.875rem 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .auth-footer,
+    .login-footer,
+    .form-footer,
+    .back-link {
+        margin-top: 1.25rem;
+        padding-top: 1.25rem;
+    }
+    
+    .auth-footer p,
+    .login-footer p,
+    .form-footer p,
+    .login-prompt {
+        font-size: 0.85rem;
+    }
+    
+    .info-box {
+        padding: 1.25rem;
+    }
+    
+    .info-box h4 {
+        font-size: 1rem;
+    }
+    
+    .info-box ol,
+    .info-box ul {
+        font-size: 0.85rem;
+    }
+    
+    .option-card {
+        padding: 1.5rem;
+    }
+    
+    .option-card h3 {
+        font-size: 1.15rem;
+    }
+    
+    .option-card p {
+        font-size: 0.85rem;
+    }
+    
+    .verification-message {
+        font-size: 0.9rem;
+    }
+    
+    .action-buttons .btn {
+        margin: 0.35rem;
+    }
+    
+    .resend-section h3 {
+        font-size: 1rem;
+    }
+}

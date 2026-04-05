@@ -8,13 +8,16 @@
 package com.jakartaee.jobfinder.dao;
 
 import com.jakartaee.jobfinder.entity.User;
+import com.jakartaee.jobfinder.security.utils.BCryptHashAlgorithm;
 import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Data Access Object (DAO) for managing User entities.
@@ -35,6 +38,9 @@ public class UserDAO {
     @PersistenceContext(unitName = "youth-job-finder")
     private EntityManager em;
 
+    @Inject
+    private BCryptHashAlgorithm passwordHasher;
+
     // --- 1. CREATE ---
     /**
      * Persists a new User entity into the database.
@@ -45,8 +51,9 @@ public class UserDAO {
      * @param user the User entity to be persisted
      */
     @Transactional
-    public void create(User user) {
-        em.persist(user); // Converts the Java object into a MySQL INSERT statement
+    public User create(User user) {
+        em.persist(user);
+        return user;
     }
 
     // --- 2. READ (Find by ID) ---
@@ -109,15 +116,64 @@ public class UserDAO {
      * Finds a User entity by its email address.
      *
      * @param email the email address to search for
-     * @return the User entity if found, otherwise null
+     * @return the User entity if found, otherwise Optional.empty()
      */
-    public User findByEmail(String email) {
+    public Optional<User> findByEmail(String email) {
         TypedQuery<User> query = em.createQuery(
                 "SELECT u FROM User u WHERE u.email = :email", User.class
         );
         query.setParameter("email", email);
 
         List<User> results = query.getResultList();
-        return results.isEmpty() ? null : results.get(0);
+        return results.isEmpty() ? Optional.empty() : Optional.of(results.get(0));
+    }
+
+    // --- CUSTOM QUERY (Find by Verification Token) ---
+    /**
+     * Finds a User entity by its verification token.
+     *
+     * @param token the verification token to search for
+     * @return the User entity if found, otherwise Optional.empty()
+     */
+    public Optional<User> findByVerificationToken(String token) {
+        TypedQuery<User> query = em.createQuery(
+                "SELECT u FROM User u WHERE u.verificationToken = :token", User.class
+        );
+        query.setParameter("token", token);
+
+        List<User> results = query.getResultList();
+        return results.isEmpty() ? Optional.empty() : Optional.of(results.get(0));
+    }
+
+    // --- PASSWORD METHODS ---
+    /**
+     * Updates a user's password.
+     *
+     * @param id          the user ID
+     * @param newPassword the new password (already hashed)
+     */
+    @Transactional
+    public void updatePassword(String id, String newPassword) {
+        User user = findById(id);
+        if (user != null) {
+            String hashedPassword = passwordHasher.generate(newPassword.toCharArray());
+            user.setPasswordHash(hashedPassword);
+            em.merge(user);
+        }
+    }
+
+    /**
+     * Verifies a user's password using BCrypt.
+     *
+     * @param id       the user ID
+     * @param password the password to verify
+     * @return true if password matches, false otherwise
+     */
+    public boolean verifyPassword(String id, String password) {
+        User user = findById(id);
+        if (user == null || user.getPasswordHash() == null) {
+            return false;
+        }
+        return passwordHasher.verify(password.toCharArray(), user.getPasswordHash());
     }
 }

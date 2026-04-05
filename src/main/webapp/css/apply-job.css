@@ -1,0 +1,496 @@
+/* Apply for Job Page Styles */
+
+.apply-job {
+    padding: 2rem;
+    background-color: #f9f9f9;
+    min-height: 80vh;
+}
+
+.apply-container {
+    max-width: 800px;
+    margin: auto;
+}
+
+.apply-container h2 {
+    margin-bottom: 1.5rem;
+    color: #004080;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Alerts */
+.alert {
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.alert-error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.alert-error i {
+    color: #dc3545;
+}
+
+.alert-success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.alert-success i {
+    color: #28a745;
+}
+
+/* Job Summary Card */
+.job-summary {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-bottom: 1.5rem;
+}
+
+.job-header {
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.job-header h3 {
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.company-name {
+    color: #666;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.company-name i {
+    color: #667eea;
+}
+
+.job-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.detail-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #666;
+    font-size: 0.875rem;
+}
+
+.detail-item i {
+    color: #667eea;
+}
+
+.job-description, .job-requirements {
+    margin-bottom: 1.5rem;
+}
+
+.job-description h4, .job-requirements h4 {
+    color: #333;
+    margin-bottom: 0.75rem;
+    font-size: 1rem;
+}
+
+.job-description p, .job-requirements p {
+    color: #555;
+    line-height: 1.6;
+}
+
+/* Application Form Card */
+.application-form {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.application-form h4 {
+    color: #333;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.application-form > p {
+    color: #666;
+    margin-bottom: 1.5rem;
+}
+
+.applicant-info {
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 6px;
+    margin-bottom: 1.5rem;
+}
+
+.info-row {
+    display: flex;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.info-row:last-child {
+    border-bottom: none;
+}
+
+.info-label {
+    font-weight: 600;
+    color: #666;
+    width: 150px;
+    flex-shrink: 0;
+}
+
+.info-value {
+    color: #333;
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e9ecef;
+}
+
+/* No Job State */
+.no-job {
+    text-align: center;
+    padding: 3rem;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.no-job i {
+    font-size: 3rem;
+    color: #ffc107;
+    margin-bottom: 1rem;
+}
+
+.no-job h3 {
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.no-job p {
+    color: #666;
+    margin-bottom: 1.5rem;
+}
+
+/* Button Styles */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    color: #fff;
+    text-decoration: none;
+}
+
+.btn-secondary {
+    background: #f8f9fa;
+    color: #333;
+    border: 2px solid #ddd;
+}
+
+.btn-secondary:hover {
+    background: #e9ecef;
+    border-color: #ccc;
+    transform: translateY(-2px);
+    text-decoration: none;
+}
+
+/* Responsive - Multiple breakpoints for better window size sensitivity */
+@media (max-width: 1200px) {
+    .apply-container {
+        max-width: 90%;
+    }
+}
+
+@media (max-width: 992px) {
+    .apply-job {
+        padding: 1.5rem;
+    }
+    
+    .apply-container h2 {
+        font-size: 1.5rem;
+    }
+    
+    .job-summary,
+    .application-form {
+        padding: 1.25rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .apply-job {
+        padding: 1rem;
+    }
+
+    .job-details {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .info-row {
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+
+    .info-label {
+        width: auto;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 576px) {
+    .apply-job {
+        padding: 0.75rem;
+        min-height: 70vh;
+    }
+    
+    .apply-container h2 {
+        font-size: 1.25rem;
+        margin-bottom: 1rem;
+    }
+    
+    .alert {
+        padding: 0.875rem 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .job-summary,
+    .application-form {
+        padding: 1rem;
+        border-radius: 6px;
+    }
+    
+    .job-header h3 {
+        font-size: 1.1rem;
+    }
+    
+    .company-name {
+        font-size: 0.85rem;
+    }
+    
+    .job-details {
+        gap: 0.75rem;
+    }
+    
+    .detail-item {
+        font-size: 0.8rem;
+    }
+    
+    .job-description h4,
+    .job-requirements h4,
+    .application-form h4 {
+        font-size: 0.95rem;
+    }
+    
+    .job-description p,
+    .job-requirements p,
+    .application-form > p {
+        font-size: 0.9rem;
+    }
+    
+    .applicant-info {
+        padding: 0.875rem;
+    }
+    
+    .info-row {
+        padding: 0.4rem 0;
+    }
+    
+    .info-label {
+        font-size: 0.85rem;
+    }
+    
+    .info-value {
+        font-size: 0.9rem;
+    }
+    
+    .form-actions {
+        gap: 0.75rem;
+    }
+    
+    .btn {
+        padding: 0.625rem 1.25rem;
+        font-size: 0.9rem;
+    }
+    
+    .no-job {
+        padding: 2rem 1rem;
+    }
+    
+    .no-job i {
+        font-size: 2.5rem;
+    }
+    
+    .no-job h3 {
+        font-size: 1.1rem;
+    }
+    
+    .no-job p {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .apply-job {
+        padding: 0.5rem;
+    }
+    
+    .apply-container h2 {
+        font-size: 1.125rem;
+        gap: 0.35rem;
+    }
+    
+    .alert {
+        padding: 0.75rem 0.875rem;
+        font-size: 0.85rem;
+    }
+    
+    .job-summary,
+    .application-form {
+        padding: 0.875rem;
+        border-radius: 6px;
+    }
+    
+    .job-header {
+        margin-bottom: 0.75rem;
+        padding-bottom: 0.75rem;
+    }
+    
+    .job-header h3 {
+        font-size: 1rem;
+    }
+    
+    .company-name {
+        font-size: 0.8rem;
+        gap: 0.35rem;
+    }
+    
+    .job-details {
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+    }
+    
+    .detail-item {
+        font-size: 0.75rem;
+        gap: 0.35rem;
+    }
+    
+    .job-description,
+    .job-requirements {
+        margin-bottom: 1rem;
+    }
+    
+    .job-description h4,
+    .job-requirements h4,
+    .application-form h4 {
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .job-description p,
+    .job-requirements p {
+        font-size: 0.85rem;
+        line-height: 1.5;
+    }
+    
+    .application-form > p {
+        font-size: 0.85rem;
+        margin-bottom: 1rem;
+    }
+    
+    .applicant-info {
+        padding: 0.75rem;
+        margin-bottom: 1rem;
+    }
+    
+    .info-row {
+        padding: 0.35rem 0;
+    }
+    
+    .info-label {
+        font-size: 0.8rem;
+    }
+    
+    .info-value {
+        font-size: 0.85rem;
+    }
+    
+    .form-actions {
+        padding-top: 0.875rem;
+        gap: 0.5rem;
+    }
+    
+    .btn {
+        padding: 0.6rem 1rem;
+        font-size: 0.85rem;
+    }
+    
+    .no-job {
+        padding: 1.5rem 0.75rem;
+    }
+    
+    .no-job i {
+        font-size: 2rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    .no-job h3 {
+        font-size: 1rem;
+    }
+    
+    .no-job p {
+        font-size: 0.85rem;
+        margin-bottom: 1rem;
+    }
+}

@@ -1,0 +1,152 @@
+/* ===========================
+   Additional Mobile Responsive Styles
+   =========================== */
+
+/* Table responsive wrapper - ensures horizontal scroll on mobile */
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: 1rem;
+}
+
+.table-responsive table {
+    width: 100%;
+    margin-bottom: 0;
+}
+
+/* Mobile enhancements for 480px and below */
+@media (max-width: 480px) {
+    /* Container padding adjustments */
+    .container,
+    .dashboard-container,
+    .applicants-container,
+    .listings-container,
+    .jobs-container,
+    .companies-container {
+        padding: 0 0.75rem;
+    }
+
+    /* Form card adjustments */
+    .form-card {
+        padding: 1rem;
+        margin: 0.5rem;
+    }
+
+    .form-group.half {
+        width: 100%;
+    }
+
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    /* Table mobile adjustments */
+    .table-responsive {
+        border: 0;
+        font-size: 0.85rem;
+    }
+
+    .table-responsive th,
+    .table-responsive td {
+        padding: 0.5rem 0.25rem;
+    }
+
+    /* Action buttons mobile - wrap and smaller */
+    .action-buttons {
+        flex-wrap: wrap;
+        gap: 0.25rem;
+    }
+
+    .action-buttons .btn,
+    .action-buttons a,
+    .action-buttons button {
+        padding: 0.4rem 0.6rem;
+        font-size: 0.8rem;
+    }
+
+    /* Card padding adjustments */
+    .dashboard-card,
+    .applicants-card,
+    .job-card,
+    .application-card {
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    /* Stats/Summary cards - 2 columns on mobile */
+    .applications-summary,
+    .applicants-summary,
+    .quick-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+    }
+
+    .summary-card {
+        padding: 0.75rem;
+    }
+
+    .summary-card h4 {
+        font-size: 0.85rem;
+    }
+
+    .summary-number {
+        font-size: 1.25rem;
+    }
+
+    /* Modal mobile adjustments */
+    .modal-content {
+        width: 95%;
+        margin: 10% auto;
+        padding: 1rem;
+    }
+
+    /* Hero section mobile */
+    .hero-content {
+        padding: 1rem;
+    }
+
+    .hero h1 {
+        font-size: 1.75rem;
+    }
+
+    /* Navbar mobile refinements */
+    .navbar {
+        padding: 0.75rem 1rem;
+    }
+
+    .navbar .logo {
+        font-size: 1.2rem;
+    }
+
+    .navbar .nav-links {
+        top: 60px;
+        max-height: calc(100vh - 60px);
+        padding: 1.5rem 0;
+    }
+
+    .navbar .nav-links li {
+        margin: 0.75rem 0;
+    }
+
+    .navbar .nav-links a {
+        padding: 0.75rem;
+    }
+}
+
+/* Tablet adjustments for stats cards */
+@media (min-width: 481px) and (max-width: 768px) {
+    .applications-summary,
+    .applicants-summary {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Ensure all containers have max-width on large screens */
+@media (min-width: 1025px) {
+    .applicants-container,
+    .listings-container {
+        max-width: 1200px;
+        margin: auto;
+    }
+}

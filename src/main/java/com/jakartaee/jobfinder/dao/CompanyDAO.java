@@ -13,7 +13,9 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
+
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Data Access Object (DAO) for managing Company entities.
@@ -44,8 +46,9 @@ public class CompanyDAO {
      * @param company the Company entity to be persisted
      */
     @Transactional
-    public void create(Company company) {
+    public Company create(Company company) {
         em.persist(company);
+        return company;
     }
 
     // --- 2. READ (Find by ID) ---
@@ -114,5 +117,73 @@ public class CompanyDAO {
 
         List<Company> results = query.getResultList();
         return results.isEmpty() ? null : results.get(0);
+    }
+
+    // --- CUSTOM QUERY (Find by User ID) ---
+    /**
+     * Finds a Company entity by the company admin's user ID.
+     *
+     * @param userId the ID of the company admin user
+     * @return the Company entity if found, otherwise null
+     */
+    public Company findByUserId(String userId) {
+        TypedQuery<Company> query = em.createQuery(
+                "SELECT c FROM Company c WHERE c.companyAdmin.id = :userId",
+                Company.class
+        );
+        query.setParameter("userId", userId);
+
+        List<Company> results = query.getResultList();
+        return results.isEmpty() ? null : results.get(0);
+    }
+
+    // --- CUSTOM QUERY (Find by User) ---
+    /**
+     * Finds all Company entities associated with a specific user.
+     *
+     * @param user the User entity
+     * @return a list of Company entities associated with the user
+     */
+    public List<Company> findByUser(com.jakartaee.jobfinder.entity.User user) {
+        TypedQuery<Company> query = em.createQuery(
+                "SELECT c FROM Company c WHERE c.companyAdmin.id = :userId",
+                Company.class
+        );
+        query.setParameter("userId", user.getId());
+        return query.getResultList();
+    }
+
+    // --- CUSTOM QUERY (Find by Status) ---
+    /**
+     * Finds all Company entities with a specific status.
+     *
+     * @param status the status to search for (e.g., PENDING, APPROVED, REJECTED)
+     * @return a list of Company entities with the specified status
+     */
+    public List<Company> findByStatus(com.jakartaee.jobfinder.entity.status.Status status) {
+        TypedQuery<Company> query = em.createQuery(
+                "SELECT c FROM Company c WHERE c.status = :status",
+                Company.class
+        );
+        query.setParameter("status", status);
+        return query.getResultList();
+    }
+
+    // --- CUSTOM QUERY (Find by Name) ---
+    /**
+     * Finds a Company entity by its name.
+     *
+     * @param name the name of the Company
+     * @return an Optional containing the Company entity if found, otherwise empty
+     */
+    public Optional<Company> findByName(String name) {
+        TypedQuery<Company> query = em.createQuery(
+                "SELECT c FROM Company c WHERE c.name = :name",
+                Company.class
+        );
+        query.setParameter("name", name);
+
+        List<Company> results = query.getResultList();
+        return results.isEmpty() ? Optional.empty() : Optional.of(results.get(0));
     }
 }

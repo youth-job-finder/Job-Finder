@@ -1,0 +1,82 @@
+.companies-section {
+    padding: 2rem;
+    background-color: #f9f9f9;
+    min-height: 80vh;
+}
+
+.companies-container {
+    max-width: 1000px;
+    margin: auto;
+}
+
+.companies-container h2 {
+    margin-bottom: 1rem;
+    color: #004080;
+}
+
+.companies-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+.companies-table th,
+.companies-table td {
+    border: 1px solid #ddd;
+    padding: 0.75rem;
+    text-align: left;
+}
+
+.companies-table th {
+    background-color: #f0f0f0;
+}
+
+.companies-table a {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.companies-table a:hover {
+    color: #764ba2;
+    text-decoration: underline;
+}
+
+/* Tablet and Mobile Responsive */
+@media (max-width: 768px) {
+    .companies-section {
+        padding: 1rem;
+    }
+
+    .companies-container {
+        padding: 0 0.5rem;
+    }
+
+    .companies-table {
+        font-size: 0.9rem;
+    }
+
+    .companies-table th,
+    .companies-table td {
+        padding: 0.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .companies-section {
+        padding: 0.75rem;
+    }
+
+    .companies-container h2 {
+        font-size: 1.25rem;
+    }
+
+    .companies-table {
+        font-size: 0.8rem;
+    }
+
+    .companies-table th,
+    .companies-table td {
+        padding: 0.375rem;
+    }
+}

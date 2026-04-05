@@ -3,13 +3,15 @@ package com.jakartaee.jobfinder.entity;
 import com.jakartaee.jobfinder.entity.role.Role;
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "users")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "user_id", nullable = false, unique = true)
+    @Column(name = "user_id", columnDefinition = "CHAR(36)", nullable = false, unique = true)
     private String id;
 
     @Column(name = "full_name", length = 50, nullable = false)
@@ -23,12 +25,33 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
-    private Role role;
+    private Role role = Role.APPLICANT; // default role
+
+    @Column(name = "phone", length = 20)
+    private String phone;
+
+    @Column(name = "address", columnDefinition = "TEXT")
+    private String address;
+
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at", nullable = false)
+    private LocalDateTime updatedAt;
+
+    @Column(name = "email_verified", nullable = false)
+    private Boolean emailVerified = false;
+
+    @Column(name = "verification_token", columnDefinition = "VARCHAR(255)")
+    private String verificationToken;
+
+    @Column(name = "verification_token_expiry")
+    private LocalDateTime verificationTokenExpiry;
 
     // Required no-arg constructor for JPA
     public User() {}
 
-    // Constructor with all required fields (including role)
+    // Constructor with explicit role
     public User(String name, String email, String passwordHash, Role role) {
         this.name = name;
         this.email = email;
@@ -36,27 +59,30 @@ public class User {
         this.role = role;
     }
 
-    // Option 2: If you want a default role (e.g., APPLICANT), you can either:
-    // - Initialize the field: private Role role = Role.APPLICANT;
-    // - Provide a constructor without role and set a default there.
-    // Example with default role:
-    /*
+    // Constructor with default role
     public User(String name, String email, String passwordHash) {
         this.name = name;
         this.email = email;
         this.passwordHash = passwordHash;
-        this.role = Role.APPLICANT; // default
     }
-    */
 
-    // Getter for ID – typically no setter is provided for auto-generated fields,
-    // but if you need one (e.g., for testing), keep it simple (do NOT generate a new UUID).
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    // Getters and setters
     public String getId() {
         return id;
     }
 
-    // Optional setter – use with caution; it simply assigns the given value.
-    // Usually you would omit this setter.
+    // Optional setter (use carefully)
     public void setId(String id) {
         this.id = id;
     }
@@ -91,6 +117,54 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public Boolean getEmailVerified() {
+        return emailVerified;
+    }
+
+    public void setEmailVerified(Boolean emailVerified) {
+        this.emailVerified = emailVerified;
+    }
+
+    public String getVerificationToken() {
+        return verificationToken;
+    }
+
+    public void setVerificationToken(String verificationToken) {
+        this.verificationToken = verificationToken;
+    }
+
+    public LocalDateTime getVerificationTokenExpiry() {
+        return verificationTokenExpiry;
+    }
+
+    public void setVerificationTokenExpiry(LocalDateTime verificationTokenExpiry) {
+        this.verificationTokenExpiry = verificationTokenExpiry;
     }
 }
 

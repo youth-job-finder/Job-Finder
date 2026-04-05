@@ -1,0 +1,245 @@
+.company-footer {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    color: white;
+    padding: 3rem 0 1rem;
+    margin-top: 4rem;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.footer-section h3 {
+    color: #ffcc00;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.footer-section h4 {
+    color: #ffcc00;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    border-bottom: 2px solid #ffcc00;
+    padding-bottom: 0.5rem;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section ul li {
+    margin-bottom: 0.5rem;
+}
+
+.footer-section ul li a {
+    color: #b3d9ff;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.footer-section ul li a:hover {
+    color: #ffcc00;
+    transform: translateX(5px);
+}
+
+.company-quick-stats {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+}
+
+.company-quick-stats span {
+    background: rgba(255, 204, 0, 0.2);
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.9rem;
+    border: 1px solid #ffcc00;
+}
+
+.tips-section {
+    margin-bottom: 1.5rem;
+}
+
+.tip-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-bottom: 0.8rem;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.tip-item i {
+    color: #ffcc00;
+    margin-top: 0.2rem;
+    flex-shrink: 0;
+}
+
+.upgrade-prompt {
+    background: rgba(255, 204, 0, 0.15);
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid #ffcc00;
+    margin-top: 1rem;
+}
+
+.upgrade-prompt p {
+    margin: 0 0 0.8rem 0;
+    font-size: 0.9rem;
+}
+
+.btn-premium {
+    background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    display: inline-block;
+    box-shadow: 0 4px 15px rgba(238, 90, 36, 0.3);
+}
+
+.btn-premium:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(238, 90, 36, 0.4);
+    color: #fff;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    color: #b3d9ff;
+    font-size: 0.9rem;
+}
+
+.footer-bottom a {
+    color: #ffcc00;
+    text-decoration: none;
+    margin: 0 0.5rem;
+}
+
+.footer-bottom a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 1200px) {
+    .footer-content {
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 992px) {
+    .company-footer {
+        padding: 2rem 0 1rem;
+    }
+    
+    .footer-content {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+    
+    .footer-section h3 {
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .footer-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+    
+    .company-quick-stats {
+        justify-content: center;
+    }
+    
+    .footer-section ul li a {
+        justify-content: center;
+    }
+    
+    .tip-item {
+        justify-content: center;
+        text-align: center;
+    }
+}
+
+@media (max-width: 576px) {
+    .company-footer {
+        padding: 1.5rem 0 1rem;
+        margin-top: 2rem;
+    }
+    
+    .footer-content {
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .footer-section h3 {
+        font-size: 1.2rem;
+    }
+    
+    .footer-section h4 {
+        font-size: 1rem;
+    }
+    
+    .company-quick-stats span {
+        font-size: 0.8rem;
+        padding: 0.25rem 0.6rem;
+    }
+    
+    .tip-item {
+        font-size: 0.85rem;
+    }
+    
+    .btn-premium {
+        font-size: 0.85rem;
+        padding: 0.4rem 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .company-footer {
+        padding: 1rem 0 0.75rem;
+    }
+    
+    .footer-content {
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+    }
+    
+    .footer-section h3 {
+        font-size: 1.1rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    .footer-section h4 {
+        font-size: 0.95rem;
+        padding-bottom: 0.35rem;
+    }
+    
+    .company-quick-stats {
+        gap: 0.5rem;
+    }
+    
+    .upgrade-prompt {
+        padding: 0.75rem;
+    }
+    
+    .upgrade-prompt p {
+        font-size: 0.85rem;
+    }
+}
