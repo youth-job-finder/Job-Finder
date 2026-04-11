@@ -1,32 +1,51 @@
 /**
- * Footer Component Styles
- * Extracted from footer.jsp
+ * 🏛️ Global Footer Component Styles - Enterprise Dashboard
+ * Standardized to the Navy & Gold System
  */
 
+:root {
+    --deep-navy: #0f172a;
+    --slate-navy: #1e293b;
+    --accent-gold: #d4af37;
+    --gold-gradient: linear-gradient(135deg, #b8860b 0%, #d4af37 100%);
+    --text-light: #f1f5f9;
+    --text-muted: #94a3b8;
+    --border-glass: rgba(255, 255, 255, 0.1);
+}
+
 .footer {
-    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-    color: white;
-    padding: 3rem 0 1rem;
+    background: var(--primary-navy, #0f172a);
+    color: var(--text-light, #f1f5f9);
+    padding: 4rem 0 1.5rem;
     margin-top: 4rem;
+    border-top: 4px solid var(--accent-gold, #d4af37); /* Gold Anchor Line */
+    position: relative;
 }
 
 .footer-content {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-    margin-bottom: 2rem;
+    gap: 2.5rem;
+    margin-bottom: 2.5rem;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 2rem;
 }
 
 .footer-section h3 {
-    color: #ffcc00;
-    margin-bottom: 1rem;
+    color: var(--accent-gold, #d4af37);
+    margin-bottom: 1.25rem;
     font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
 }
 
 .footer-section h4 {
-    color: #ffcc00;
+    color: var(--accent-gold, #d4af37);
     margin-bottom: 1rem;
     font-size: 1.1rem;
+    font-weight: 700;
 }
 
 .footer-section ul {
@@ -35,155 +54,112 @@
 }
 
 .footer-section ul li {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
 }
 
 .footer-section ul li a {
-    color: #b3d9ff;
+    color: var(--text-muted, #94a3b8);
     text-decoration: none;
-    transition: color 0.3s ease;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    display: inline-block;
 }
 
 .footer-section ul li a:hover {
-    color: #667eea;
-    text-decoration: underline;
+    color: var(--accent-gold, #d4af37);
+    transform: translateX(4px); /* Gentle slide effect */
 }
 
+/* Social Media Links */
 .social-links {
     display: flex;
     gap: 1rem;
-    margin-top: 1rem;
+    margin-top: 1.5rem;
 }
 
 .social-links a {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
-    background: rgba(255, 255, 255, 0.1);
+    width: 42px;
+    height: 42px;
+    background: rgba(255, 255, 255, 0.05); /* Frosted Glass */
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 50%;
-    color: white;
+    color: var(--text-light, #f1f5f9);
     text-decoration: none;
     transition: all 0.3s ease;
+    font-size: 1.1rem;
 }
 
 .social-links a:hover {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    background: var(--gold-gradient, linear-gradient(135deg, #b8860b 0%, #d4af37 100%));
+    color: var(--primary-navy, #0f172a);
+    border-color: transparent;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(184, 134, 11, 0.3);
 }
 
+/* Footer Copyright Bottom Bar */
 .footer-bottom {
     text-align: center;
     padding-top: 2rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    color: #b3d9ff;
+    border-top: 1px solid var(--border-glass, rgba(255, 255, 255, 0.05));
+    color: var(--text-muted, #94a3b8);
+    font-size: 0.95rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-left: 2rem;
+    padding-right: 2rem;
 }
 
 .footer-bottom a {
-    color: #ffcc00;
+    color: var(--accent-gold, #d4af37);
     text-decoration: none;
+    font-weight: 600;
+    margin: 0 0.25rem;
+    transition: color 0.3s ease;
 }
 
 .footer-bottom a:hover {
-    color: #667eea;
+    color: var(--text-light, #f1f5f9);
     text-decoration: underline;
 }
 
+/* =========================================
+   Responsive Breakpoints
+   ========================================= */
 @media (max-width: 1200px) {
-    .footer-content {
-        gap: 1.5rem;
-    }
+    .footer-content { gap: 2rem; }
 }
 
 @media (max-width: 992px) {
-    .footer {
-        padding: 2rem 0 1rem;
-    }
-    
-    .footer-content {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1.5rem;
-    }
-    
-    .footer-section h3 {
-        font-size: 1.3rem;
-    }
+    .footer { padding: 3rem 0 1.5rem; }
+    .footer-content { grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+    .footer-section h3 { font-size: 1.35rem; }
 }
 
 @media (max-width: 768px) {
-    .footer-content {
-        grid-template-columns: 1fr;
-        text-align: center;
-    }
-    
-    .social-links {
-        justify-content: center;
-    }
+    .footer-content { grid-template-columns: 1fr; text-align: center; gap: 2.5rem;}
+    .social-links { justify-content: center; }
+    .footer-section ul li a:hover { transform: translateY(-2px); /* Vertical slide instead of horizontal on mobile */ }
 }
 
 @media (max-width: 576px) {
-    .footer {
-        padding: 1.5rem 0 1rem;
-        margin-top: 2rem;
-    }
-    
-    .footer-content {
-        gap: 1rem;
-        margin-bottom: 1.5rem;
-    }
-    
-    .footer-section h3 {
-        font-size: 1.2rem;
-    }
-    
-    .footer-section h4 {
-        font-size: 1rem;
-    }
-    
-    .social-links a {
-        width: 35px;
-        height: 35px;
-    }
-    
-    .footer-bottom {
-        padding-top: 1.5rem;
-        font-size: 0.85rem;
-    }
+    .footer { padding: 2rem 0 1rem; margin-top: 3rem; }
+    .footer-content { gap: 2rem; margin-bottom: 2rem; padding: 0 1.5rem;}
+    .footer-section h3 { font-size: 1.25rem; }
+    .footer-section h4 { font-size: 1.05rem; }
+    .social-links a { width: 38px; height: 38px; font-size: 1rem;}
+    .footer-bottom { padding-top: 1.5rem; font-size: 0.85rem; }
 }
 
 @media (max-width: 480px) {
-    .footer {
-        padding: 1rem 0 0.75rem;
-    }
-    
-    .footer-content {
-        gap: 0.75rem;
-        margin-bottom: 1rem;
-    }
-    
-    .footer-section h3 {
-        font-size: 1.1rem;
-        margin-bottom: 0.75rem;
-    }
-    
-    .footer-section h4 {
-        font-size: 0.95rem;
-        margin-bottom: 0.75rem;
-    }
-    
-    .footer-section ul li {
-        margin-bottom: 0.35rem;
-    }
-    
-    .social-links {
-        gap: 0.5rem;
-    }
-    
-    .footer-bottom {
-        padding-top: 1rem;
-        font-size: 0.8rem;
-    }
+    .footer { padding: 1.5rem 0 1rem; }
+    .footer-content { gap: 1.5rem; margin-bottom: 1.5rem; padding: 0 1rem;}
+    .footer-section h3 { font-size: 1.15rem; margin-bottom: 1rem; }
+    .footer-section h4 { font-size: 1rem; margin-bottom: 0.75rem; }
+    .footer-section ul li { margin-bottom: 0.5rem; }
+    .social-links { gap: 0.75rem; }
+    .footer-bottom { padding-top: 1.25rem; font-size: 0.8rem; }
 }

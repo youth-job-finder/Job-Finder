@@ -1,39 +1,36 @@
-/* Job Detail Page Styles */
+/**
+ * 🏛️ Job Detail Page Styles - Enterprise Dashboard
+ * UPDATED: High-Visibility Description Text
+ */
 
-body {
-    background-color: #f5f5f5;
+:root {
+    --deep-navy: #0f172a;
+    --slate-navy: #1e293b;
+    --darker-navy: #0b1120;
+    --accent-gold: #d4af37;
+    --gold-gradient: linear-gradient(135deg, #b8860b 0%, #d4af37 100%);
+    --text-light: #f1f5f9;
+    --text-muted: #94a3b8;
+    --border-glass: rgba(255, 255, 255, 0.1);
 }
 
+body {
+    background-color: var(--darker-navy, #0b1120);
+    color: var(--text-light, #f1f5f9);
+    /* Enhances font rendering on dark backgrounds */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Header - The Premium Anchor */
 .job-detail-header {
-    background: #004080;
+    background: linear-gradient(to bottom, #000, var(--deep-navy)) !important;
     color: white;
-    padding: 3rem 0;
+    padding: 4rem 0;
     margin-bottom: 2rem;
     position: relative;
     z-index: 10;
-}
-
-.back-link {
-    color: white;
-    opacity: 0.9;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
-}
-
-.back-link:hover {
-    opacity: 1;
-    text-decoration: underline;
-}
-
-.company-info .divider {
-    opacity: 0.7;
-}
-
-.company-info .industry {
-    opacity: 0.9;
+    border-bottom: 2px solid var(--border-glass);
 }
 
 .job-detail-header .container {
@@ -43,104 +40,235 @@ body {
 }
 
 .job-detail-header h1 {
-    font-size: 2.5rem;
-    margin-bottom: 0.5rem;
+    font-size: 3rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent-gold);
+    font-weight: 800;
+    letter-spacing: -1px;
+}
+
+.back-link {
+    color: var(--text-muted);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.back-link:hover {
+    color: var(--accent-gold);
+    transform: translateX(-5px);
 }
 
 .company-info {
     display: flex;
     align-items: center;
     gap: 1rem;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
+    color: var(--text-light);
 }
 
+.company-info .divider {
+    opacity: 0.3;
+    color: var(--accent-gold);
+}
+
+.company-info .industry {
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+/* Meta Grid - Data Widgets */
 .job-meta-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 1.5rem;
-    margin: 2rem 0;
+    margin: 2.5rem 0;
 }
 
 .job-meta-item {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    padding: 1rem;
-    background: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    gap: 1rem;
+    padding: 1.25rem;
+    background: var(--slate-navy);
+    border-radius: 12px;
+    border: 1px solid var(--border-glass);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease;
+}
+
+.job-meta-item:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent-gold);
 }
 
 .job-meta-item i {
-    color: var(--primary-color);
-    font-size: 1.2rem;
+    color: var(--accent-gold);
+    font-size: 1.5rem;
+    background: rgba(212, 175, 55, 0.1);
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
 }
 
+.job-meta-item span {
+    font-weight: 600;
+    color: var(--text-light);
+    font-size: 1rem;
+}
+
+/* Content Sections */
 .job-section {
-    background: #ffffff;
-    border-radius: 12px;
-    padding: 2rem;
-    margin-bottom: 2rem;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    background: var(--slate-navy);
+    border-radius: 16px;
+    padding: 2.5rem;
+    margin-bottom: 2.5rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    border: 1px solid var(--border-glass);
     position: relative;
     z-index: 5;
 }
 
+/* 🛠️ Fix for the "Log in to Apply" Prompt Box */
+
+.job-section .alert-info {
+    background-color: rgba(15, 23, 42, 0.6) !important; /* Deep Navy Glass */
+    border: 1px solid rgba(212, 175, 55, 0.3) !important; /* Soft Gold Border */
+    color: var(--text-light, #f1f5f9) !important;
+    padding: 3rem 2rem !important;
+    border-radius: 12px !important;
+    text-align: center !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 1.5rem !important;
+    box-shadow: inset 0 2px 10px rgba(0,0,0,0.2) !important;
+}
+
+/* Fix for the links inside the alert (log in / create account) */
+.job-section .alert-info a {
+    color: var(--accent-gold, #d4af37) !important;
+    text-decoration: underline !important;
+    font-weight: 700 !important;
+}
+
+.job-section .alert-info a:hover {
+    color: #fff !important;
+}
+
+/* Adjusting the "Please log in..." text visibility */
+.job-section .alert-info i, 
+.job-section .alert-info span {
+    color: var(--text-muted, #94a3b8) !important;
+    font-size: 1.1rem !important;
+}
+
+/* Ensure the button inside the alert matches the gold system */
+.job-section .alert-info .btn {
+    margin-top: 0.5rem !important;
+}
+
 .job-section h3 {
-    color: var(--primary-color);
-    margin-bottom: 1rem;
-    font-size: 1.3rem;
-}
-
-.job-section p {
-    line-height: 1.8;
-    color: #444;
-}
-
-.btn-lg {
-    padding: 0.875rem 2rem;
-    font-size: 1rem;
-}
-
-.back-link {
-    display: inline-flex;
+    color: var(--accent-gold);
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: flex;
     align-items: center;
-    gap: 0.5rem;
-    color: var(--primary-color);
-    text-decoration: none;
+    gap: 0.75rem;
+}
+
+.job-section h3::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border-glass);
+}
+
+/* 🛠️ FIXED: High Visibility Body Text */
+.job-section p, 
+.job-section li {
+    line-height: 1.8;
+    color: var(--text-light, #f1f5f9) !important; /* Forces light text for visibility */
+    font-size: 1.05rem;
+    font-weight: 400;
     margin-bottom: 1rem;
 }
 
-.back-link:hover {
-    text-decoration: underline;
+.job-section ul {
+    margin-left: 1.5rem;
+    margin-bottom: 1.5rem;
 }
 
-/* Alert styles for job detail page */
+/* Big Action Button */
+.btn-lg {
+    padding: 1rem 2.5rem;
+    font-size: 1.1rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 50px;
+    background: var(--gold-gradient);
+    color: var(--deep-navy) !important;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(184, 134, 11, 0.3);
+    transition: all 0.3s ease;
+}
+
+.btn-lg:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 15px 30px rgba(184, 134, 11, 0.4);
+}
+
+/* Alert Styles */
 .job-section .alert {
-    padding: 1rem 1.5rem;
-    border-radius: 8px;
-    margin-bottom: 1rem;
+    padding: 1.25rem 1.5rem;
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+    border: none;
 }
 
 .job-section .alert-success {
-    background-color: #d4edda;
-    border: 1px solid #c3e6cb;
-    color: #155724;
+    background-color: rgba(16, 185, 129, 0.15);
+    color: #6ee7b7;
+    border-left: 5px solid #10b981;
 }
 
 .job-section .alert-info {
-    background-color: #d1ecf1;
-    border: 1px solid #bee5eb;
-    color: #0c5460;
+    background-color: rgba(56, 189, 248, 0.15);
+    color: #7dd3fc;
+    border-left: 5px solid #38bdf8;
 }
 
 /* Responsive */
+@media (max-width: 992px) {
+    .job-section { padding: 2rem; }
+    .job-detail-header h1 { font-size: 2.2rem; }
+}
+
 @media (max-width: 768px) {
-    .job-detail-header h1 {
-        font-size: 1.8rem;
-    }
-    
-    .job-meta-grid {
-        grid-template-columns: 1fr;
-    }
+    .job-detail-header { padding: 3rem 0; }
+    .job-detail-header h1 { font-size: 1.8rem; }
+    .job-meta-grid { grid-template-columns: 1fr; gap: 1rem; }
+    .company-info { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+    .company-info .divider { display: none; }
+    .job-section h3 { font-size: 1.25rem; }
+}
+
+@media (max-width: 480px) {
+    .job-detail-header { padding: 2rem 0; }
+    .job-detail-header h1 { font-size: 1.5rem; }
+    .job-section { padding: 1.5rem; border-radius: 12px; }
+    .btn-lg { width: 100%; text-align: center; }
 }

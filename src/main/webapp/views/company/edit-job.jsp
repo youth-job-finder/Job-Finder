@@ -76,7 +76,7 @@
                             <i class="fas fa-money-bill"></i> Salary Range
                         </label>
                         <input type="text" id="salaryRange" name="salaryRange"
-                               placeholder="e.g., $50,000 - $70,000 or Competitive"
+                               placeholder="e.g., R50,000 - R70,000 or Competitive"
                                value="${job.salaryRange}">
                         <small>Specify the salary range or compensation</small>
                     </div>
