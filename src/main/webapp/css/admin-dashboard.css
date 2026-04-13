@@ -1,7 +1,19 @@
 /**
  * 🏛️ Admin Dashboard Styles - Enterprise Command Center
- * Standardized to the Navy & Gold System
+ * Fully Standardized to the Dark Navy & Gold System
  */
+
+:root {
+    --deep-navy: #0f172a;
+    --slate-navy: #1e293b;
+    --darker-navy: #0b1120;
+    --accent-gold: #d4af37;
+    --gold-gradient: linear-gradient(135deg, #b8860b 0%, #d4af37 100%);
+    --navy-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    --text-light: #f1f5f9;
+    --text-muted: #94a3b8;
+    --border-glass: rgba(255, 255, 255, 0.1);
+}
 
 /* Quick Stats - Data Panels */
 .quick-stats {
@@ -12,32 +24,32 @@
 }
 
 .quick-stat-card {
-    background: var(--surface-white);
-    border: 1px solid var(--border-soft);
-    border-top: 4px solid var(--primary-navy); /* Solid Anchor Line */
-    color: var(--text-main);
+    background: var(--slate-navy);
+    border: 1px solid var(--border-glass);
+    border-top: 4px solid var(--deep-navy); /* Base top border */
     padding: 1.5rem;
     border-radius: 12px;
     text-align: center;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: var(--shadow-md);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 
 .quick-stat-card:hover {
     transform: translateY(-5px);
-    border-top-color: var(--gold-accent);
-    box-shadow: var(--shadow-hover);
+    border-top-color: var(--accent-gold);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    background: rgba(30, 41, 59, 0.8);
 }
 
 .quick-stat-card i {
     font-size: 2.5rem;
     margin-bottom: 0.75rem;
-    color: var(--primary-navy);
+    color: var(--text-muted);
     transition: color 0.3s ease;
 }
 
 .quick-stat-card:hover i {
-    color: var(--gold-accent);
+    color: var(--accent-gold);
 }
 
 .quick-stat-card h4 {
@@ -52,39 +64,39 @@
 .quick-stat-card .number {
     font-size: 2.75rem;
     font-weight: 800;
-    color: var(--primary-navy);
+    color: var(--text-light);
 }
 
 /* Status-Specific Stat Cards */
-.quick-stat-card.pending {
-    border-top-color: var(--gold-accent);
-}
-.quick-stat-card.pending .number { color: var(--gold-accent); }
+.quick-stat-card.pending { border-top-color: var(--accent-gold); }
+.quick-stat-card.pending .number { color: var(--accent-gold); }
+.quick-stat-card.pending i { color: var(--accent-gold); }
 
-.quick-stat-card.success {
-    border-top-color: #10b981; /* Emerald Green */
-}
+.quick-stat-card.success { border-top-color: #10b981; }
+.quick-stat-card.success .number { color: #10b981; }
+.quick-stat-card.success i { color: #10b981; }
 
 /* Management Action Cards - The Control Grid */
 .management-cards {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 1.5rem;
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
 }
 
 .management-card {
-    background: var(--surface-white);
+    background: var(--slate-navy);
     padding: 2rem;
-    border-radius: 16px;
-    border: 1px solid var(--border-soft);
-    box-shadow: var(--shadow-md);
+    border-radius: 12px;
+    border: 1px solid var(--border-glass);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     transition: all 0.3s ease;
 }
 
 .management-card:hover {
-    border-color: var(--gold-accent);
+    border-color: var(--accent-gold);
     transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
 }
 
 .management-card h3 {
@@ -92,22 +104,32 @@
     align-items: center;
     gap: 0.75rem;
     margin-bottom: 1rem;
-    color: var(--primary-navy);
+    color: var(--accent-gold);
     font-weight: 800;
+    font-size: 1.25rem;
+}
+
+.management-card h3 i {
+    color: var(--text-light);
+    opacity: 0.8;
 }
 
 .management-card p {
-    color: var(--text-muted);
-    margin-bottom: 1.5rem;
+    color: var(--text-light); /* Switched to light for visibility */
+    margin-bottom: 1.75rem;
     font-size: 0.95rem;
     line-height: 1.6;
+    opacity: 0.9;
 }
 
 /* Admin Specific Buttons */
 .management-card .btn {
     width: 100%;
     text-align: center;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
     padding: 0.8rem 1rem;
     border-radius: 8px;
     text-decoration: none;
@@ -121,39 +143,48 @@
 }
 
 .btn-primary {
-    background: var(--primary-navy);
-    color: white;
+    background: var(--gold-gradient);
+    color: var(--deep-navy) !important;
+    box-shadow: 0 4px 15px rgba(184, 134, 11, 0.3);
 }
 
 .btn-primary:hover {
-    background: var(--gold-gradient);
-    color: var(--primary-navy);
-    box-shadow: 0 10px 15px -3px rgba(184, 134, 11, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(184, 134, 11, 0.4);
+    filter: brightness(1.1);
 }
 
 .btn-secondary {
-    background: var(--background-alt);
-    color: var(--primary-navy);
-    border: 1px solid var(--border-soft);
+    background: transparent;
+    color: var(--accent-gold) !important;
+    border: 2px solid var(--accent-gold);
 }
 
 .btn-secondary:hover {
-    border-color: var(--primary-navy);
-    background: transparent;
+    background: rgba(212, 175, 55, 0.1);
+    transform: translateY(-2px);
 }
 
 .btn-warning {
-    background: var(--gold-accent);
-    color: var(--primary-navy);
+    background: rgba(245, 158, 11, 0.1);
+    color: #fcd34d !important;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.btn-warning:hover {
+    background: #f59e0b;
+    color: var(--deep-navy) !important;
+    transform: translateY(-2px);
 }
 
 /* Recent Activity - The Audit Log */
 .recent-activity {
-    background: var(--surface-white);
+    background: var(--slate-navy);
     padding: 2rem;
-    border-radius: 16px;
-    border: 1px solid var(--border-soft);
-    box-shadow: var(--shadow-md);
+    border-radius: 12px;
+    border: 1px solid var(--border-glass);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    margin-bottom: 2rem;
 }
 
 .recent-activity h3 {
@@ -161,10 +192,11 @@
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    color: var(--primary-navy);
+    color: var(--accent-gold);
     font-weight: 800;
-    border-bottom: 2px solid var(--background-alt);
+    border-bottom: 1px solid var(--border-glass);
     padding-bottom: 1rem;
+    font-size: 1.35rem;
 }
 
 .activity-item {
@@ -172,12 +204,13 @@
     align-items: center;
     gap: 1.25rem;
     padding: 1.25rem 0;
-    border-bottom: 1px solid var(--border-soft);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.activity-item:last-child { border-bottom: none; }
+.activity-item:last-child { border-bottom: none; padding-bottom: 0; }
+.activity-item:first-child { padding-top: 0; }
 
-/* Audit Icons */
+/* Audit Icons - Dark Mode Tinted */
 .activity-icon {
     width: 45px;
     height: 45px;
@@ -187,17 +220,19 @@
     justify-content: center;
     font-size: 1.1rem;
     font-weight: bold;
+    border: 1px solid transparent;
 }
 
-.activity-icon.blue { background-color: rgba(15, 23, 42, 0.1); color: var(--primary-navy); }
-.activity-icon.green { background-color: #ecfdf5; color: #10b981; }
-.activity-icon.orange { background-color: rgba(212, 175, 55, 0.15); color: var(--gold-accent); }
-.activity-icon.red { background-color: #fef2f2; color: #ef4444; }
+.activity-icon.blue { background-color: rgba(56, 189, 248, 0.15); color: #38bdf8; border-color: rgba(56, 189, 248, 0.3); }
+.activity-icon.green { background-color: rgba(16, 185, 129, 0.15); color: #6ee7b7; border-color: rgba(16, 185, 129, 0.3); }
+.activity-icon.orange { background-color: rgba(245, 158, 11, 0.15); color: #fcd34d; border-color: rgba(245, 158, 11, 0.3); }
+.activity-icon.red { background-color: rgba(239, 68, 68, 0.15); color: #fca5a5; border-color: rgba(239, 68, 68, 0.3); }
 
 .activity-title {
     font-weight: 600;
-    color: var(--text-main);
+    color: var(--text-light);
     margin-bottom: 0.25rem;
+    font-size: 1rem;
 }
 
 .activity-meta {
@@ -205,7 +240,7 @@
     color: var(--text-muted);
 }
 
-/* System Alerts */
+/* System Alerts - Glassmorphism style */
 .alert {
     padding: 1.25rem;
     border-radius: 8px;
@@ -214,10 +249,12 @@
     display: flex;
     align-items: center;
     gap: 0.75rem;
+    border: none;
 }
 
-.alert-success { background-color: #ecfdf5; color: #065f46; border-left: 4px solid #10b981; }
-.alert-warning { background-color: #fffbeb; color: #b45309; border-left: 4px solid var(--gold-accent); }
+.alert-success { background-color: rgba(16, 185, 129, 0.15); color: #6ee7b7; border-left: 4px solid #10b981; }
+.alert-warning { background-color: rgba(245, 158, 11, 0.15); color: #fcd34d; border-left: 4px solid #f59e0b; }
+.alert-error { background-color: rgba(239, 68, 68, 0.15); color: #fca5a5; border-left: 4px solid #ef4444; }
 
 /* Responsive - Scaled for Dashboards */
 @media (max-width: 992px) {
@@ -228,7 +265,20 @@
 @media (max-width: 768px) {
     .quick-stats { grid-template-columns: 1fr; }
     .management-cards { grid-template-columns: 1fr; }
-    .quick-stat-card { padding: 1.25rem; display: flex; align-items: center; justify-content: space-between; text-align: left;}
-    .quick-stat-card i { margin-bottom: 0; font-size: 2rem; }
-    .quick-stat-card .number { font-size: 2rem; }
+    .quick-stat-card { 
+        padding: 1.25rem; 
+        display: flex; 
+        align-items: center; 
+        justify-content: space-between; 
+        text-align: left;
+    }
+    .quick-stat-card i { margin-bottom: 0; font-size: 2.25rem; }
+    .quick-stat-card .number { font-size: 2.25rem; }
+    .quick-stat-card h4 { margin-bottom: 0; }
+}
+
+@media (max-width: 480px) {
+    .management-card { padding: 1.5rem; }
+    .management-card h3 { font-size: 1.15rem; }
+    .recent-activity { padding: 1.5rem; }
 }

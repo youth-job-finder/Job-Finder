@@ -3,10 +3,13 @@
   User: aubre
   Date: 2026/03/24
   Time: 22:50
-  To change this template use File | Settings | File Templates.
+  
+  Modified by: Pilot
+  Date: 2026/04/13
+  Description: Updated legacy JSTL taglib to modern Jakarta EE 10 standard to fix GlassFish 500 errors.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
 
 <footer class="footer">
     <div class="container">
