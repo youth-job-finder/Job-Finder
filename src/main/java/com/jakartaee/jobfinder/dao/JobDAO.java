@@ -71,6 +71,21 @@ public class JobDAO {
                 .getResultList();
     }
 
+    /**
+     * Retrieves all jobs matching a given job type, case-insensitively.
+     *
+     * @param jobType the job type to match
+     * @return matching jobs
+     */
+    public List<Job> findByJobType(String jobType) {
+        return em.createQuery(
+                        "SELECT j FROM Job j WHERE LOWER(j.jobType) = LOWER(:jobType)",
+                        Job.class
+                )
+                .setParameter("jobType", jobType)
+                .getResultList();
+    }
+
     // --- 4. UPDATE ---
     /**
      * Updates an existing Job entity.

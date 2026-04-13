@@ -26,6 +26,33 @@ public class HomeServlet extends HttpServlet {
         BusinessLogger.logPageView(SERVLET_NAME, "index.jsp", user, isAuth);
         
         try {
+            String userId = (String) request.getSession().getAttribute("userId");
+
+            if (userId == null) {
+                String remoteUser = request.getRemoteUser();
+                if (remoteUser != null) {
+                    userId = remoteUser;
+                    request.getSession().setAttribute("userId", userId);
+
+                    if (request.isUserInRole("APPLICANT")) {
+                        request.getSession().setAttribute("role", "APPLICANT");
+                    } else if (request.isUserInRole("COMPANY_ADMIN")) {
+                        request.getSession().setAttribute("role", "COMPANY_ADMIN");
+                    } else if (request.isUserInRole("SYSTEM_ADMIN")) {
+                        request.getSession().setAttribute("role", "SYSTEM_ADMIN");
+                    }
+                }
+            }
+
+            boolean isAuthenticated = userId != null;
+            request.setAttribute("isAuthenticated", isAuthenticated);
+
+            if (isAuthenticated) {
+                Object roleObj = request.getSession().getAttribute("role");
+                String userRole = roleObj != null ? roleObj.toString() : "";
+                request.setAttribute("userRole", userRole);
+            }
+
             request.getRequestDispatcher("/views/index.jsp").forward(request, response);
         } catch (Exception e) {
             BusinessLogger.logError(SERVLET_NAME, "VIEW_HOME", 

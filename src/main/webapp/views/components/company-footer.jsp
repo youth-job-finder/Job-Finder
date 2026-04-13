@@ -11,11 +11,11 @@
             <div class="footer-section">
                 <h3><i class="fas fa-briefcase"></i> Employer Tools</h3>
                 <ul>
-                    <li><a href="${pageContext.request.contextPath}/companies/${companyId}/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-                    <li><a href="${pageContext.request.contextPath}/companies/${companyId}/list-job"><i class="fas fa-plus-circle"></i> Post New Job</a></li>
-                    <li><a href="${pageContext.request.contextPath}/companies/${companyId}/listings"><i class="fas fa-list"></i> Manage Listings</a></li>
-                    <li><a href="${pageContext.request.contextPath}/companies/${companyId}/applicants"><i class="fas fa-users"></i> View Applicants</a></li>
-                    <li><a href="${pageContext.request.contextPath}/companies/${companyId}/analytics"><i class="fas fa-chart-bar"></i> Job Analytics</a></li>
+                    <li><a href="${pageContext.request.contextPath}/company/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="${pageContext.request.contextPath}/company/list-job"><i class="fas fa-plus-circle"></i> Post New Job</a></li>
+                    <li><a href="${pageContext.request.contextPath}/company/listings"><i class="fas fa-list"></i> Manage Listings</a></li>
+                    <li><a href="${pageContext.request.contextPath}/company/applicants"><i class="fas fa-users"></i> View Applicants</a></li>
+                    <li><a href="${pageContext.request.contextPath}/company/analytics"><i class="fas fa-chart-bar"></i> Job Analytics</a></li>
                 </ul>
             </div>
             
@@ -23,10 +23,10 @@
                 <h3><i class="fas fa-building"></i> Company Profile</h3>
                 <ul>
                     <li><a href="${pageContext.request.contextPath}/company/profile"><i class="fas fa-edit"></i> Edit Profile</a></li>
-                    <li><a href="${pageContext.request.contextPath}/companies/${companyId}/settings"><i class="fas fa-cog"></i> Account Settings</a></li>
-                    <li><a href="${pageContext.request.contextPath}/companies/${companyId}/billing"><i class="fas fa-credit-card"></i> Billing & Plans</a></li>
-                    <li><a href="${pageContext.request.contextPath}/companies/${companyId}/team"><i class="fas fa-users"></i> Team Management</a></li>
-                    <li><a href="${pageContext.request.contextPath}/companies/${companyId}/reviews"><i class="fas fa-star"></i> Company Reviews</a></li>
+                    <li><a href="${pageContext.request.contextPath}/company/reviews"><i class="fas fa-star"></i> Company Reviews</a></li>
+                    <li><a href="${pageContext.request.contextPath}/jobs"><i class="fas fa-briefcase"></i> Browse Open Roles</a></li>
+                    <li><a href="${pageContext.request.contextPath}/contact"><i class="fas fa-headset"></i> Contact Support</a></li>
+                    <li><a href="${pageContext.request.contextPath}/terms"><i class="fas fa-scale-balanced"></i> Terms of Service</a></li>
                 </ul>
             </div>
             
@@ -66,7 +66,7 @@
         </div>
         
         <div class="footer-bottom">
-            <p>&copy; 2026 JobFinder for Business | <a href="${pageContext.request.contextPath}/companies/${companyId}/help">Employer Guide</a> | <a href="${pageContext.request.contextPath}/companies/${companyId}/terms">Terms of Service</a> | <a href="${pageContext.request.contextPath}/contact">Contact Support</a></p>
+            <p>&copy; 2026 JobFinder for Business | <a href="${pageContext.request.contextPath}/company/dashboard">Employer Dashboard</a> | <a href="${pageContext.request.contextPath}/terms">Terms of Service</a> | <a href="${pageContext.request.contextPath}/contact">Contact Support</a></p>
         </div>
     </div>
 </footer>

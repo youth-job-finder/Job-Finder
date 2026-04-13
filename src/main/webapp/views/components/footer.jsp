@@ -12,7 +12,12 @@
     <div class="container">
         <div class="footer-content">
             <div class="footer-section">
-                <h3>JobFinder</h3>
+                <h3>
+                    <a href="${pageContext.request.contextPath}/home" class="footer-brand-link" aria-label="JobFinder home">
+                        <span class="logo-icon"><i class="fas fa-search"></i></span>
+                        <span>JobFinder</span>
+                    </a>
+                </h3>
                 <p>Your gateway to amazing career opportunities and internships.</p>
                 <div class="social-links">
                     <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
@@ -45,8 +50,8 @@
             <div class="footer-section">
                 <h4>Contact Info</h4>
                 <p><i class="fas fa-envelope"></i> info@jobfinder.com</p>
-                <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
-                <p><i class="fas fa-map-marker-alt"></i> 123 Career Street, Job City, JC 12345</p>
+                <p><i class="fas fa-phone"></i> +27 (72) 623-4567</p>
+                <p><i class="fas fa-map-marker-alt"></i> Cnr R40 and D725 Roads, Mbombela, 1200</p>
             </div>
         </div>
         

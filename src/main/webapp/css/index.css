@@ -39,6 +39,26 @@ body {
     color: var(--text-light);
 }
 
+body.hero-button-hovering {
+    cursor: pointer;
+}
+
+.logo-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    text-decoration: none;
+    flex: 1;
+    color: inherit;
+}
+
+.logo-link:focus,
+.logo-link:focus-visible,
+.logo-link:active {
+    outline: none;
+    box-shadow: none;
+}
+
 /* =========================================
    2. Navbar - Authoritative Anchor
    ========================================= */
@@ -69,11 +89,51 @@ body {
     flex: 1;
 }
 
+.logo-icon {
+    width: 1.8rem;
+    height: 1.8rem;
+    border-radius: 0.45rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #f4cf59 0%, #d4af37 100%);
+    color: var(--primary-navy);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2);
+    flex-shrink: 0;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    font-size: 0.82rem;
+}
+
+.logo-link:hover .logo-icon,
+.logo-link:focus-visible .logo-icon {
+    transform: translateY(-1px);
+    box-shadow: 0 7px 16px rgba(212, 175, 55, 0.28);
+}
+
 .navbar .nav-links {
     list-style: none;
     display: flex;
     gap: 1.5rem;
     align-items: center;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar .nav-links li {
+    list-style: none !important;
+    list-style-type: none !important;
+    list-style-image: none !important;
+    display: flex;
+    align-items: center;
+}
+
+.navbar .nav-links li::marker,
+.navbar .nav-links li::before,
+.navbar .nav-links li::after,
+.navbar .nav-links a::before,
+.navbar .nav-links a::after {
+    content: none !important;
 }
 
 .navbar .nav-links a {
@@ -92,6 +152,25 @@ body {
     background: var(--gold-accent);
 }
 
+.hamburger {
+    display: none !important;
+    flex-direction: column;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    z-index: 1001;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+}
+
+#hamburger-menu {
+    display: none !important;
+}
+
 /* =========================================
    3. Hero Section - The Golden Entrance
    ========================================= */
@@ -103,16 +182,52 @@ body {
     justify-content: center;
     overflow: hidden;
     background: var(--navy-gradient);
+    isolation: isolate;
 }
 
-.hero-particles {
+.hero::before {
+    content: "";
     position: absolute;
-    width: 100%;
-    height: 100%;
+    inset: 0;
+    pointer-events: none;
+    z-index: -1;
     background-image: 
         radial-gradient(circle at 20% 80%, rgba(212, 175, 55, 0.05) 0%, transparent 50%),
         radial-gradient(circle at 80% 20%, rgba(212, 175, 55, 0.05) 0%, transparent 50%);
     animation: float 6s ease-in-out infinite;
+}
+
+.hero-content {
+    max-width: 1200px;
+    width: 100%;
+    padding: 0 2rem;
+}
+
+.hero-text {
+    max-width: 760px;
+}
+
+.hero-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.hero-actions .btn {
+    cursor: pointer;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                background-color 0.3s ease,
+                color 0.3s ease,
+                border-color 0.3s ease;
+}
+
+#hero-get-started:hover,
+#hero-browse-jobs:hover,
+#hero-get-started.manual-hover,
+#hero-browse-jobs.manual-hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 10px 20px rgba(184, 134, 11, 0.4);
 }
 
 .hero-title {
@@ -190,6 +305,11 @@ body {
     box-shadow: 0 10px 20px rgba(184, 134, 11, 0.4);
 }
 
+.btn.manual-hover, .cta-btn.manual-hover, .signin-link.manual-hover, .signup-link.manual-hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 10px 20px rgba(184, 134, 11, 0.4);
+}
+
 .btn-secondary, .btn-outline {
     background: transparent !important;
     color: var(--gold-accent) !important;
@@ -201,12 +321,35 @@ body {
     background: rgba(212, 175, 55, 0.1) !important;
 }
 
+.btn-secondary.manual-hover, .btn-outline.manual-hover {
+    background: rgba(212, 175, 55, 0.1) !important;
+}
+
+#hero-browse-jobs:hover,
+#hero-browse-jobs.manual-hover {
+    border-color: var(--gold-accent) !important;
+    color: var(--gold-accent) !important;
+}
+
 /* =========================================
    5. Features & Sections (Unified Blend)
    ========================================= */
 .features, .jobs-section, .companies-section {
     padding: 5rem 0;
     background-color: var(--darker-navy);
+}
+
+.features .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2.5rem;
 }
 
 .page-header {
@@ -243,11 +386,67 @@ body {
     box-shadow: var(--shadow-hover);
 }
 
+.feature-card {
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-height: 220px;
+    position: relative;
+}
+
 .feature-icon, .company-logo, .company-logo-large {
     background: var(--primary-navy);
     color: var(--gold-accent);
     border: 2px solid var(--gold-accent);
     border-radius: 50%;
+}
+
+.feature-icon {
+    width: 56px;
+    height: 56px;
+    min-width: 56px;
+    min-height: 56px;
+    max-width: 56px;
+    max-height: 56px;
+    display: inline-grid;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.1rem;
+    flex-shrink: 0;
+    align-self: flex-start;
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.16), rgba(212, 175, 55, 0.06));
+    border: 1px solid rgba(212, 175, 55, 0.22);
+    border-radius: 16px;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+    overflow: hidden;
+}
+
+.feature-card h3 {
+    margin-bottom: 0.75rem;
+    font-size: 1.4rem;
+    line-height: 1.2;
+}
+
+.feature-card p {
+    margin: 0;
+    line-height: 1.7;
+}
+
+.features-grid .feature-card,
+.features-grid .feature-card:hover {
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+.features-grid .feature-card .feature-icon,
+.features-grid .feature-card:hover .feature-icon {
+    width: 56px !important;
+    min-width: 56px !important;
+    max-width: 56px !important;
+    height: 56px !important;
+    min-height: 56px !important;
+    max-height: 56px !important;
+    border-radius: 16px !important;
 }
 
 .job-title, .company-name-large, .feature-card h3 {

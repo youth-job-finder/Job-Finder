@@ -73,6 +73,16 @@ html {
         color: var(--accent-gold, #d4af37);
     }
 
+    .hamburger,
+    #hamburger-menu {
+        display: flex !important;
+        width: auto;
+        height: auto;
+        overflow: visible;
+        opacity: 1;
+        pointer-events: auto;
+    }
+
     .navbar .nav-links {
         display: none;
         position: fixed;
@@ -137,6 +147,16 @@ html {
 
 /* Tablet refinements */
 @media (min-width: 481px) and (max-width: 768px) {
+    .hamburger,
+    #hamburger-menu {
+        display: flex !important;
+        width: auto;
+        height: auto;
+        overflow: visible;
+        opacity: 1;
+        pointer-events: auto;
+    }
+
     .navbar .logo { font-size: 1.4rem; }
     .navbar .nav-links { gap: 1rem; }
     .navbar .nav-links a { font-size: 0.9rem; padding: 0.5rem 0.75rem; }

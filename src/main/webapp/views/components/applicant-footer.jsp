@@ -11,11 +11,11 @@
             <div class="footer-section">
                 <h3><i class="fas fa-user"></i> My Career</h3>
                 <ul>
-                    <li><a href="${pageContext.request.contextPath}/user/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-                    <li><a href="${pageContext.request.contextPath}/user/profile"><i class="fas fa-edit"></i> Edit Profile</a></li>
-                    <li><a href="${pageContext.request.contextPath}/user/resume"><i class="fas fa-file-alt"></i> My Resume</a></li>
-                    <li><a href="${pageContext.request.contextPath}/user/applications"><i class="fas fa-paper-plane"></i> Applications</a></li>
-                    <li><a href="${pageContext.request.contextPath}/user/saved-jobs"><i class="fas fa-bookmark"></i> Saved Jobs</a></li>
+                    <li><a href="${pageContext.request.contextPath}/applicant/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="${pageContext.request.contextPath}/applicant/profile"><i class="fas fa-edit"></i> Edit Profile</a></li>
+                    <li><a href="${pageContext.request.contextPath}/applicant/cv"><i class="fas fa-file-alt"></i> My Resume</a></li>
+                    <li><a href="${pageContext.request.contextPath}/applicant/applications"><i class="fas fa-paper-plane"></i> Applications</a></li>
+                    <li><a href="${pageContext.request.contextPath}/jobs?filter=saved"><i class="fas fa-bookmark"></i> Saved Jobs</a></li>
                 </ul>
             </div>
             
@@ -66,7 +66,7 @@
         </div>
         
         <div class="footer-bottom">
-            <p>&copy; 2026 JobFinder Career Portal | <a href="${pageContext.request.contextPath}/help/applicant">Applicant Help</a> | <a href="${pageContext.request.contextPath}/terms">Terms of Service</a> | <a href="${pageContext.request.contextPath}/privacy">Privacy Policy</a></p>
+            <p>&copy; 2026 JobFinder Career Portal | <a href="${pageContext.request.contextPath}/contact">Applicant Help</a> | <a href="${pageContext.request.contextPath}/terms">Terms of Service</a> | <a href="${pageContext.request.contextPath}/privacy">Privacy Policy</a></p>
         </div>
     </div>
 </footer>

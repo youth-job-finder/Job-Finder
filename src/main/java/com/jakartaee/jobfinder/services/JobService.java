@@ -41,6 +41,15 @@ public class JobService {
     }
 
     /**
+     * Retrieves only jobs marked as remote.
+     *
+     * @return list of remote jobs
+     */
+    public List<Job> getRemoteJobs() {
+        return jobDAO.findByJobType("Remote");
+    }
+
+    /**
      * Retrieves a job by its ID.
      *
      * @param jobId the job ID

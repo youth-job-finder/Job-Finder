@@ -90,6 +90,8 @@ public class JobsServlet extends HttpServlet {
                 } else {
                     jobs = List.of();
                 }
+            } else if ("remote".equals(filter)) {
+                jobs = jobService.getRemoteJobs();
             } else {
                 // Get all jobs
                 jobs = jobService.getAllJobs();

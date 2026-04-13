@@ -57,11 +57,67 @@ body {
     letter-spacing: -0.5px;
 }
 
+.logo-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    text-decoration: none;
+    flex: 1;
+    color: inherit;
+}
+
+.logo-link:focus,
+.logo-link:focus-visible,
+.logo-link:active {
+    outline: none;
+    box-shadow: none;
+}
+
+.logo-icon {
+    width: 1.8rem;
+    height: 1.8rem;
+    border-radius: 0.45rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #f4cf59 0%, #d4af37 100%);
+    color: var(--primary-navy);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2);
+    flex-shrink: 0;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    font-size: 0.82rem;
+}
+
+.logo-link:hover .logo-icon,
+.logo-link:focus-visible .logo-icon {
+    transform: translateY(-1px);
+    box-shadow: 0 7px 16px rgba(212, 175, 55, 0.28);
+}
+
 .navbar .nav-links {
     list-style: none;
     display: flex;
     gap: 1.5rem;
     align-items: center;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar .nav-links li {
+    list-style: none !important;
+    list-style-type: none !important;
+    list-style-image: none !important;
+    display: flex;
+    align-items: center;
+}
+
+.navbar .nav-links li::marker,
+.navbar .nav-links li::before,
+.navbar .nav-links li::after,
+.navbar .nav-links a::before,
+.navbar .nav-links a::after {
+    content: none !important;
 }
 
 .navbar .nav-links a {

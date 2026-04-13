@@ -14,14 +14,35 @@
 </head>
 <body>
 
-<!-- Reusable Navbar -->
-<jsp:include page="/views/components/default-navbar.jsp" />
+<c:set var="getStartedHref" value="${pageContext.request.contextPath}/signup-options" />
+<c:if test="${isAuthenticated}">
+    <c:choose>
+        <c:when test="${userRole == 'APPLICANT'}">
+            <c:set var="getStartedHref" value="${pageContext.request.contextPath}/applicant/dashboard" />
+        </c:when>
+        <c:when test="${userRole == 'COMPANY_ADMIN'}">
+            <c:set var="getStartedHref" value="${pageContext.request.contextPath}/company/dashboard" />
+        </c:when>
+        <c:when test="${userRole == 'SYSTEM_ADMIN'}">
+            <c:set var="getStartedHref" value="${pageContext.request.contextPath}/admin/dashboard" />
+        </c:when>
+    </c:choose>
+</c:if>
+
+<c:choose>
+    <c:when test="${isAuthenticated}">
+        <c:choose>
+            <c:when test="${userRole == 'APPLICANT'}"><jsp:include page="/views/components/user-navbar.jsp" /></c:when>
+            <c:when test="${userRole == 'COMPANY_ADMIN'}"><jsp:include page="/views/components/company-navbar.jsp" /></c:when>
+            <c:when test="${userRole == 'SYSTEM_ADMIN'}"><jsp:include page="/views/components/system-navbar.jsp" /></c:when>
+            <c:otherwise><jsp:include page="/views/components/default-navbar.jsp" /></c:otherwise>
+        </c:choose>
+    </c:when>
+    <c:otherwise><jsp:include page="/views/components/default-navbar.jsp" /></c:otherwise>
+</c:choose>
 
 <!-- Modern Hero Section -->
 <section class="hero">
-    <div class="hero-background">
-        <div class="hero-particles"></div>
-    </div>
     <div class="hero-content">
         <div class="hero-text">
             <h1 class="hero-title">
@@ -31,12 +52,12 @@
                 Connect with top companies, find internships, and kickstart your professional journey
             </p>
             <div class="hero-actions">
-                <a href="${pageContext.request.contextPath}/signup-options" class="btn btn-primary">
+                <button type="button" id="hero-get-started" class="btn btn-primary" onclick="window.location.href='${getStartedHref}'">
                     <i class="fas fa-rocket"></i> Get Started
-                </a>
-                <a href="${pageContext.request.contextPath}/jobs" class="btn btn-secondary">
+                </button>
+                <button type="button" id="hero-browse-jobs" class="btn btn-secondary" onclick="window.location.href='${pageContext.request.contextPath}/jobs'">
                     <i class="fas fa-search"></i> Browse Jobs
-                </a>
+                </button>
             </div>
         </div>
     </div>
@@ -85,15 +106,74 @@
         <div class="cta-content">
             <h2>Ready to Start Your Career Journey?</h2>
             <p>Join thousands of students who found their dream jobs through JobFinder</p>
-            <a href="${pageContext.request.contextPath}/signup-options" class="btn btn-primary btn-large">
+            <button type="button" class="btn btn-primary btn-large" onclick="window.location.href='${getStartedHref}'">
                 Get Started Now
-            </a>
+            </button>
         </div>
     </div>
 </section>
 
-<!-- footer -->
-<jsp:include page="/views/components/footer.jsp" />
+<c:choose>
+    <c:when test="${isAuthenticated}">
+        <c:choose>
+            <c:when test="${userRole == 'APPLICANT'}"><jsp:include page="/views/components/applicant-footer.jsp" /></c:when>
+            <c:when test="${userRole == 'COMPANY_ADMIN'}"><jsp:include page="/views/components/company-footer.jsp" /></c:when>
+            <c:when test="${userRole == 'SYSTEM_ADMIN'}"><jsp:include page="/views/components/admin-footer.jsp" /></c:when>
+            <c:otherwise><jsp:include page="/views/components/footer.jsp" /></c:otherwise>
+        </c:choose>
+    </c:when>
+    <c:otherwise><jsp:include page="/views/components/footer.jsp" /></c:otherwise>
+</c:choose>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const heroButtons = [
+        { element: document.getElementById('hero-get-started'), href: '${getStartedHref}' },
+        { element: document.getElementById('hero-browse-jobs'), href: '${pageContext.request.contextPath}/jobs' }
+    ].filter(item => item.element);
+
+    function isInsideRect(rect, x, y) {
+        return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
+    }
+
+    function syncManualHover(event) {
+        let hoveringHeroButton = false;
+
+        heroButtons.forEach(item => {
+            const rect = item.element.getBoundingClientRect();
+            const isHovering = isInsideRect(rect, event.clientX, event.clientY);
+            item.element.classList.toggle('manual-hover', isHovering);
+            if (isHovering) {
+                hoveringHeroButton = true;
+            }
+        });
+
+        document.body.classList.toggle('hero-button-hovering', hoveringHeroButton);
+    }
+
+    document.addEventListener('mousemove', syncManualHover, true);
+    document.addEventListener('pointermove', syncManualHover, true);
+
+    document.addEventListener('mouseleave', function() {
+        heroButtons.forEach(item => item.element.classList.remove('manual-hover'));
+        document.body.classList.remove('hero-button-hovering');
+    }, true);
+
+    document.addEventListener('click', function(event) {
+        const x = event.clientX;
+        const y = event.clientY;
+
+        const targetButton = heroButtons.find(item => {
+            const rect = item.element.getBoundingClientRect();
+            return isInsideRect(rect, x, y);
+        });
+
+        if (targetButton) {
+            window.location.href = targetButton.href;
+        }
+    }, true);
+});
+</script>
 
 </body>
 </html>

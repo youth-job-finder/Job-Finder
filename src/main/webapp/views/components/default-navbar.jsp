@@ -14,7 +14,10 @@
 <nav class="navbar">
     <div class="navbar-container">
         <!-- Logo centered -->
-        <div class="logo">JobFinder</div>
+        <a href="${pageContext.request.contextPath}/home" class="logo-link" aria-label="JobFinder home">
+            <span class="logo-icon"><i class="fas fa-search"></i></span>
+            <span class="logo">JobFinder</span>
+        </a>
         
         <!-- Hamburger menu for mobile -->
         <button class="hamburger" id="hamburger-menu" aria-label="Toggle menu">

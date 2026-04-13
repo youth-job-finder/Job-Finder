@@ -101,6 +101,7 @@
             border-radius: 16px !important;
             padding: 25px !important;
             transition: all 0.3s ease !important;
+            cursor: pointer;
         }
         .job-card:hover { transform: translateY(-5px) !important; border-color: var(--accent-gold) !important; box-shadow: 0 10px 20px rgba(0,0,0,0.2) !important;}
         .job-card h4 { color: var(--accent-gold) !important; font-weight: 700 !important; margin: 0 0 5px 0; font-size: 1.3rem;}
@@ -156,11 +157,9 @@
                 <a href="${pageContext.request.contextPath}/jobs?filter=remote" class="filter-btn ${param.filter == 'remote' ? 'active' : ''}">
                     <i class="fas fa-laptop"></i> Remote
                 </a>
-                <c:if test="${isAuthenticated && userRole == 'APPLICANT'}">
-                    <a href="${pageContext.request.contextPath}/jobs?filter=saved" class="filter-btn ${param.filter == 'saved' ? 'active' : ''}">
-                        <i class="fas fa-bookmark"></i> Saved Jobs
-                    </a>
-                </c:if>
+                <a href="${isAuthenticated && userRole == 'APPLICANT' ? pageContext.request.contextPath.concat('/jobs?filter=saved') : pageContext.request.contextPath.concat('/login')}" class="filter-btn ${param.filter == 'saved' ? 'active' : ''}">
+                    <i class="fas fa-bookmark"></i> Saved Jobs
+                </a>
             </div>
         </div>
     </div>
@@ -183,7 +182,7 @@
                     </c:when>
                     <c:otherwise>
                         <c:forEach items="${jobs}" var="job">
-                            <div class="job-card">
+                            <div class="job-card" data-job-url="${pageContext.request.contextPath}/job/${job.id}">
                                 <div class="job-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
                                     <div class="job-info">
                                         <h4>${job.jobTitle}</h4>
@@ -199,8 +198,7 @@
                                     <p class="job-description">${fn:substring(job.jobDescription, 0, 150)}...</p>
                                 </div>
                                 <div class="job-actions" style="display: flex; gap: 10px; margin-top: 20px;">
-                                    <a href="${pageContext.request.contextPath}/applicant/apply?jobId=${job.id}" class="btn btn-sm btn-primary">Apply Now</a>
-                                    <a href="${pageContext.request.contextPath}/job/${job.id}" class="btn btn-sm btn-outline">View Details</a>
+                                    <a href="${isAuthenticated && userRole == 'APPLICANT' ? pageContext.request.contextPath.concat('/applicant/apply?jobId=').concat(job.id) : pageContext.request.contextPath.concat('/login')}" class="btn btn-sm btn-primary">Apply Now</a>
                                     <c:if test="${isAuthenticated && userRole == 'APPLICANT'}">
                                         <c:choose>
                                             <c:when test="${savedJobIds != null && savedJobIds.contains(job.id)}">
@@ -237,8 +235,20 @@
     <c:otherwise><jsp:include page="/views/components/footer.jsp" /></c:otherwise>
 </c:choose>
 
-<c:if test="${isAuthenticated && userRole == 'APPLICANT'}">
 <script>
+document.querySelectorAll('.job-card[data-job-url]').forEach(card => {
+    card.addEventListener('click', function() {
+        window.location.href = this.dataset.jobUrl;
+    });
+});
+
+document.querySelectorAll('.job-actions a, .job-actions button').forEach(action => {
+    action.addEventListener('click', function(event) {
+        event.stopPropagation();
+    });
+});
+
+<c:if test="${isAuthenticated && userRole == 'APPLICANT'}">
 function saveJob(jobId) {
     if (!jobId || jobId === 'null' || jobId === '') {
         alert('Error: Cannot save job - invalid job ID');
@@ -304,8 +314,8 @@ function unsaveJob(jobId) {
         alert('An error occurred while removing the job');
     });
 }
-</script>
 </c:if>
+</script>
 
 </body>
 </html>

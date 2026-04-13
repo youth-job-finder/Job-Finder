@@ -41,6 +41,29 @@
     letter-spacing: -0.5px;
 }
 
+.footer-brand-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--accent-gold, #d4af37) !important;
+    text-decoration: none !important;
+}
+
+.footer-brand-link:hover {
+    color: var(--accent-gold, #d4af37) !important;
+    text-decoration: none !important;
+}
+
+.footer-brand-link:visited,
+.footer-brand-link:focus,
+.footer-brand-link:focus-visible,
+.footer-brand-link:active {
+    color: var(--accent-gold, #d4af37) !important;
+    text-decoration: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
 .footer-section h4 {
     color: var(--accent-gold, #d4af37);
     margin-bottom: 1rem;

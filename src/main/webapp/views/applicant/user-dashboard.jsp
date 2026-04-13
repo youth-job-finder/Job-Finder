@@ -18,6 +18,11 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/mobile-responsive.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/user-dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .job-card {
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
 
@@ -210,7 +215,7 @@
                     </c:when>
                     <c:otherwise>
                         <c:forEach items="${recommendedJobs}" var="job">
-                            <div class="job-card">
+                            <div class="job-card" data-job-url="${pageContext.request.contextPath}/job/${job.id}">
                                 <div class="job-header">
                                     <div class="job-info">
                                         <h4>${job.title}</h4>
@@ -225,16 +230,15 @@
                                     </div>
                                     <p class="job-description">${job.description}</p>
                                 </div>
-                                <div class="job-actions">
-                                    <a href="${pageContext.request.contextPath}/job/${job.id}" class="btn btn-sm btn-outline">View Details</a>
+                                <div class="job-actions" style="margin-top: 1.5rem;">
                                     <a href="${pageContext.request.contextPath}/applicant/apply?jobId=${job.id}" class="btn btn-sm btn-primary">Apply Now</a>
                                     <c:if test="${not empty job.id}">
-                                    <button onclick="saveJob('${job.id}')" class="btn btn-sm btn-outline save-job-btn" data-job-id="${job.id}">
+                                    <button onclick="saveJob('${job.id}')" class="btn btn-sm btn-outline save-job-btn" data-job-id="${job.id}" style="margin-top: 1rem;">
                                         <i class="far fa-bookmark"></i> Save
                                     </button>
                                     </c:if>
                                     <c:if test="${empty job.id}">
-                                    <button disabled class="btn btn-sm btn-outline" title="Cannot save - job ID missing">
+                                    <button disabled class="btn btn-sm btn-outline" title="Cannot save - job ID missing" style="margin-top: 1rem;">
                                         <i class="fas fa-exclamation-triangle"></i> Save
                                     </button>
                                     </c:if>
@@ -256,14 +260,13 @@
                 <c:choose>
                     <c:when test="${empty savedJobs}">
                         <div class="no-jobs">
-                            <i class="fas fa-bookmark"></i>
                             <p>No saved jobs yet. Browse jobs and click the save button to add them here!</p>
                             <a href="${pageContext.request.contextPath}/jobs" class="btn btn-primary">Browse Jobs</a>
                         </div>
                     </c:when>
                     <c:otherwise>
                         <c:forEach items="${savedJobs}" var="savedJob">
-                            <div class="job-card saved-job-card" data-job-id="${savedJob.job.id}">
+                            <div class="job-card saved-job-card" data-job-id="${savedJob.job.id}" data-job-url="${pageContext.request.contextPath}/job/${savedJob.job.id}">
                                 <div class="job-header">
                                     <div class="job-info">
                                         <h4>${savedJob.job.jobTitle}</h4>
@@ -278,16 +281,15 @@
                                     </div>
                                     <p class="job-description">${savedJob.job.jobDescription}</p>
                                 </div>
-                                <div class="job-actions">
-                                    <a href="${pageContext.request.contextPath}/job/${savedJob.job.id}" class="btn btn-sm btn-outline">View Details</a>
+                                <div class="job-actions" style="margin-top: 1.5rem;">
                                     <a href="${pageContext.request.contextPath}/applicant/apply?jobId=${savedJob.job.id}" class="btn btn-sm btn-primary">Apply Now</a>
                                     <c:if test="${not empty savedJob.job.id}">
-                                    <button onclick="unsaveJob('${savedJob.job.id}')" class="btn btn-sm btn-warning unsave-job-btn">
+                                    <button onclick="unsaveJob('${savedJob.job.id}')" class="btn btn-sm btn-warning unsave-job-btn" style="margin-top: 1rem;">
                                         <i class="fas fa-bookmark"></i> Saved
                                     </button>
                                     </c:if>
                                     <c:if test="${empty savedJob.job.id}">
-                                    <button disabled class="btn btn-sm btn-warning" title="Cannot unsave - job ID missing">
+                                    <button disabled class="btn btn-sm btn-warning" title="Cannot unsave - job ID missing" style="margin-top: 1rem;">
                                         <i class="fas fa-exclamation-triangle"></i> Saved
                                     </button>
                                     </c:if>
@@ -304,6 +306,18 @@
 <jsp:include page="/views/components/applicant-footer.jsp" />
 
 <script>
+document.querySelectorAll('.job-card[data-job-url]').forEach(card => {
+    card.addEventListener('click', function() {
+        window.location.href = this.dataset.jobUrl;
+    });
+});
+
+document.querySelectorAll('.job-actions a, .job-actions button').forEach(action => {
+    action.addEventListener('click', function(event) {
+        event.stopPropagation();
+    });
+});
+
 function resendVerification() {
     // Implementation for resending verification email
     alert('Verification email sent! Please check your inbox.');
@@ -382,8 +396,6 @@ function unsaveJob(jobId) {
     });
 }
 </script>
-
-<jsp:include page="/views/components/applicant-footer.jsp" />
 
 </body>
 </html>

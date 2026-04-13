@@ -14,6 +14,11 @@
 </head>
 <body>
 
+<c:set var="backToJobsHref" value="${pageContext.request.contextPath}/jobs" />
+<c:if test="${isAuthenticated && userRole == 'COMPANY_ADMIN'}">
+    <c:set var="backToJobsHref" value="${pageContext.request.contextPath}/company/listings" />
+</c:if>
+
 <!-- Dynamic Navbar based on auth status -->
 <c:choose>
     <c:when test="${isAuthenticated}">
@@ -40,7 +45,7 @@
 <!-- Job Detail Header -->
 <section class="job-detail-header">
     <div class="container">
-        <a href="${pageContext.request.contextPath}/company/listings" class="back-link">
+        <a href="${backToJobsHref}" class="back-link">
             <i class="fas fa-arrow-left"></i> Back to Jobs
         </a>
         <h1>${job.jobTitle}</h1>
@@ -91,7 +96,7 @@
     <!-- Job Description -->
     <div class="job-section">
         <h3><i class="fas fa-info-circle"></i> Job Description</h3>
-        <p style="line-height: 1.8; color: #444;">
+        <p class="job-copy">
             ${job.jobDescription != null ? job.jobDescription : 'No description available.'}
         </p>
     </div>
@@ -100,7 +105,7 @@
     <c:if test="${not empty job.jobRequirements}">
         <div class="job-section">
             <h3><i class="fas fa-check-circle"></i> Requirements</h3>
-            <p style="line-height: 1.8; color: #444;">
+            <p class="job-copy">
                 ${job.jobRequirements}
             </p>
         </div>
@@ -109,11 +114,11 @@
     <!-- Company Information -->
     <div class="job-section">
         <h3><i class="fas fa-building"></i> About ${job.company.name}</h3>
-        <p style="line-height: 1.8; color: #444;">
+        <p class="job-copy">
             ${job.company.description != null ? job.company.description : 'No company description available.'}
         </p>
         <c:if test="${not empty job.company.url}">
-            <p style="margin-top: 1rem;">
+            <p class="job-link-row">
                 <a href="${job.company.url}" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm">
                     <i class="fas fa-external-link-alt"></i> Visit Company Website
                 </a>
@@ -154,8 +159,8 @@
 
     <!-- Message for non-logged in users -->
     <c:if test="${!isAuthenticated}">
-        <div class="job-section" style="text-align: center; background: #f8f9fa;">
-            <p style="margin-bottom: 1rem;">
+        <div class="job-section guest-apply-panel">
+            <p class="guest-apply-copy">
                 <i class="fas fa-info-circle"></i> 
                 Please <a href="${pageContext.request.contextPath}/login">log in</a> or 
                 <a href="${pageContext.request.contextPath}/signup-options">create an account</a> to apply for this job.
@@ -168,7 +173,7 @@
 
     <!-- Company Admin View -->
     <c:if test="${isAuthenticated && userRole == 'COMPANY_ADMIN'}">
-        <div class="job-section" style="background: #fff3cd; border: 1px solid #ffc107;">
+        <div class="job-section company-admin-panel">
             <h3><i class="fas fa-info-circle"></i> Company Admin View</h3>
             <p>This is your company's job posting. You can manage it from your <a href="${pageContext.request.contextPath}/company/listings">listings page</a>.</p>
         </div>
@@ -253,6 +258,16 @@ function unsaveJob(jobId) {
 }
 </script>
 </c:if>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('[data-nav-target]').forEach(link => {
+        link.addEventListener('click', function() {
+            window.location.href = this.dataset.navTarget;
+        });
+    });
+});
+</script>
 
 </body>
 </html>

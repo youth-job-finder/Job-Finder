@@ -6,7 +6,7 @@
 
     <!-- Welcome file configuration -->
     <welcome-file-list>
-        <welcome-file>index.jsp</welcome-file>
+        <welcome-file>home</welcome-file>
     </welcome-file-list>
 
     <!-- Security roles (kept for reference) -->
