@@ -145,19 +145,38 @@
 
 <section class="search-section">
     <div class="container">
+        <c:url var="jobsUrlAll" value="/jobs">
+            <c:if test="${not empty param.q}"><c:param name="q" value="${param.q}"/></c:if>
+        </c:url>
+        <c:url var="jobsUrlRemote" value="/jobs">
+            <c:param name="filter" value="remote"/>
+            <c:if test="${not empty param.q}"><c:param name="q" value="${param.q}"/></c:if>
+        </c:url>
+        <c:url var="jobsUrlSaved" value="/jobs">
+            <c:param name="filter" value="saved"/>
+            <c:if test="${not empty param.q}"><c:param name="q" value="${param.q}"/></c:if>
+        </c:url>
         <div class="search-container">
-            <div class="search-box">
+            <form method="get" action="${pageContext.request.contextPath}/jobs" class="search-box" style="margin: 0 auto 20px;">
+                <c:if test="${not empty param.filter}">
+                    <input type="hidden" name="filter" value="${param.filter}">
+                </c:if>
                 <i class="fas fa-search" style="color: #64748b; margin-left: 10px;"></i>
-                <input type="text" placeholder="Search jobs by title, company, or keyword..." class="search-input">
-            </div>
+                <input type="search" name="q" value="${fn:escapeXml(searchQuery)}"
+                       placeholder="Search jobs by title, company, or keyword..."
+                       class="search-input"
+                       autocomplete="off"
+                       aria-label="Search jobs">
+                <button type="submit" class="btn-primary" style="flex-shrink: 0; white-space: nowrap;">Search</button>
+            </form>
             <div class="filter-buttons">
-                <a href="${pageContext.request.contextPath}/jobs" class="filter-btn ${empty param.filter ? 'active' : ''}">
+                <a href="${jobsUrlAll}" class="filter-btn ${empty param.filter ? 'active' : ''}">
                     <i class="fas fa-briefcase"></i> All Jobs
                 </a>
-                <a href="${pageContext.request.contextPath}/jobs?filter=remote" class="filter-btn ${param.filter == 'remote' ? 'active' : ''}">
+                <a href="${jobsUrlRemote}" class="filter-btn ${param.filter == 'remote' ? 'active' : ''}">
                     <i class="fas fa-laptop"></i> Remote
                 </a>
-                <a href="${isAuthenticated && userRole == 'APPLICANT' ? pageContext.request.contextPath.concat('/jobs?filter=saved') : pageContext.request.contextPath.concat('/login')}" class="filter-btn ${param.filter == 'saved' ? 'active' : ''}">
+                <a href="${isAuthenticated && userRole == 'APPLICANT' ? jobsUrlSaved : pageContext.request.contextPath.concat('/login')}" class="filter-btn ${param.filter == 'saved' ? 'active' : ''}">
                     <i class="fas fa-bookmark"></i> Saved Jobs
                 </a>
             </div>

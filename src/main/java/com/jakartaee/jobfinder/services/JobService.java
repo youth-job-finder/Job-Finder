@@ -50,6 +50,30 @@ public class JobService {
     }
 
     /**
+     * Keyword search across job fields and company name.
+     *
+     * @param query search text; blank returns all jobs (same as getAllJobs)
+     */
+    public List<Job> searchJobs(String query) {
+        if (query == null || query.isBlank()) {
+            return jobDAO.findAll();
+        }
+        return jobDAO.searchByTerm(query);
+    }
+
+    /**
+     * Keyword search limited to remote jobs.
+     *
+     * @param query search text; blank returns all remote jobs
+     */
+    public List<Job> searchRemoteJobs(String query) {
+        if (query == null || query.isBlank()) {
+            return jobDAO.findByJobType("Remote");
+        }
+        return jobDAO.searchByTermAndJobType(query, "Remote");
+    }
+
+    /**
      * Retrieves a job by its ID.
      *
      * @param jobId the job ID

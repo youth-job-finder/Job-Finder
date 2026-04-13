@@ -86,6 +86,56 @@ public class JobDAO {
                 .getResultList();
     }
 
+    /**
+     * Jobs whose title, description, requirements, location, salary, type, or company name
+     * contain the given term (case-insensitive). {@code term} must be non-blank.
+     */
+    public List<Job> searchByTerm(String term) {
+        String pattern = likePattern(term);
+        return em.createQuery(
+                        "SELECT j FROM Job j JOIN j.company c WHERE "
+                                + "LOWER(j.jobTitle) LIKE :p ESCAPE '|' OR "
+                                + "LOWER(j.jobDescription) LIKE :p ESCAPE '|' OR "
+                                + "LOWER(j.jobRequirements) LIKE :p ESCAPE '|' OR "
+                                + "LOWER(j.physicalAddress) LIKE :p ESCAPE '|' OR "
+                                + "LOWER(j.salaryRange) LIKE :p ESCAPE '|' OR "
+                                + "LOWER(j.jobType) LIKE :p ESCAPE '|' OR "
+                                + "LOWER(c.name) LIKE :p ESCAPE '|'",
+                        Job.class
+                )
+                .setParameter("p", pattern)
+                .getResultList();
+    }
+
+    /**
+     * Same as {@link #searchByTerm(String)} but restricted to a job type (e.g. Remote).
+     */
+    public List<Job> searchByTermAndJobType(String term, String jobType) {
+        String pattern = likePattern(term);
+        return em.createQuery(
+                        "SELECT j FROM Job j JOIN j.company c WHERE LOWER(j.jobType) = LOWER(:jobType) AND ("
+                                + "LOWER(j.jobTitle) LIKE :p ESCAPE '|' OR "
+                                + "LOWER(j.jobDescription) LIKE :p ESCAPE '|' OR "
+                                + "LOWER(j.jobRequirements) LIKE :p ESCAPE '|' OR "
+                                + "LOWER(j.physicalAddress) LIKE :p ESCAPE '|' OR "
+                                + "LOWER(j.salaryRange) LIKE :p ESCAPE '|' OR "
+                                + "LOWER(c.name) LIKE :p ESCAPE '|')",
+                        Job.class
+                )
+                .setParameter("jobType", jobType)
+                .setParameter("p", pattern)
+                .getResultList();
+    }
+
+    private static String likePattern(String raw) {
+        return "%" + escapeLikeWildcards(raw.trim().toLowerCase()) + "%";
+    }
+
+    /** Escape % and _ for JPQL LIKE with ESCAPE '|'. */
+    private static String escapeLikeWildcards(String s) {
+        return s.replace("|", "||").replace("%", "|%").replace("_", "|_");
+    }
+
     // --- 4. UPDATE ---
     /**
      * Updates an existing Job entity.

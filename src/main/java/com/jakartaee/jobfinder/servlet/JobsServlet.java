@@ -17,6 +17,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -75,26 +76,37 @@ public class JobsServlet extends HttpServlet {
                 req.setAttribute("userRole", userRole);
             }
 
-            // Handle filter parameter
+            // Handle filter + optional search (q)
             String filter = req.getParameter("filter");
+            String searchQuery = req.getParameter("q");
+            if (searchQuery != null) {
+                searchQuery = searchQuery.trim();
+            }
+            boolean hasSearch = searchQuery != null && !searchQuery.isEmpty();
+            req.setAttribute("searchQuery", hasSearch ? searchQuery : "");
+
             List<Job> jobs;
 
             if ("saved".equals(filter) && isAuthenticated && "APPLICANT".equals(userRole)) {
-                // Get saved jobs for the applicant
                 User user = userDAO.findById(userId);
                 if (user != null) {
                     List<SavedJob> savedJobs = savedJobDAO.findByApplicant(user);
                     jobs = savedJobs.stream()
                             .map(SavedJob::getJob)
                             .collect(Collectors.toList());
+                    if (hasSearch) {
+                        String needle = searchQuery.toLowerCase(Locale.ROOT);
+                        jobs = jobs.stream()
+                                .filter(j -> matchesJobSearch(j, needle))
+                                .collect(Collectors.toList());
+                    }
                 } else {
                     jobs = List.of();
                 }
             } else if ("remote".equals(filter)) {
-                jobs = jobService.getRemoteJobs();
+                jobs = hasSearch ? jobService.searchRemoteJobs(searchQuery) : jobService.getRemoteJobs();
             } else {
-                // Get all jobs
-                jobs = jobService.getAllJobs();
+                jobs = hasSearch ? jobService.searchJobs(searchQuery) : jobService.getAllJobs();
             }
 
             BusinessLogger.logDataAccess(SERVLET_NAME, "Job", jobs.size(), username);
@@ -120,8 +132,33 @@ public class JobsServlet extends HttpServlet {
                     e.getMessage(), username);
 
             req.setAttribute("jobs", List.of());
+            req.setAttribute("searchQuery", "");
             req.setAttribute("error", "Unable to load jobs at this time. Please try again later.");
             req.getRequestDispatcher("/views/jobs.jsp").forward(req, resp);
         }
+    }
+
+    private static boolean matchesJobSearch(Job job, String needle) {
+        if (job.getJobTitle() != null && job.getJobTitle().toLowerCase(Locale.ROOT).contains(needle)) {
+            return true;
+        }
+        if (job.getJobDescription() != null && job.getJobDescription().toLowerCase(Locale.ROOT).contains(needle)) {
+            return true;
+        }
+        if (job.getJobRequirements() != null && job.getJobRequirements().toLowerCase(Locale.ROOT).contains(needle)) {
+            return true;
+        }
+        if (job.getPhysicalAddress() != null && job.getPhysicalAddress().toLowerCase(Locale.ROOT).contains(needle)) {
+            return true;
+        }
+        if (job.getSalaryRange() != null && job.getSalaryRange().toLowerCase(Locale.ROOT).contains(needle)) {
+            return true;
+        }
+        if (job.getJobType() != null && job.getJobType().toLowerCase(Locale.ROOT).contains(needle)) {
+            return true;
+        }
+        return job.getCompany() != null
+                && job.getCompany().getName() != null
+                && job.getCompany().getName().toLowerCase(Locale.ROOT).contains(needle);
     }
 }
