@@ -4,10 +4,10 @@
 
 <c:set var="currentUri" value="${pageContext.request.requestURI}" />
 
-<nav class="navbar">
+<nav class="navbar company-navbar">
     <div class="navbar-container">
         <!-- Logo -->
-        <a href="${pageContext.request.contextPath}/company/dashboard" class="logo-link" aria-label="JobFinder dashboard">
+        <a href="${pageContext.request.contextPath}/company/dashboard" class="logo-link company-logo-link" aria-label="JobFinder dashboard">
             <span class="logo-icon"><i class="fas fa-search"></i></span>
             <span class="logo">JobFinder</span>
         </a>
@@ -76,16 +76,16 @@
                     Analytics
                 </a>
             </li>
-
-            <!-- Sign Out -->
-            <li>
-                <form action="${pageContext.request.contextPath}/logout" method="post" style="display: inline;">
-                    <button type="submit" class="btn btn-primary">
-                        Logout
-                    </button>
-                </form>
-            </li>
         </ul>
+
+        <!-- Actions (right side) -->
+        <div class="nav-actions">
+            <form action="${pageContext.request.contextPath}/logout" method="post" style="display: inline;">
+                <button type="submit" class="btn btn-primary">
+                    Logout
+                </button>
+            </form>
+        </div>
     </div>
 </nav>
 

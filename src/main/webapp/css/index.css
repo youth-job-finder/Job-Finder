@@ -52,6 +52,21 @@ body.hero-button-hovering {
     color: inherit;
 }
 
+/* Company navbar: keep logo text snug to icon (don't let it "stretch" away) */
+.logo-link.company-logo-link {
+    flex: 0 0 auto;
+    width: fit-content;
+    max-width: max-content;
+    justify-content: flex-start;
+    gap: 0.35rem;
+}
+
+.navbar .logo-link.company-logo-link .logo {
+    flex: 0 0 auto !important;
+    display: inline-block;
+    text-align: left !important;
+}
+
 .logo-link:focus,
 .logo-link:focus-visible,
 .logo-link:active {
@@ -78,6 +93,34 @@ body.hero-button-hovering {
     align-items: center;
     max-width: 1200px;
     margin: 0 auto;
+}
+
+/* Company navbar layout when company-navbar.jsp is included */
+.company-navbar .navbar-container {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    column-gap: 2.25rem;
+}
+
+.company-navbar .nav-links {
+    margin-left: 0;
+    justify-content: center;
+}
+
+.company-navbar .logo-link {
+    flex: 0 0 auto;
+}
+
+.company-navbar .logo {
+    flex: 0 0 auto;
+    text-align: left;
+}
+
+.company-navbar .nav-actions {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
 }
 
 .navbar .logo {

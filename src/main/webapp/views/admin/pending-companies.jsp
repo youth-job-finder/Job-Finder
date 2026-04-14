@@ -6,7 +6,8 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%-- LocalDateTime is not supported by fmt:formatDate (expects java.util.Date) --%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -48,8 +49,9 @@
                 </div>
             </c:when>
             <c:otherwise>
-                <div class="companies-table-container">
-                    <table class="companies-table">
+                <p class="table-scroll-hint"><i class="fas fa-arrows-alt-h"></i> Scroll horizontally to see all columns</p>
+                <div class="companies-table-container companies-table-container--scroll">
+                    <table class="companies-table pending-approvals-table">
                         <thead>
                             <tr>
                                 <th>Company</th>
@@ -72,12 +74,15 @@
                                     <td>
                                         <a href="mailto:${company.email}">${company.email}</a>
                                     </td>
-                                    <td>
-                                        <c:if test="${not empty company.url}">
-                                            <a href="${company.url}" target="_blank" title="Visit website">
-                                                <i class="fas fa-external-link-alt"></i> ${company.url}
-                                            </a>
-                                        </c:if>
+                                    <td class="cell-website">
+                                        <c:choose>
+                                            <c:when test="${not empty company.url}">
+                                                <a href="${company.url}" target="_blank" rel="noopener noreferrer" title="Visit website">
+                                                    <i class="fas fa-external-link-alt"></i> ${company.url}
+                                                </a>
+                                            </c:when>
+                                            <c:otherwise><span class="cell-empty">—</span></c:otherwise>
+                                        </c:choose>
                                     </td>
                                     <td>
                                         <c:choose>
@@ -87,7 +92,12 @@
                                                 </span>
                                                 <br>
                                                 <small>
-                                                    <fmt:formatDate value="${company.urlVerifiedAt}" pattern="yyyy-MM-dd HH:mm" />
+                                                    <c:choose>
+                                                        <c:when test="${not empty company.urlVerifiedAt}">
+                                                            ${fn:replace(fn:substring(company.urlVerifiedAt, 0, 16), 'T', ' ')}
+                                                        </c:when>
+                                                        <c:otherwise>—</c:otherwise>
+                                                    </c:choose>
                                                 </small>
                                             </c:when>
                                             <c:otherwise>
@@ -97,14 +107,19 @@
                                             </c:otherwise>
                                         </c:choose>
                                     </td>
-                                    <td>
+                                    <td class="cell-admin">
                                         <c:if test="${not empty company.companyAdmin}">
-                                            ${company.companyAdmin.name}<br>
-                                            <small>${company.companyAdmin.email}</small>
+                                            <span class="cell-admin-name">${company.companyAdmin.name}</span>
+                                            <span class="cell-admin-email">${company.companyAdmin.email}</span>
                                         </c:if>
                                     </td>
                                     <td>
-                                        <fmt:formatDate value="${company.createdAt}" pattern="yyyy-MM-dd HH:mm" />
+                                        <c:choose>
+                                            <c:when test="${not empty company.createdAt}">
+                                                ${fn:replace(fn:substring(company.createdAt, 0, 16), 'T', ' ')}
+                                            </c:when>
+                                            <c:otherwise>—</c:otherwise>
+                                        </c:choose>
                                     </td>
                                     <td class="actions">
                                         <form action="${pageContext.request.contextPath}/admin/companies/approve" 

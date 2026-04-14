@@ -40,6 +40,17 @@ public class AdminCompanyApprovalServlet extends HttpServlet {
             // Display pending companies
             List<Company> pendingCompanies = companyRegistrationService.getPendingCompanies();
             req.setAttribute("pendingCompanies", pendingCompanies);
+            // Flash messages stored in session by POST handlers
+            Object success = req.getSession().getAttribute("successMessage");
+            Object error = req.getSession().getAttribute("errorMessage");
+            if (success != null) {
+                req.setAttribute("successMessage", success);
+                req.getSession().removeAttribute("successMessage");
+            }
+            if (error != null) {
+                req.setAttribute("errorMessage", error);
+                req.getSession().removeAttribute("errorMessage");
+            }
             req.getRequestDispatcher("/views/admin/pending-companies.jsp").forward(req, resp);
         } else {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -106,11 +117,35 @@ public class AdminCompanyApprovalServlet extends HttpServlet {
             throws IOException {
 
         String userId = (String) req.getSession().getAttribute("userId");
-        Role userRole = (Role) req.getSession().getAttribute("role");
+        Role userRole = null;
+        Object roleAttr = req.getSession().getAttribute("role");
+        if (roleAttr instanceof Role r) {
+            userRole = r;
+        } else if (roleAttr instanceof String s) {
+            try {
+                userRole = Role.valueOf(s);
+            } catch (IllegalArgumentException ignored) {
+                userRole = null;
+            }
+        }
 
         if (userId == null && req.getUserPrincipal() != null) {
             userId = req.getUserPrincipal().getName();
             req.getSession().setAttribute("userId", userId);
+        }
+
+        if (userRole == null) {
+            // Fallback: resolve role from container if session was populated with a String or not set
+            if (req.isUserInRole("SYSTEM_ADMIN")) {
+                userRole = Role.SYSTEM_ADMIN;
+            } else if (req.isUserInRole("COMPANY_ADMIN")) {
+                userRole = Role.COMPANY_ADMIN;
+            } else if (req.isUserInRole("APPLICANT")) {
+                userRole = Role.APPLICANT;
+            }
+            if (userRole != null) {
+                req.getSession().setAttribute("role", userRole);
+            }
         }
 
         if (userId == null) {
