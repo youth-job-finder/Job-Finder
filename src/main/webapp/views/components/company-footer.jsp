@@ -23,7 +23,6 @@
                 <h3><i class="fas fa-building"></i> Company Profile</h3>
                 <ul>
                     <li><a href="${pageContext.request.contextPath}/company/profile"><i class="fas fa-edit"></i> Edit Profile</a></li>
-                    <li><a href="${pageContext.request.contextPath}/company/reviews"><i class="fas fa-star"></i> Company Reviews</a></li>
                     <li><a href="${pageContext.request.contextPath}/jobs"><i class="fas fa-briefcase"></i> Browse Open Roles</a></li>
                     <li><a href="${pageContext.request.contextPath}/contact"><i class="fas fa-headset"></i> Contact Support</a></li>
                     <li><a href="${pageContext.request.contextPath}/terms"><i class="fas fa-scale-balanced"></i> Terms of Service</a></li>

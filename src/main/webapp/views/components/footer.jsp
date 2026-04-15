@@ -35,7 +35,6 @@
                 <ul>
                     <li><a href="${pageContext.request.contextPath}/home">Home</a></li>
                     <li><a href="${pageContext.request.contextPath}/jobs">Jobs</a></li>
-                    <li><a href="${pageContext.request.contextPath}/internships">Internships</a></li>
                     <li><a href="${pageContext.request.contextPath}/companies">Companies</a></li>
                 </ul>
             </div>
@@ -53,7 +52,7 @@
             <div class="footer-section">
                 <h4>Contact Info</h4>
                 <p><i class="fas fa-envelope"></i> info@jobfinder.com</p>
-                <p><i class="fas fa-phone"></i> +27 (72) 623-4567</p>
+                <p><i class="fas fa-phone"></i> +27 (71) 234-5678</p>
                 <p><i class="fas fa-map-marker-alt"></i> Cnr R40 and D725 Roads, Mbombela, 1200</p>
             </div>
         </div>

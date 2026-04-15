@@ -61,14 +61,6 @@
                 </a>
             </li>
 
-            <!-- Reviews -->
-            <li>
-                <a href="${pageContext.request.contextPath}/company/reviews"
-                   class="${fn:contains(currentUri, '/company/reviews') ? 'active' : ''}">
-                    Reviews
-                </a>
-            </li>
-
             <!-- Analytics -->
             <li>
                 <a href="${pageContext.request.contextPath}/company/analytics"
