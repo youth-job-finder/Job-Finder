@@ -32,12 +32,8 @@
                    class="${fn:contains(currentUri, '/home') ? 'active' : ''}">Home</a></li>
             <li><a href="${pageContext.request.contextPath}/jobs"
                    class="${fn:contains(currentUri, '/jobs') ? 'active' : ''}">Jobs</a></li>
-            <li><a href="${pageContext.request.contextPath}/internships"
-                   class="${fn:contains(currentUri, '/internships') ? 'active' : ''}">Internships</a></li>
             <li><a href="${pageContext.request.contextPath}/companies"
                    class="${fn:contains(currentUri, '/companies') ? 'active' : ''}">Companies</a></li>
-            <li><a href="${pageContext.request.contextPath}/reviews"
-                   class="${fn:contains(currentUri, '/reviews') ? 'active' : ''}">Reviews</a></li>
 
             <!-- Sign In as button -->
             <li><a href="${pageContext.request.contextPath}/login"
