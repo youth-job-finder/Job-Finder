@@ -1,0 +1,233 @@
+/**
+ * 🏛️ Applicant Footer Styles - Enterprise Dashboard
+ * Standardized to the Navy & Gold System
+ */
+
+.applicant-footer {
+    background: var(--primary-navy, #0f172a);
+    color: var(--text-light, #f1f5f9);
+    padding: 4rem 0 1.5rem;
+    margin-top: 4rem;
+    border-top: 4px solid var(--gold-accent, #d4af37); /* Gold Anchor Line */
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.footer-section h3 {
+    color: var(--gold-accent, #d4af37);
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 800;
+}
+
+.footer-section h4 {
+    color: var(--gold-accent, #d4af37);
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    border-bottom: 2px solid rgba(212, 175, 55, 0.2); /* Soft Gold Underline */
+    padding-bottom: 0.5rem;
+    font-weight: 700;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section ul li {
+    margin-bottom: 0.5rem;
+}
+
+.footer-section ul li a {
+    color: var(--text-muted, #94a3b8);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+}
+
+.footer-section ul li a:hover {
+    color: var(--gold-accent, #d4af37);
+    transform: translateX(5px);
+}
+
+/* Career Progress Widgets */
+.career-progress {
+    margin-top: 1.5rem;
+}
+
+.progress-item {
+    margin-bottom: 1.25rem;
+}
+
+.progress-item span {
+    display: block;
+    font-size: 0.9rem;
+    margin-bottom: 0.4rem;
+    color: var(--text-light, #f1f5f9);
+    font-weight: 600;
+}
+
+.progress-bar {
+    background: rgba(255, 255, 255, 0.1); /* Subtle track */
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 0.4rem;
+}
+
+.progress-fill {
+    background: var(--gold-gradient, linear-gradient(135deg, #b8860b 0%, #d4af37 100%));
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.progress-text {
+    font-size: 0.8rem;
+    color: var(--text-muted, #94a3b8);
+}
+
+/* Recommendations List */
+.recommendations {
+    margin-bottom: 1.5rem;
+}
+
+.rec-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.8rem;
+    margin-bottom: 1.25rem;
+    font-size: 0.95rem;
+}
+
+.rec-item i {
+    color: var(--gold-accent, #d4af37);
+    margin-top: 0.2rem;
+    flex-shrink: 0;
+    font-size: 1.1rem;
+}
+
+.rec-item strong {
+    display: block;
+    margin-bottom: 0.2rem;
+    color: var(--text-light, #f1f5f9);
+}
+
+.rec-item p {
+    margin: 0;
+    line-height: 1.5;
+    color: var(--text-muted, #94a3b8);
+    font-size: 0.9rem;
+}
+
+/* Job Alert Signup Box */
+.job-alert-signup {
+    background: rgba(212, 175, 55, 0.05); /* Tinted Glass */
+    padding: 1.25rem;
+    border-radius: 8px;
+    border: 1px solid rgba(212, 175, 55, 0.3); /* Soft Gold Border */
+    margin-top: 1rem;
+}
+
+.job-alert-signup p {
+    margin: 0 0 1rem 0;
+    font-size: 0.95rem;
+    color: var(--text-light, #f1f5f9);
+}
+
+/* Action Button */
+.btn-alert {
+    background: var(--gold-gradient, linear-gradient(135deg, #b8860b 0%, #d4af37 100%));
+    color: var(--primary-navy, #0f172a);
+    padding: 0.6rem 1.25rem;
+    border: none;
+    border-radius: 50px;
+    font-weight: 800;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 15px rgba(184, 134, 11, 0.2);
+}
+
+.btn-alert:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(184, 134, 11, 0.4);
+    filter: brightness(1.1);
+}
+
+/* Footer Bottom Copyright */
+.footer-bottom {
+    text-align: center;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    color: var(--text-muted, #94a3b8);
+    font-size: 0.9rem;
+}
+
+.footer-bottom a {
+    color: var(--gold-accent, #d4af37);
+    text-decoration: none;
+    margin: 0 0.5rem;
+    font-weight: 600;
+}
+
+.footer-bottom a:hover {
+    text-decoration: underline;
+}
+
+/* =========================================
+   Responsive Breakpoints
+   ========================================= */
+@media (max-width: 1200px) {
+    .footer-content { gap: 1.5rem; }
+}
+
+@media (max-width: 992px) {
+    .applicant-footer { padding: 3rem 0 1.5rem; }
+    .footer-content { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+    .footer-section h3 { font-size: 1.3rem; }
+}
+
+@media (max-width: 768px) {
+    .footer-content { grid-template-columns: 1fr; text-align: center; }
+    .footer-section h3 { justify-content: center; }
+    .footer-section ul li a { justify-content: center; }
+    .rec-item { flex-direction: column; align-items: center; text-align: center; gap: 0.5rem; }
+    .progress-item { text-align: center; }
+}
+
+@media (max-width: 576px) {
+    .applicant-footer { padding: 2rem 0 1rem; margin-top: 2rem; }
+    .footer-content { gap: 1rem; margin-bottom: 1.5rem; }
+    .footer-section h3 { font-size: 1.2rem; }
+    .footer-section h4 { font-size: 1rem; }
+    .progress-bar { height: 6px; }
+    .rec-item { font-size: 0.85rem; }
+    .btn-alert { font-size: 0.8rem; padding: 0.5rem 1rem; }
+}
+
+@media (max-width: 480px) {
+    .applicant-footer { padding: 1.5rem 0 0.75rem; }
+    .footer-content { gap: 0.75rem; margin-bottom: 1rem; }
+    .footer-section h3 { font-size: 1.1rem; margin-bottom: 0.75rem; }
+    .footer-section h4 { font-size: 0.95rem; padding-bottom: 0.35rem; }
+    .footer-section ul li { margin-bottom: 0.35rem; }
+    .progress-item span { font-size: 0.85rem; }
+    .progress-text { font-size: 0.75rem; }
+    .job-alert-signup { padding: 1rem; }
+    .job-alert-signup p { font-size: 0.85rem; }
+    .footer-bottom { padding-top: 1.5rem; }
+}

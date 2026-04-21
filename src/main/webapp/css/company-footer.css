@@ -1,0 +1,252 @@
+/**
+ * 🏛️ Company Footer Styles - Enterprise Dashboard
+ * Standardized to the Navy & Gold System
+ */
+
+:root {
+    --deep-navy: #0f172a;
+    --slate-navy: #1e293b;
+    --darker-navy: #0b1120;
+    --accent-gold: #d4af37;
+    --gold-gradient: linear-gradient(135deg, #b8860b 0%, #d4af37 100%);
+    --text-light: #f1f5f9;
+    --text-muted: #94a3b8;
+}
+
+.company-footer {
+    background: var(--primary-navy, #0f172a);
+    color: var(--text-light, #f1f5f9);
+    padding: 4rem 0 1.5rem;
+    margin-top: 4rem;
+    border-top: 4px solid var(--accent-gold, #d4af37); /* Gold Anchor Line */
+    position: relative;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2.5rem;
+}
+
+.footer-section h3 {
+    color: var(--accent-gold, #d4af37);
+    margin-bottom: 1.25rem;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 800;
+}
+
+.footer-section h4 {
+    color: var(--accent-gold, #d4af37);
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    border-bottom: 2px solid rgba(212, 175, 55, 0.2); /* Soft Gold Underline */
+    padding-bottom: 0.5rem;
+    font-weight: 700;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section ul li {
+    margin-bottom: 0.5rem;
+}
+
+.footer-section ul li a {
+    color: var(--text-muted, #94a3b8);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+}
+
+.footer-section ul li a:hover {
+    color: var(--accent-gold, #d4af37);
+    transform: translateX(5px);
+}
+
+/* Quick Stats Pills */
+.company-quick-stats {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.company-quick-stats span {
+    background: rgba(212, 175, 55, 0.1); /* Frosted Gold Tint */
+    color: var(--accent-gold, #d4af37);
+    padding: 0.4rem 1rem;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border: 1px solid rgba(212, 175, 55, 0.4);
+    letter-spacing: 0.5px;
+}
+
+/* Tips Section */
+.tips-section {
+    margin-bottom: 1.5rem;
+}
+
+.tip-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--text-muted, #94a3b8);
+}
+
+.tip-item i {
+    color: var(--accent-gold, #d4af37);
+    margin-top: 0.2rem;
+    flex-shrink: 0;
+    font-size: 1.1rem;
+}
+
+/* Premium Upgrade Prompt */
+.upgrade-prompt {
+    background: rgba(212, 175, 55, 0.05); /* Tinted Glass */
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid rgba(212, 175, 55, 0.3); /* Soft Gold Border */
+    margin-top: 1.5rem;
+}
+
+.upgrade-prompt p {
+    margin: 0 0 1.25rem 0;
+    font-size: 0.95rem;
+    color: var(--text-light, #f1f5f9);
+    line-height: 1.5;
+}
+
+.btn-premium {
+    background: var(--gold-gradient, linear-gradient(135deg, #b8860b 0%, #d4af37 100%));
+    color: var(--deep-navy, #0f172a);
+    padding: 0.6rem 1.5rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 800;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    box-shadow: 0 4px 15px rgba(184, 134, 11, 0.2);
+}
+
+.btn-premium:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(184, 134, 11, 0.4);
+    filter: brightness(1.1);
+    color: var(--deep-navy, #0f172a); /* Prevent text color change on hover */
+}
+
+/* Footer Bottom Copyright */
+.footer-bottom {
+    text-align: center;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05); /* Very subtle line */
+    color: var(--text-muted, #94a3b8);
+    font-size: 0.9rem;
+}
+
+.footer-bottom a {
+    color: var(--accent-gold, #d4af37);
+    text-decoration: none;
+    margin: 0 0.5rem;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.footer-bottom a:hover {
+    text-decoration: underline;
+    color: var(--text-light, #f1f5f9);
+}
+
+/* =========================================
+   Responsive Breakpoints
+   ========================================= */
+@media (max-width: 1200px) {
+    .footer-content { gap: 1.5rem; }
+}
+
+@media (max-width: 992px) {
+    .company-footer { padding: 3rem 0 1.5rem; }
+    .footer-content {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+    }
+    .footer-section h3 { font-size: 1.3rem; }
+}
+
+@media (max-width: 768px) {
+    .footer-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+    .company-quick-stats { justify-content: center; }
+    .footer-section h3 { justify-content: center; }
+    .footer-section ul li a { justify-content: center; }
+    .tip-item {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 0.5rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .company-footer {
+        padding: 2rem 0 1rem;
+        margin-top: 2rem;
+    }
+    .footer-content {
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+    .footer-section h3 { font-size: 1.2rem; }
+    .footer-section h4 { font-size: 1rem; }
+    .company-quick-stats span {
+        font-size: 0.8rem;
+        padding: 0.3rem 0.8rem;
+    }
+    .tip-item { font-size: 0.9rem; }
+    .btn-premium {
+        font-size: 0.85rem;
+        padding: 0.5rem 1.25rem;
+    }
+    .upgrade-prompt { padding: 1.25rem; }
+}
+
+@media (max-width: 480px) {
+    .company-footer { padding: 1.5rem 0 0.75rem; }
+    .footer-content {
+        gap: 1.25rem;
+        margin-bottom: 1rem;
+    }
+    .footer-section h3 {
+        font-size: 1.1rem;
+        margin-bottom: 0.75rem;
+    }
+    .footer-section h4 {
+        font-size: 0.95rem;
+        padding-bottom: 0.35rem;
+    }
+    .company-quick-stats { gap: 0.5rem; }
+    .upgrade-prompt { padding: 1rem; }
+    .upgrade-prompt p { font-size: 0.85rem; margin-bottom: 1rem;}
+    .footer-bottom { padding-top: 1.5rem; }
+}

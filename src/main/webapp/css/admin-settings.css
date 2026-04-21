@@ -1,0 +1,194 @@
+/**
+ * 🏛️ Admin Settings Page Styles - Enterprise Control Panel
+ * Extracted from settings.jsp
+ */
+
+:root {
+    --deep-navy: #0f172a;
+    --slate-navy: #1e293b;
+    --accent-gold: #d4af37;
+    --text-light: #f1f5f9;
+    --text-muted: #94a3b8;
+    --border-glass: rgba(255, 255, 255, 0.1);
+}
+
+/* Settings Header */
+.settings-header {
+    margin-bottom: 2rem;
+}
+
+.settings-header h2 {
+    color: var(--accent-gold, #d4af37);
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+/* Settings Form */
+.settings-form {
+    max-width: 800px;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--text-light, #f1f5f9);
+    letter-spacing: 0.5px;
+    font-size: 0.95rem;
+}
+
+/* Premium Form Inputs */
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid rgba(212, 175, 55, 0.3); /* Subtle Gold Border */
+    border-radius: 6px;
+    font-size: 1rem;
+    background: rgba(255, 255, 255, 0.05); /* Frosted Glass Effect */
+    color: var(--text-light, #f1f5f9);
+    transition: all 0.3s ease;
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="number"]:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--accent-gold, #d4af37);
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15); /* Gold Focus Ring */
+}
+
+.form-group select option {
+    background: var(--slate-navy, #1e293b);
+    color: var(--text-light, #f1f5f9);
+}
+
+.form-group input[type="checkbox"] {
+    margin-right: 0.75rem;
+    width: 1.25rem;
+    height: 1.25rem;
+    accent-color: var(--accent-gold, #d4af37); /* Colors the checkbox gold when checked */
+    cursor: pointer;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: var(--text-muted, #94a3b8);
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.checkbox-label:hover {
+    color: var(--text-light, #f1f5f9);
+}
+
+/* Settings Section - The Control Cards */
+.settings-section {
+    background: var(--slate-navy, #1e293b);
+    padding: 2rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    border: 1px solid var(--border-glass, rgba(255,255,255,0.05));
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease;
+}
+
+.settings-section:hover {
+    border-color: rgba(212, 175, 55, 0.3);
+}
+
+.settings-section h3 {
+    margin-bottom: 1.5rem;
+    color: var(--accent-gold, #d4af37);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 700;
+    border-bottom: 1px solid var(--border-glass, rgba(255,255,255,0.05));
+    padding-bottom: 1rem;
+}
+
+.settings-section h3 i {
+    color: var(--text-light, #f1f5f9);
+    opacity: 0.8;
+}
+
+/* Info Box - Adapted for Dark Mode */
+.info-box {
+    background-color: rgba(56, 189, 248, 0.1); /* Subtle Blue Tint */
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    border-radius: 8px;
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+    color: #bae6fd; /* Light Blue Text */
+    display: flex;
+    align-items: flex-start;
+    line-height: 1.5;
+}
+
+.info-box i {
+    color: #38bdf8; /* Bright Blue Icon */
+    margin-right: 0.75rem;
+    margin-top: 0.2rem;
+    font-size: 1.2rem;
+}
+
+/* Alerts - Dark Mode Polished */
+.alert {
+    padding: 1rem 1.25rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+}
+
+.alert-success { background-color: rgba(16, 185, 129, 0.15); color: #6ee7b7; border-left: 4px solid #10b981; }
+.alert-error { background-color: rgba(239, 68, 68, 0.15); color: #fca5a5; border-left: 4px solid #ef4444; }
+
+/* Responsive - Multiple breakpoints for better window size sensitivity */
+@media (max-width: 1200px) {
+    .settings-form { max-width: 700px; }
+}
+
+@media (max-width: 992px) {
+    .settings-form { max-width: 100%; }
+    .settings-section { padding: 1.5rem; }
+}
+
+@media (max-width: 768px) {
+    .settings-section { padding: 1.25rem; }
+    .settings-section h3 { font-size: 1.1rem; }
+    .form-group { margin-bottom: 1.25rem; }
+    .form-group input[type="text"],
+    .form-group input[type="number"],
+    .form-group select { padding: 0.625rem 0.875rem; }
+}
+
+@media (max-width: 576px) {
+    .settings-header h2 { font-size: 1.25rem; }
+    .settings-section { padding: 1rem; margin-bottom: 1rem; }
+    .settings-section h3 { font-size: 1rem; margin-bottom: 1rem; }
+    .form-group label { font-size: 0.9rem; }
+    .form-group input[type="text"],
+    .form-group input[type="number"],
+    .form-group select { font-size: 0.9rem; }
+    .info-box { padding: 1rem; margin-bottom: 1rem; }
+    .info-box h4 { font-size: 0.95rem; }
+}
+
+@media (max-width: 480px) {
+    .settings-header h2 { font-size: 1.125rem; }
+    .settings-section { padding: 0.875rem; border-radius: 8px; }
+    .settings-section h3 { font-size: 0.95rem; padding-bottom: 0.75rem;}
+    .form-group { margin-bottom: 1rem; }
+    .form-group label { font-size: 0.85rem; margin-bottom: 0.4rem; }
+    .checkbox-label { font-size: 0.9rem; }
+    .alert { padding: 0.875rem; font-size: 0.9rem; }
+}

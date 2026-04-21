@@ -1,0 +1,198 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt
+ * to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java
+ * to edit this template
+ */
+
+package com.jakartaee.jobfinder.dao;
+
+import com.jakartaee.jobfinder.entity.Job;
+import com.jakartaee.jobfinder.entity.Company;
+import jakarta.ejb.Stateless;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
+import jakarta.transaction.Transactional;
+import java.util.List;
+
+/**
+ * Data Access Object (DAO) for managing Job entities.
+ *
+ * Provides CRUD operations and custom queries for Job objects
+ * using JPA and MySQL as the persistence layer.
+ *
+ * Original Author: pilot
+ * Modified & Documented by: Aubrey
+ */
+@Stateless
+public class JobDAO {
+
+    /**
+     * Injected EntityManager configured in persistence.xml.
+     * Handles database operations automatically within the persistence context.
+     */
+    @PersistenceContext(unitName = "youth-job-finder")
+    private EntityManager em;
+
+    // --- 1. CREATE ---
+    /**
+     * Persists a new Job entity into the database.
+     *
+     * Runs inside a transactional context. If any error occurs
+     * (such as a constraint violation), the transaction will roll back.
+     *
+     * @param job the Job entity to be persisted
+     */
+    @Transactional
+    public void create(Job job) {
+        em.persist(job);
+    }
+
+    // --- 2. READ (Find by ID) ---
+    /**
+     * Finds a Job entity by its unique identifier.
+     *
+     * @param id the primary key of the Job
+     * @return the Job entity if found, otherwise null
+     */
+    public Job findById(String id) {
+        return em.find(Job.class, id);
+    }
+
+    // --- 3. READ (Find All) ---
+    /**
+     * Retrieves all Job entities from the database.
+     *
+     * @return a list of all Job entities
+     */
+    public List<Job> findAll() {
+        return em.createQuery("SELECT j FROM Job j", Job.class)
+                .getResultList();
+    }
+
+    /**
+     * Retrieves all jobs matching a given job type, case-insensitively.
+     *
+     * @param jobType the job type to match
+     * @return matching jobs
+     */
+    public List<Job> findByJobType(String jobType) {
+        return em.createQuery(
+                        "SELECT j FROM Job j WHERE LOWER(j.jobType) = LOWER(:jobType)",
+                        Job.class
+                )
+                .setParameter("jobType", jobType)
+                .getResultList();
+    }
+
+    /**
+     * Jobs whose title, description, requirements, location, salary, type, or company name
+     * contain the given term (case-insensitive). {@code term} must be non-blank.
+     */
+    public List<Job> searchByTerm(String term) {
+        String pattern = likePattern(term);
+        return em.createQuery(
+                        "SELECT j FROM Job j JOIN j.company c WHERE "
+                                + "LOWER(j.jobTitle) LIKE :p ESCAPE '|' OR "
+                                + "LOWER(j.jobDescription) LIKE :p ESCAPE '|' OR "
+                                + "LOWER(j.jobRequirements) LIKE :p ESCAPE '|' OR "
+                                + "LOWER(j.physicalAddress) LIKE :p ESCAPE '|' OR "
+                                + "LOWER(j.salaryRange) LIKE :p ESCAPE '|' OR "
+                                + "LOWER(j.jobType) LIKE :p ESCAPE '|' OR "
+                                + "LOWER(c.name) LIKE :p ESCAPE '|'",
+                        Job.class
+                )
+                .setParameter("p", pattern)
+                .getResultList();
+    }
+
+    /**
+     * Same as {@link #searchByTerm(String)} but restricted to a job type (e.g. Remote).
+     */
+    public List<Job> searchByTermAndJobType(String term, String jobType) {
+        String pattern = likePattern(term);
+        return em.createQuery(
+                        "SELECT j FROM Job j JOIN j.company c WHERE LOWER(j.jobType) = LOWER(:jobType) AND ("
+                                + "LOWER(j.jobTitle) LIKE :p ESCAPE '|' OR "
+                                + "LOWER(j.jobDescription) LIKE :p ESCAPE '|' OR "
+                                + "LOWER(j.jobRequirements) LIKE :p ESCAPE '|' OR "
+                                + "LOWER(j.physicalAddress) LIKE :p ESCAPE '|' OR "
+                                + "LOWER(j.salaryRange) LIKE :p ESCAPE '|' OR "
+                                + "LOWER(c.name) LIKE :p ESCAPE '|')",
+                        Job.class
+                )
+                .setParameter("jobType", jobType)
+                .setParameter("p", pattern)
+                .getResultList();
+    }
+
+    private static String likePattern(String raw) {
+        return "%" + escapeLikeWildcards(raw.trim().toLowerCase()) + "%";
+    }
+
+    /** Escape % and _ for JPQL LIKE with ESCAPE '|'. */
+    private static String escapeLikeWildcards(String s) {
+        return s.replace("|", "||").replace("%", "|%").replace("_", "|_");
+    }
+
+    // --- 4. UPDATE ---
+    /**
+     * Updates an existing Job entity.
+     *
+     * Runs inside a transactional context. If any error occurs,
+     * the transaction will roll back.
+     *
+     * @param job the Job entity with updated fields
+     * @return the managed Job entity after merge
+     */
+    @Transactional
+    public Job update(Job job) {
+        return em.merge(job);
+    }
+
+    // --- 5. DELETE ---
+    /**
+     * Deletes a Job entity by its unique identifier.
+     *
+     * @param id the primary key of the Job to delete
+     */
+    public void delete(String id) {
+        Job job = findById(id);
+        if (job != null) {
+            em.remove(job);
+        }
+    }
+
+    // --- CUSTOM QUERY (Find by Company ID) ---
+    /**
+     * Finds all Job entities posted by a specific company.
+     *
+     * @param companyId the unique identifier of the company
+     * @return a list of Job entities posted by the company
+     */
+    public List<Job> findByCompanyId(String companyId) {
+        TypedQuery<Job> query = em.createQuery(
+                "SELECT j FROM Job j WHERE j.company.id = :companyId",
+                Job.class
+        );
+        query.setParameter("companyId", companyId);
+        return query.getResultList();
+    }
+
+    // --- CUSTOM QUERY (Find by Company Entity) ---
+    /**
+     * Finds all Job entities posted by a specific company.
+     *
+     * @param company the Company entity
+     * @return a list of Job entities posted by the company
+     */
+    public List<Job> findByCompany(com.jakartaee.jobfinder.entity.Company company) {
+        TypedQuery<Job> query = em.createQuery(
+                "SELECT j FROM Job j WHERE j.company = :company",
+                Job.class
+        );
+        query.setParameter("company", company);
+        return query.getResultList();
+    }
+}

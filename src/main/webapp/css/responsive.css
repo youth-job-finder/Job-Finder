@@ -1,0 +1,195 @@
+/* ============================================================
+   🏛️ Global Responsive Layer - Enterprise Edition
+   Accessibility, Typography Scaling, and Fluid Media
+   ============================================================ */
+
+/* Accessibility: Professional Gold focus states */
+a:focus, button:focus, input:focus, textarea:focus, select:focus {
+    outline: 2px solid var(--accent-gold, #d4af37);
+    outline-offset: 3px;
+}
+
+/* Fluid media */
+img, video {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+/* Typography scaling */
+html {
+    font-size: 100%; /* base = 16px */
+    scroll-behavior: smooth;
+}
+
+@media (max-width: 480px) {
+    html { font-size: 90%; }
+}
+
+@media (min-width: 1024px) {
+    html { font-size: 105%; }
+}
+
+/* Utility classes */
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+}
+
+@media (max-width: 768px) {
+    .grid-2 { grid-template-columns: 1fr; }
+}
+
+/* Mobile-first Enterprise Adjustments */
+@media (max-width: 480px) {
+    body {
+        font-size: 0.95rem;
+        background-color: var(--darker-navy, #0b1120);
+    }
+
+    button, .cta-btn, .signup-link {
+        padding: 0.875rem 1.25rem;
+        font-size: 0.95rem;
+        width: 100%; /* Force full-width buttons on small mobile */
+    }
+
+    /* Navbar mobile refinements */
+    .navbar {
+        padding: 0.75rem 1.25rem;
+    }
+
+    .navbar .logo {
+        flex: none;
+        text-align: left;
+        font-size: 1.25rem;
+        color: var(--accent-gold, #d4af37);
+    }
+
+    .hamburger,
+    #hamburger-menu {
+        display: flex !important;
+        width: auto;
+        height: auto;
+        overflow: visible;
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .navbar .nav-links {
+        display: none;
+        position: fixed;
+        left: -100%;
+        top: 60px;
+        flex-direction: column;
+        background-color: rgba(15, 23, 42, 0.98); /* Deep Navy */
+        backdrop-filter: blur(15px);
+        width: 100%;
+        text-align: center;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+        gap: 0;
+        padding: 2rem 0;
+        max-height: calc(100vh - 60px);
+        overflow-y: auto;
+        z-index: 999;
+    }
+
+    .navbar .nav-links.active {
+        display: flex;
+        left: 0;
+    }
+
+    .navbar .nav-links li {
+        margin: 0.5rem 0;
+        width: 100%;
+    }
+
+    .navbar .nav-links a {
+        display: block;
+        padding: 1.25rem;
+        width: 100%;
+        border-radius: 0;
+        font-weight: 600;
+        color: var(--text-light, #f1f5f9);
+    }
+
+    .navbar .nav-links a:hover,
+    .navbar .nav-links a.active {
+        background-color: rgba(212, 175, 55, 0.1);
+        color: var(--accent-gold, #d4af37);
+    }
+
+    .signin-link, .signup-link {
+        margin: 0.5rem auto;
+        display: flex;
+        width: 90%;
+        min-width: unset;
+    }
+
+    .hero h1 { font-size: 2.25rem; line-height: 1.2; }
+    .hero p { font-size: 1.05rem; color: var(--text-muted, #94a3b8); }
+    
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+        border-radius: 8px;
+    }
+}
+
+/* Tablet refinements */
+@media (min-width: 481px) and (max-width: 768px) {
+    .hamburger,
+    #hamburger-menu {
+        display: flex !important;
+        width: auto;
+        height: auto;
+        overflow: visible;
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .navbar .logo { font-size: 1.4rem; }
+    .navbar .nav-links { gap: 1rem; }
+    .navbar .nav-links a { font-size: 0.9rem; padding: 0.5rem 0.75rem; }
+
+    .dashboard-container { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 2.75rem; }
+}
+
+/* Large devices & Desktop Consistency */
+@media (min-width: 1025px) {
+    .container,
+    .jobs-container,
+    .companies-container,
+    .dashboard-container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+}
+
+/* 🌙 Premium Dark Mode Override
+   Ensures the system respects user preference using our custom palette
+*/
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: var(--darker-navy, #0b1120);
+        color: var(--text-light, #f1f5f9);
+    }
+    .navbar, .footer {
+        background-color: var(--primary-navy, #0f172a);
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+    .cta-btn, .btn-primary {
+        background: var(--gold-gradient, linear-gradient(135deg, #b8860b 0%, #d4af37 100%));
+        color: var(--deep-navy, #0f172a) !important;
+    }
+}

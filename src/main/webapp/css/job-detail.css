@@ -1,0 +1,312 @@
+/**
+ * Job detail page styles.
+ */
+
+:root {
+    --deep-navy: #0f172a;
+    --slate-navy: #1e293b;
+    --darker-navy: #0b1120;
+    --accent-gold: #d4af37;
+    --gold-gradient: linear-gradient(135deg, #b8860b 0%, #d4af37 100%);
+    --text-light: #f1f5f9;
+    --text-muted: #94a3b8;
+    --border-glass: rgba(255, 255, 255, 0.1);
+}
+
+body {
+    background-color: var(--darker-navy);
+    color: var(--text-light);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.job-detail-header {
+    background: linear-gradient(to bottom, #000, var(--deep-navy)) !important;
+    color: white;
+    padding: 4rem 0;
+    margin-bottom: 2rem;
+    position: relative;
+    z-index: 10;
+    border-bottom: 2px solid var(--border-glass);
+}
+
+.job-detail-header .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.job-detail-header h1 {
+    font-size: 3rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent-gold);
+    font-weight: 800;
+    letter-spacing: -1px;
+}
+
+.back-link {
+    color: var(--text-muted);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.back-link:hover {
+    color: var(--accent-gold);
+    transform: translateX(-5px);
+}
+
+.company-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 1.2rem;
+    color: var(--text-light);
+}
+
+.company-info .divider {
+    opacity: 0.3;
+    color: var(--accent-gold);
+}
+
+.company-info .industry {
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.job-meta-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    margin: 2.5rem 0;
+}
+
+.job-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem;
+    background: var(--slate-navy);
+    border-radius: 12px;
+    border: 1px solid var(--border-glass);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.job-meta-item:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent-gold);
+}
+
+.job-meta-item i {
+    color: var(--accent-gold);
+    font-size: 1.5rem;
+    background: rgba(212, 175, 55, 0.1);
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    flex-shrink: 0;
+}
+
+.job-meta-item strong {
+    display: block;
+    margin-bottom: 0.35rem;
+    color: var(--text-light);
+}
+
+.job-meta-item p {
+    margin: 0;
+    color: var(--text-muted) !important;
+}
+
+.job-section {
+    background: var(--slate-navy);
+    border-radius: 16px;
+    padding: 2.5rem;
+    margin-bottom: 2.5rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--border-glass);
+    position: relative;
+    z-index: 5;
+}
+
+.job-section h3 {
+    color: var(--accent-gold);
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.job-section h3::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--border-glass);
+}
+
+.job-section p,
+.job-section li {
+    line-height: 1.8;
+    color: var(--text-light) !important;
+    font-size: 1.05rem;
+    font-weight: 400;
+    margin-bottom: 1rem;
+}
+
+.job-section ul {
+    margin-left: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.job-copy {
+    white-space: pre-line;
+}
+
+.job-link-row {
+    margin-top: 1rem;
+}
+
+.guest-apply-panel {
+    text-align: center;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(212, 175, 55, 0.06));
+    border: 1px solid rgba(212, 175, 55, 0.24);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 18px 36px rgba(0, 0, 0, 0.2);
+}
+
+.guest-apply-copy {
+    color: var(--text-light) !important;
+    font-size: 1.05rem;
+    max-width: 680px;
+    margin: 0 auto 1.5rem;
+}
+
+.guest-apply-copy i {
+    color: var(--accent-gold);
+    margin-right: 0.45rem;
+}
+
+.guest-apply-copy a {
+    color: var(--accent-gold);
+    font-weight: 700;
+    text-decoration: underline;
+}
+
+.guest-apply-copy a:hover {
+    color: #fff;
+}
+
+.company-admin-panel {
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.14), rgba(255, 255, 255, 0.04));
+    border: 1px solid rgba(212, 175, 55, 0.4);
+}
+
+.btn-lg {
+    padding: 1rem 2.5rem;
+    font-size: 1.1rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 50px;
+    background: var(--gold-gradient);
+    color: var(--deep-navy) !important;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(184, 134, 11, 0.3);
+    transition: all 0.3s ease;
+}
+
+.btn-lg:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 15px 30px rgba(184, 134, 11, 0.4);
+}
+
+.job-section .alert {
+    padding: 1.25rem 1.5rem;
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+    border: none;
+}
+
+.job-section .alert-success {
+    background-color: rgba(16, 185, 129, 0.15);
+    color: #6ee7b7;
+    border-left: 5px solid #10b981;
+}
+
+.job-section .alert-info {
+    background-color: rgba(56, 189, 248, 0.15);
+    color: #7dd3fc;
+    border-left: 5px solid #38bdf8;
+}
+
+@media (max-width: 992px) {
+    .job-section {
+        padding: 2rem;
+    }
+
+    .job-detail-header h1 {
+        font-size: 2.2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .job-detail-header {
+        padding: 3rem 0;
+    }
+
+    .job-detail-header h1 {
+        font-size: 1.8rem;
+    }
+
+    .job-meta-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .company-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .company-info .divider {
+        display: none;
+    }
+
+    .job-section h3 {
+        font-size: 1.25rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .job-detail-header {
+        padding: 2rem 0;
+    }
+
+    .job-detail-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .job-section {
+        padding: 1.5rem;
+        border-radius: 12px;
+    }
+
+    .btn-lg {
+        width: 100%;
+        text-align: center;
+    }
+}

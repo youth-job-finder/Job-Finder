@@ -1,0 +1,179 @@
+/* ============================================================
+   Additional Mobile Responsive Styles - Enterprise Edition
+   Standardized to the Navy & Gold System
+   ============================================================ */
+
+/* Table responsive wrapper - ensures horizontal scroll on mobile */
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: 1.5rem;
+    background: rgba(15, 23, 42, 0.3); /* Deep navy well tint */
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.table-responsive table {
+    width: 100%;
+    margin-bottom: 0;
+    border-collapse: collapse;
+}
+
+/* Mobile enhancements for 480px and below */
+@media (max-width: 480px) {
+    /* Container padding adjustments */
+    .container,
+    .dashboard-container,
+    .applicants-container,
+    .listings-container,
+    .jobs-container,
+    .companies-container {
+        padding: 0 1rem;
+    }
+
+    /* Form card adjustments */
+    .form-card {
+        padding: 1.25rem;
+        margin: 0.5rem 0;
+        background: #1e293b; /* Slate Navy */
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .form-group.half {
+        width: 100%;
+    }
+
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    /* Table mobile adjustments */
+    .table-responsive {
+        border: none;
+        font-size: 0.85rem;
+    }
+
+    .table-responsive th,
+    .table-responsive td {
+        padding: 0.875rem 0.5rem;
+    }
+
+    /* Action buttons mobile - wrap and smaller */
+    .action-buttons {
+        flex-wrap: wrap;
+        gap: 0.35rem;
+    }
+
+    .action-buttons .btn,
+    .action-buttons a,
+    .action-buttons button {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.75rem;
+        border-radius: 4px;
+    }
+
+    /* Card padding adjustments */
+    .dashboard-card,
+    .applicants-card,
+    .job-card,
+    .application-card {
+        padding: 1.25rem;
+        margin-bottom: 1rem;
+        border-radius: 10px;
+    }
+
+    /* Stats/Summary cards - 2 columns on mobile */
+    .applications-summary,
+    .applicants-summary,
+    .quick-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+    }
+
+    .summary-card {
+        padding: 1rem 0.75rem;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .summary-card h4 {
+        font-size: 0.75rem;
+        color: #94a3b8;
+    }
+
+    .summary-number {
+        font-size: 1.25rem;
+        color: #f1f5f9;
+    }
+
+    /* Modal mobile adjustments */
+    .modal-content {
+        width: 92%;
+        margin: 15% auto;
+        padding: 1.5rem;
+        background: #1e293b;
+        border: 1px solid #d4af37; /* Gold accent border */
+    }
+
+    /* Hero section mobile */
+    .hero-content {
+        padding: 1.5rem;
+        text-align: center;
+    }
+
+    .hero h1 {
+        font-size: 2rem;
+        letter-spacing: -0.5px;
+        color: #d4af37;
+    }
+
+    /* Navbar mobile refinements */
+    .navbar {
+        padding: 0.875rem 1.25rem;
+    }
+
+    .navbar .logo {
+        font-size: 1.25rem;
+        color: #d4af37;
+    }
+
+    .navbar .nav-links {
+        top: 64px;
+        max-height: calc(100vh - 64px);
+        padding: 2rem 1rem;
+        background: rgba(15, 23, 42, 0.98);
+        backdrop-filter: blur(15px);
+    }
+
+    .navbar .nav-links li {
+        margin: 0.5rem 0;
+    }
+
+    .navbar .nav-links a {
+        padding: 1rem;
+        font-size: 1rem;
+        border-radius: 8px;
+    }
+}
+
+/* Tablet adjustments for stats cards */
+@media (min-width: 481px) and (max-width: 768px) {
+    .applications-summary,
+    .applicants-summary {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+}
+
+/* Ensure all containers have consistent max-width on large screens */
+@media (min-width: 1025px) {
+    .dashboard-container,
+    .applicants-container,
+    .listings-container,
+    .jobs-container,
+    .companies-container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+}
