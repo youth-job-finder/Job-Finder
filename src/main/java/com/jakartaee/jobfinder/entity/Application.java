@@ -39,6 +39,12 @@ public class Application {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime created_at;
 
+    @Column(name = "cv_file_name")
+    private String cvFileName;
+
+    @Column(name = "cv_file_path", columnDefinition = "TEXT")
+    private String cvFilePath;
+
     // Required no-arg constructor for JPA
     public Application() {}
 
@@ -97,6 +103,22 @@ public class Application {
 
     public LocalDateTime getCreated_at() {
         return created_at;
+    }
+
+    public String getCvFileName() {
+        return cvFileName;
+    }
+
+    public void setCvFileName(String cvFileName) {
+        this.cvFileName = cvFileName;
+    }
+
+    public String getCvFilePath() {
+        return cvFilePath;
+    }
+
+    public void setCvFilePath(String cvFilePath) {
+        this.cvFilePath = cvFilePath;
     }
 
     @PrePersist

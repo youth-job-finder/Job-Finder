@@ -110,9 +110,20 @@
         
         /* Badges & Meta */
         .job-type { background: var(--accent-gold) !important; color: var(--deep-navy) !important; font-weight: 700 !important; padding: 4px 12px; border-radius: 4px; font-size: 0.8rem; }
-        .job-meta { margin-bottom: 15px; display: flex; gap: 15px; flex-wrap: wrap;}
-        .job-meta span { color: #64748b !important; font-size: 0.9rem; }
-        .job-meta i { color: var(--accent-gold) !important; margin-right: 5px; }
+        .job-meta {
+            margin-bottom: 18px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        .job-meta span {
+            color: #64748b !important;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+        }
+        .job-meta i { color: var(--accent-gold) !important; margin-right: 8px; }
 
         /* Buttons */
         .btn-primary { background: var(--accent-gold) !important; color: var(--deep-navy) !important; font-weight: 700 !important; border: none !important; cursor: pointer; padding: 8px 20px; border-radius: 50px; text-decoration: none;}

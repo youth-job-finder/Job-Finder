@@ -3,11 +3,13 @@ package com.jakartaee.jobfinder.services;
 import com.jakartaee.jobfinder.dao.ApplicationDAO;
 import com.jakartaee.jobfinder.dao.CompanyDAO;
 import com.jakartaee.jobfinder.dao.JobDAO;
+import com.jakartaee.jobfinder.dao.SavedJobDAO;
 import com.jakartaee.jobfinder.entity.Application;
 import com.jakartaee.jobfinder.entity.Company;
 import com.jakartaee.jobfinder.entity.Job;
 import com.jakartaee.jobfinder.entity.User;
 import com.jakartaee.jobfinder.logging.MainLogger;
+import com.jakartaee.jobfinder.util.SalaryFormatter;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
@@ -30,6 +32,9 @@ public class JobService {
 
     @Inject
     private ApplicationDAO applicationDAO;
+
+    @Inject
+    private SavedJobDAO savedJobDAO;
 
     /**
      * Retrieves all jobs from the database.
@@ -91,9 +96,7 @@ public class JobService {
      * @return true if user has applied, false otherwise
      */
     public boolean hasUserApplied(String jobId, String userId) {
-        List<Application> applications = applicationDAO.findByJobId(jobId);
-        return applications.stream()
-                .anyMatch(app -> app.getApplicant().getId().equals(userId));
+        return applicationDAO.existsByApplicantAndJob(userId, jobId);
     }
 
     /**
@@ -145,7 +148,8 @@ public class JobService {
         job.setJobDescription(jobDescription.trim());
         job.setJobRequirements(jobRequirements != null ? jobRequirements.trim() : "");
         job.setPhysicalAddress(physicalAddress != null ? physicalAddress.trim() : "");
-        job.setSalaryRange(salaryRange != null && !salaryRange.trim().isEmpty() ? salaryRange.trim() : "Competitive");
+        job.setSalaryRange(SalaryFormatter.normalizeToRand(
+                salaryRange != null && !salaryRange.trim().isEmpty() ? salaryRange.trim() : "Competitive"));
         job.setJobType(jobType != null && !jobType.trim().isEmpty() ? jobType.trim() : "Full-time");
         job.setCompany(company);
 
@@ -164,7 +168,8 @@ public class JobService {
         job.setJobDescription(jobDescription.trim());
         job.setJobRequirements(jobRequirements != null ? jobRequirements.trim() : "");
         job.setPhysicalAddress(physicalAddress != null ? physicalAddress.trim() : "");
-        job.setSalaryRange(salaryRange != null && !salaryRange.trim().isEmpty() ? salaryRange.trim() : "Competitive");
+        job.setSalaryRange(SalaryFormatter.normalizeToRand(
+                salaryRange != null && !salaryRange.trim().isEmpty() ? salaryRange.trim() : "Competitive"));
         job.setJobType(jobType != null && !jobType.trim().isEmpty() ? jobType.trim() : "Full-time");
 
         jobDAO.update(job);
@@ -192,9 +197,33 @@ public class JobService {
             throw new IllegalStateException("You can only delete your own jobs");
         }
 
-        jobDAO.delete(jobId);
+        deleteJobInternal(job);
         MainLogger.logServiceOperation("JobService", "DELETE_JOB", true, "Job ID: " + jobId);
         return true;
+    }
+
+    public boolean deleteJobAsAdmin(String jobId) {
+        Job job = jobDAO.findById(jobId);
+        if (job == null) {
+            throw new IllegalStateException("Job not found");
+        }
+
+        deleteJobInternal(job);
+        MainLogger.logServiceOperation("JobService", "DELETE_JOB_ADMIN", true, "Job ID: " + jobId);
+        return true;
+    }
+
+    private void deleteJobInternal(Job job) {
+        List<Application> applications = applicationDAO.findByJob(job);
+        if (!applications.isEmpty()) {
+            throw new IllegalStateException("This job cannot be deleted because applicants have already applied to it.");
+        }
+
+        int removedSavedJobs = savedJobDAO.deleteByJobId(job.getId());
+        MainLogger.logServiceOperation("JobService", "DELETE_JOB_SAVED_CLEANUP", true,
+                "Job ID: " + job.getId() + ", Removed saved jobs: " + removedSavedJobs);
+
+        jobDAO.delete(job.getId());
     }
 
     public Map<String, Integer> getJobStatistics(User user) {

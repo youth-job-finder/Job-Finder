@@ -6,6 +6,7 @@ import com.jakartaee.jobfinder.entity.Job;
 import com.jakartaee.jobfinder.entity.User;
 import com.jakartaee.jobfinder.entity.role.Role;
 import com.jakartaee.jobfinder.logging.MainLogger;
+import com.jakartaee.jobfinder.services.JobService;
 import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -30,6 +31,9 @@ public class AdminJobsServlet extends HttpServlet {
 
     @Inject
     private UserDAO userDAO;
+
+    @Inject
+    private JobService jobService;
 
     /**
      * Displays all jobs for management with filtering support.
@@ -141,7 +145,7 @@ public class AdminJobsServlet extends HttpServlet {
             return;
         }
 
-        jobDAO.delete(jobId);
+        jobService.deleteJobAsAdmin(jobId);
         MainLogger.logUserAction(SERVLET_NAME, adminId, "DELETE_JOB: " + jobId);
         req.getSession().setAttribute("successMessage", "Job deleted successfully");
         resp.sendRedirect(req.getRequestURI());
