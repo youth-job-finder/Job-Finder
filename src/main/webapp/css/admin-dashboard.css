@@ -15,6 +15,22 @@
     --border-glass: rgba(255, 255, 255, 0.1);
 }
 
+.dashboard-container > h2 {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.6rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent-gold);
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+.dashboard-container > h2 i {
+    color: var(--text-light);
+    flex-shrink: 0;
+}
+
 /* Quick Stats - Data Panels */
 .quick-stats {
     display: grid;

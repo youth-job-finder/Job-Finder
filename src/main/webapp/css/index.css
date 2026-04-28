@@ -61,7 +61,21 @@ body.hero-button-hovering {
     gap: 0.35rem;
 }
 
+.logo-link.admin-logo-link {
+    flex: 0 0 auto;
+    width: fit-content;
+    max-width: max-content;
+    justify-content: flex-start;
+    gap: 0.55rem;
+}
+
 .navbar .logo-link.company-logo-link .logo {
+    flex: 0 0 auto !important;
+    display: inline-block;
+    text-align: left !important;
+}
+
+.navbar .logo-link.admin-logo-link .logo {
     flex: 0 0 auto !important;
     display: inline-block;
     text-align: left !important;

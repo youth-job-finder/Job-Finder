@@ -38,6 +38,7 @@ public class DataInitializerListener implements ServletContextListener {
 
             // Check if schema exists by trying to query a table
             if (isSchemaReady()) {
+                ensureApplicationCvColumns();
                 MainLogger.logInfo(LISTENER_NAME, "Database schema is ready - running data initializer");
 
                 // Run the initializer
@@ -74,5 +75,33 @@ public class DataInitializerListener implements ServletContextListener {
             MainLogger.logInfo(LISTENER_NAME, "Schema not ready yet: " + e.getMessage());
             return false;
         }
+    }
+
+    private void ensureApplicationCvColumns() {
+        try {
+            if (!columnExists("applications", "cv_file_name")) {
+                em.createNativeQuery("ALTER TABLE applications ADD COLUMN cv_file_name VARCHAR(255) NULL")
+                        .executeUpdate();
+                MainLogger.logInfo(LISTENER_NAME, "Added applications.cv_file_name column");
+            }
+
+            if (!columnExists("applications", "cv_file_path")) {
+                em.createNativeQuery("ALTER TABLE applications ADD COLUMN cv_file_path TEXT NULL")
+                        .executeUpdate();
+                MainLogger.logInfo(LISTENER_NAME, "Added applications.cv_file_path column");
+            }
+        } catch (Exception e) {
+            MainLogger.logError(LISTENER_NAME, "Failed to ensure application CV columns", e);
+        }
+    }
+
+    private boolean columnExists(String tableName, String columnName) {
+        Number count = (Number) em.createNativeQuery(
+                        "SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS " +
+                                "WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ? AND COLUMN_NAME = ?")
+                .setParameter(1, tableName)
+                .setParameter(2, columnName)
+                .getSingleResult();
+        return count != null && count.intValue() > 0;
     }
 }

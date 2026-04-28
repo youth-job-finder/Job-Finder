@@ -46,6 +46,7 @@ public class ApplicationDAO {
      */
     @Transactional
     public void create(Application application) {
+        ensureCvSnapshotColumns();
         em.persist(application);
     }
 
@@ -161,5 +162,41 @@ public class ApplicationDAO {
         );
         query.setParameter("applicant", applicant);
         return query.getResultList();
+    }
+
+    public boolean existsByApplicantAndJob(String applicantId, String jobId) {
+        TypedQuery<Long> query = em.createQuery(
+                "SELECT COUNT(a) FROM Application a WHERE a.applicant.id = :applicantId AND a.job.id = :jobId",
+                Long.class
+        );
+        query.setParameter("applicantId", applicantId);
+        query.setParameter("jobId", jobId);
+        Long count = query.getSingleResult();
+        return count != null && count > 0;
+    }
+
+    private void ensureCvSnapshotColumns() {
+        try {
+            if (!columnExists("cv_file_name")) {
+                em.createNativeQuery("ALTER TABLE applications ADD COLUMN cv_file_name VARCHAR(255) NULL")
+                        .executeUpdate();
+            }
+
+            if (!columnExists("cv_file_path")) {
+                em.createNativeQuery("ALTER TABLE applications ADD COLUMN cv_file_path TEXT NULL")
+                        .executeUpdate();
+            }
+        } catch (Exception ignored) {
+            // If the schema is already correct or the DB disallows DDL here, let the normal persist path surface it.
+        }
+    }
+
+    private boolean columnExists(String columnName) {
+        Number count = (Number) em.createNativeQuery(
+                        "SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS " +
+                                "WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'applications' AND COLUMN_NAME = ?")
+                .setParameter(1, columnName)
+                .getSingleResult();
+        return count != null && count.intValue() > 0;
     }
 }

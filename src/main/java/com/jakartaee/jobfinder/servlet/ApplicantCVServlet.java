@@ -1,7 +1,9 @@
 package com.jakartaee.jobfinder.servlet;
 
+import com.jakartaee.jobfinder.dao.ApplicationDAO;
 import com.jakartaee.jobfinder.dao.CVDAO;
 import com.jakartaee.jobfinder.dao.UserDAO;
+import com.jakartaee.jobfinder.entity.Application;
 import com.jakartaee.jobfinder.entity.CV;
 import com.jakartaee.jobfinder.entity.User;
 import com.jakartaee.jobfinder.entity.role.Role;
@@ -19,7 +21,12 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @WebServlet("/applicant/cv")
 @MultipartConfig(
@@ -30,12 +37,16 @@ import java.nio.file.Paths;
 public class ApplicantCVServlet extends HttpServlet {
 
     private static final String SERVLET_NAME = "ApplicantCVServlet";
+    private static final String APPLICATION_CV_DIR = System.getProperty("user.home") + "/jobfinder-uploads/application-cvs";
 
     @Inject
     private UserDAO userDAO;
 
     @Inject
     private CVDAO cvDAO;
+
+    @Inject
+    private ApplicationDAO applicationDAO;
 
     // Directory to store uploaded CVs - external persistent storage
     private static final String UPLOAD_DIR = System.getProperty("user.home") + "/jobfinder-uploads/cvs";
@@ -72,6 +83,7 @@ public class ApplicantCVServlet extends HttpServlet {
         // Set authentication attributes for navbar
         request.setAttribute("isAuthenticated", true);
         request.setAttribute("userRole", "APPLICANT");
+        request.setAttribute("returnJobId", normalizeJobId(request.getParameter("returnJobId")));
         
         // Load CV info from database
         loadCVInfo(request, user);
@@ -109,6 +121,12 @@ public class ApplicantCVServlet extends HttpServlet {
             return;
         }
 
+        String contentType = req.getContentType();
+        if (contentType != null && contentType.toLowerCase().startsWith("multipart/")) {
+            handleUpload(req, resp, user);
+            return;
+        }
+
         String action = req.getParameter("action");
         
         if ("download".equals(action)) {
@@ -123,11 +141,15 @@ public class ApplicantCVServlet extends HttpServlet {
     private void handleUpload(HttpServletRequest req, HttpServletResponse resp, User user)
             throws ServletException, IOException {
         MainLogger.logUserAction(SERVLET_NAME, user.getId(), "UPLOAD_CV_ATTEMPT");
+        String returnJobId = normalizeJobId(req.getParameter("returnJobId"));
 
         try {
             Part cvPart = req.getPart("cvFile");
             if (cvPart == null || cvPart.getSize() == 0) {
                 req.setAttribute("errorMessage", "No file selected. Please choose a CV file.");
+                req.setAttribute("returnJobId", returnJobId);
+                req.setAttribute("isAuthenticated", true);
+                req.setAttribute("userRole", "APPLICANT");
                 loadCVInfo(req, user);
                 req.getRequestDispatcher("/views/cv.jsp").forward(req, resp);
                 return;
@@ -154,15 +176,23 @@ public class ApplicantCVServlet extends HttpServlet {
             cvDAO.saveOrUpdate(cv);
 
             req.getSession().setAttribute("cvFileName", fileName);
-            req.setAttribute("successMessage", "CV uploaded successfully!");
             MainLogger.logServiceOperation(SERVLET_NAME, "UPLOAD_CV", true, "File: " + fileName);
-            
-            // Set authentication attributes for navbar
+
+            if (returnJobId != null) {
+                resp.sendRedirect(req.getContextPath() + "/applicant/apply?jobId=" + returnJobId + "&cvUploaded=true");
+                return;
+            }
+
+            req.setAttribute("successMessage", "CV uploaded successfully!");
             req.setAttribute("isAuthenticated", true);
             req.setAttribute("userRole", "APPLICANT");
+            req.setAttribute("returnJobId", null);
 
         } catch (Exception e) {
             req.setAttribute("errorMessage", "Failed to upload CV. Please try again.");
+            req.setAttribute("returnJobId", returnJobId);
+            req.setAttribute("isAuthenticated", true);
+            req.setAttribute("userRole", "APPLICANT");
             MainLogger.logAuthenticationError(SERVLET_NAME, "UPLOAD_CV", e.getMessage(), user.getId());
         }
 
@@ -210,6 +240,8 @@ public class ApplicantCVServlet extends HttpServlet {
         try {
             CV cv = cvDAO.findByUser(user).orElse(null);
             if (cv != null && cv.getFilePath() != null) {
+                preserveApplicationSnapshots(user, cv);
+
                 // Delete file from server
                 File file = new File(cv.getFilePath());
                 if (file.exists()) {
@@ -249,5 +281,52 @@ public class ApplicantCVServlet extends HttpServlet {
             req.removeAttribute("cvFileName");
             req.getSession().removeAttribute("cvFileName");
         }
+    }
+
+    private void preserveApplicationSnapshots(User user, CV cv) throws IOException {
+        if (cv.getFilePath() == null || cv.getFileName() == null) {
+            return;
+        }
+
+        File sourceFile = new File(cv.getFilePath());
+        if (!sourceFile.exists()) {
+            return;
+        }
+
+        List<Application> applications = applicationDAO.findByApplicant(user);
+        Path snapshotDir = Path.of(APPLICATION_CV_DIR);
+        Files.createDirectories(snapshotDir);
+
+        for (Application application : applications) {
+            if (application.getCvFilePath() != null && application.getCvFileName() != null) {
+                continue;
+            }
+
+            String extension = "";
+            String originalFileName = cv.getFileName();
+            int extensionIndex = originalFileName.lastIndexOf('.');
+            if (extensionIndex >= 0) {
+                extension = originalFileName.substring(extensionIndex);
+            }
+
+            String snapshotFileName = "application-" + application.getId() + "-"
+                    + DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS").format(LocalDateTime.now())
+                    + extension;
+            Path snapshotPath = snapshotDir.resolve(snapshotFileName);
+            Files.copy(sourceFile.toPath(), snapshotPath, StandardCopyOption.REPLACE_EXISTING);
+
+            application.setCvFileName(originalFileName);
+            application.setCvFilePath(snapshotPath.toString());
+            applicationDAO.update(application);
+        }
+    }
+
+    private String normalizeJobId(String jobId) {
+        if (jobId == null) {
+            return null;
+        }
+
+        String trimmed = jobId.trim();
+        return trimmed.isEmpty() ? null : trimmed;
     }
 }

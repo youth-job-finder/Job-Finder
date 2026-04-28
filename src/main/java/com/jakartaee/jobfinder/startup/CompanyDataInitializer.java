@@ -209,70 +209,70 @@ public class CompanyDataInitializer {
             "Design, develop, test, deploy, maintain and improve software. Manage project priorities, deadlines and deliverables.",
             "Mountain View, CA", 
             "Bachelor's degree in Computer Science or related field. 3+ years of software development experience. Proficiency in Java, Python, or C++.",
-            "$120,000 - $180,000",
+            "R120,000 - R180,000",
             "Full-time"));
 
         jobs.add(createJob(google, "Senior UX Designer",
             "Lead design projects across the entire product lifecycle. Create user-centered designs by understanding business requirements and user feedback.",
             "San Francisco, CA",
             "5+ years of UX design experience. Portfolio demonstrating strong visual design skills. Proficiency in Figma, Sketch, or Adobe XD.",
-            "$130,000 - $190,000",
+            "R130,000 - R190,000",
             "Full-time"));
 
         jobs.add(createJob(google, "Product Manager - Cloud",
             "Define product vision, strategy and roadmap for Google Cloud products. Work with engineering, design, and marketing teams to deliver world-class products.",
             "Sunnyvale, CA",
             "Bachelor's degree in technical field. 4+ years of product management experience. Strong technical background in cloud computing.",
-            "$140,000 - $200,000",
+            "R140,000 - R200,000",
             "Full-time"));
 
         jobs.add(createJob(google, "Data Scientist",
             "Work with large, complex data sets. Solve difficult, non-routine analysis problems. Apply advanced analytical methods as needed.",
             "New York, NY",
             "Master's degree in Statistics, Mathematics, Computer Science, or related field. 3+ years of data science experience. Proficiency in SQL, Python, R.",
-            "$125,000 - $185,000",
+            "R125,000 - R185,000",
             "Full-time"));
 
         jobs.add(createJob(google, "DevOps Engineer",
             "Build and maintain CI/CD pipelines. Manage cloud infrastructure. Implement monitoring and alerting solutions.",
             "Austin, TX",
             "Bachelor's degree in Computer Science. 3+ years of DevOps experience. Experience with Kubernetes, Docker, Terraform.",
-            "$115,000 - $170,000",
+            "R115,000 - R170,000",
             "Full-time"));
 
         jobs.add(createJob(google, "Mobile Developer - Android",
             "Design and build advanced applications for the Android platform. Collaborate with cross-functional teams to define and ship new features.",
             "Mountain View, CA",
             "Bachelor's degree in Computer Science. 3+ years of Android development experience. Strong knowledge of Java and Kotlin.",
-            "$120,000 - $175,000",
+            "R120,000 - R175,000",
             "Full-time"));
 
         jobs.add(createJob(google, "Technical Program Manager",
             "Lead complex, multi-disciplinary engineering projects. Plan requirements with internal customers and usher projects through the entire project lifecycle.",
             "Seattle, WA",
             "Bachelor's degree in technical field. 5+ years of technical program management experience. PMP certification preferred.",
-            "$135,000 - $195,000",
+            "R135,000 - R195,000",
             "Full-time"));
 
         jobs.add(createJob(google, "Machine Learning Engineer",
             "Design and implement machine learning models for various Google products. Work with large-scale data processing systems.",
             "Palo Alto, CA",
             "Master's degree in Computer Science or related field. 3+ years of ML engineering experience. Experience with TensorFlow, PyTorch.",
-            "$140,000 - $210,000",
+            "R140,000 - R210,000",
             "Full-time"));
 
         jobs.add(createJob(google, "Site Reliability Engineer",
             "Ensure the reliability and performance of Google's services. Build automation to prevent and address system failures.",
             "Los Angeles, CA",
             "Bachelor's degree in Computer Science. 3+ years of SRE or systems engineering experience. Strong programming skills in Python or Go.",
-            "$125,000 - $180,000",
+            "R125,000 - R180,000",
             "Full-time"));
 
         jobs.add(createJob(google, "Marketing Manager - Digital",
             "Develop and execute marketing campaigns for Google's products. Analyze campaign performance and optimize for better results.",
             "Chicago, IL",
             "Bachelor's degree in Marketing or related field. 4+ years of digital marketing experience. Experience with Google Ads and Analytics.",
-            "$95,000 - $145,000",
+            "R95,000 - R145,000",
             "Full-time"));
 
         for (Job job : jobs) {
@@ -289,70 +289,70 @@ public class CompanyDataInitializer {
             "Design, develop, and maintain software solutions for Amazon's e-commerce platform. Work on scalable distributed systems.",
             "Seattle, WA",
             "Bachelor's degree in Computer Science. 2+ years of software development experience. Proficiency in Java, C++, or C#.",
-            "$110,000 - $170,000",
+            "R110,000 - R170,000",
             "Full-time"));
 
         jobs.add(createJob(amazon, "Solutions Architect - AWS",
             "Help customers architect scalable, secure, and cost-effective solutions on AWS. Provide technical guidance and best practices.",
             "Remote",
             "Bachelor's degree in technical field. 5+ years of IT experience. AWS certification preferred. Strong communication skills.",
-            "$130,000 - $190,000",
+            "R130,000 - R190,000",
             "Remote"));
 
         jobs.add(createJob(amazon, "Operations Manager",
             "Manage day-to-day operations of fulfillment centers. Lead and develop a team of associates to meet operational goals.",
             "Phoenix, AZ",
             "Bachelor's degree in Business, Operations, or related field. 3+ years of operations management experience. Strong leadership skills.",
-            "$80,000 - $120,000",
+            "R80,000 - R120,000",
             "Full-time"));
 
         jobs.add(createJob(amazon, "Data Engineer",
             "Design and build large-scale data processing systems. Work with big data technologies to enable data-driven decisions.",
             "Boston, MA",
             "Bachelor's degree in Computer Science. 3+ years of data engineering experience. Experience with Hadoop, Spark, AWS data services.",
-            "$120,000 - $175,000",
+            "R120,000 - R175,000",
             "Full-time"));
 
         jobs.add(createJob(amazon, "Product Marketing Manager",
             "Develop go-to-market strategies for Amazon products. Create compelling messaging and positioning for target audiences.",
             "New York, NY",
             "Bachelor's degree in Marketing or related field. 4+ years of product marketing experience. Experience in tech industry preferred.",
-            "$100,000 - $150,000",
+            "R100,000 - R150,000",
             "Full-time"));
 
         jobs.add(createJob(amazon, "Supply Chain Analyst",
             "Analyze supply chain data to optimize inventory levels and delivery times. Develop forecasting models and performance metrics.",
             "Nashville, TN",
             "Bachelor's degree in Supply Chain, Analytics, or related field. 2+ years of supply chain experience. Proficiency in SQL and Excel.",
-            "$70,000 - $100,000",
+            "R70,000 - R100,000",
             "Full-time"));
 
         jobs.add(createJob(amazon, "Frontend Engineer - React",
             "Build responsive and performant user interfaces for Amazon's web applications. Collaborate with UX designers and backend engineers.",
             "San Francisco, CA",
             "Bachelor's degree in Computer Science. 3+ years of frontend development experience. Expert in React, JavaScript, HTML, CSS.",
-            "$125,000 - $185,000",
+            "R125,000 - R185,000",
             "Full-time"));
 
         jobs.add(createJob(amazon, "Quality Assurance Engineer",
             "Develop and execute test plans for Amazon's software products. Automate testing processes to ensure high-quality releases.",
             "Austin, TX",
             "Bachelor's degree in Computer Science or related field. 3+ years of QA experience. Experience with automation frameworks.",
-            "$95,000 - $140,000",
+            "R95,000 - R140,000",
             "Full-time"));
 
         jobs.add(createJob(amazon, "Business Intelligence Engineer",
             "Build reporting systems and dashboards to support business decisions. Work with stakeholders to understand analytical needs.",
             "Denver, CO",
             "Bachelor's degree in Computer Science, Engineering, or related field. 3+ years of BI experience. Proficiency in SQL, Tableau, or similar tools.",
-            "$100,000 - $150,000",
+            "R100,000 - R150,000",
             "Full-time"));
 
         jobs.add(createJob(amazon, "Warehouse Associate Team Lead",
             "Supervise warehouse operations and lead a team of associates. Ensure safety protocols and productivity targets are met.",
             "Indianapolis, IN",
             "High school diploma or equivalent. 2+ years of warehouse experience with 1+ year in a leadership role. Ability to lift up to 49 lbs.",
-            "$45,000 - $60,000",
+            "R45,000 - R60,000",
             "Full-time"));
 
         for (Job job : jobs) {

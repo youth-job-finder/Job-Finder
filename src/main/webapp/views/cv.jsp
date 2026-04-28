@@ -76,6 +76,9 @@
 
         <!-- Upload form -->
         <form action="${pageContext.request.contextPath}/applicant/cv" method="post" enctype="multipart/form-data" class="cv-form">
+            <c:if test="${not empty returnJobId}">
+                <input type="hidden" name="returnJobId" value="${returnJobId}">
+            </c:if>
             <div class="form-group">
                 <label for="cvFile">Choose CV File (PDF or DOCX):</label>
                 <input type="file" id="cvFile" name="cvFile" accept=".pdf,.doc,.docx" required>
@@ -84,6 +87,12 @@
                 <i class="fas fa-upload"></i> Upload / Update CV
             </button>
         </form>
+
+        <c:if test="${not empty returnJobId}">
+            <div class="alert alert-success">
+                <i class="fas fa-arrow-right"></i> Upload your CV and you will be taken straight back to your job application.
+            </div>
+        </c:if>
 
         <!-- Feedback messages -->
         <c:if test="${not empty requestScope.successMessage}">

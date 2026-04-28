@@ -1,8 +1,10 @@
 package com.jakartaee.jobfinder.servlet.applicant;
 
 import com.jakartaee.jobfinder.dao.ApplicationDAO;
+import com.jakartaee.jobfinder.dao.CVDAO;
 import com.jakartaee.jobfinder.dao.JobDAO;
 import com.jakartaee.jobfinder.entity.Application;
+import com.jakartaee.jobfinder.entity.CV;
 import com.jakartaee.jobfinder.entity.Job;
 import com.jakartaee.jobfinder.entity.User;
 import com.jakartaee.jobfinder.entity.role.Role;
@@ -17,8 +19,13 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import java.io.File;
 import java.io.IOException;
-import java.util.List;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 /**
  * Servlet for handling job applications by applicants.
@@ -28,6 +35,7 @@ import java.util.List;
 public class ApplyJobServlet extends HttpServlet {
 
     private static final String SERVLET_NAME = "ApplyJobServlet";
+    private static final String APPLICATION_CV_DIR = System.getProperty("user.home") + "/jobfinder-uploads/application-cvs";
 
     @Inject
     private AuthService authService;
@@ -37,6 +45,9 @@ public class ApplyJobServlet extends HttpServlet {
 
     @Inject
     private ApplicationDAO applicationDAO;
+
+    @Inject
+    private CVDAO cvDAO;
 
     @Inject
     private EmailService emailService;
@@ -75,10 +86,15 @@ public class ApplyJobServlet extends HttpServlet {
                 return;
             }
 
-            // Check if user has already applied for this job
-            List<Application> existingApplications = applicationDAO.findByApplicant(user);
-            boolean alreadyApplied = existingApplications.stream()
-                .anyMatch(app -> app.getJob() != null && app.getJob().getId().equals(jobId));
+            Optional<CV> cvOpt = cvDAO.findByUser(user);
+            if (cvOpt.isPresent()) {
+                req.setAttribute("cvFileName", cvOpt.get().getFileName());
+            } else {
+                req.setAttribute("error", "You must upload your CV before applying for a job.");
+                req.setAttribute("missingCv", true);
+            }
+
+            boolean alreadyApplied = applicationDAO.existsByApplicantAndJob(user.getId(), jobId);
 
             if (alreadyApplied) {
                 MainLogger.logInfo(SERVLET_NAME, "User " + currentUserId + " already applied for job " + jobId);
@@ -132,15 +148,25 @@ public class ApplyJobServlet extends HttpServlet {
                 return;
             }
 
-            // Check if user has already applied for this job
-            List<Application> existingApplications = applicationDAO.findByApplicant(user);
-            boolean alreadyApplied = existingApplications.stream()
-                .anyMatch(app -> app.getJob() != null && app.getJob().getId().equals(jobId));
+            Optional<CV> cvOpt = cvDAO.findByUser(user);
+            if (cvOpt.isEmpty()) {
+                MainLogger.logInfo(SERVLET_NAME, "Application blocked - missing CV for user: " + currentUserId);
+                req.setAttribute("error", "Please upload your CV before applying for this job.");
+                req.setAttribute("missingCv", true);
+                req.setAttribute("job", job);
+                req.setAttribute("isAuthenticated", true);
+                req.setAttribute("role", Role.APPLICANT.name());
+                req.getRequestDispatcher("/views/applicant/apply-job.jsp").forward(req, resp);
+                return;
+            }
+
+            boolean alreadyApplied = applicationDAO.existsByApplicantAndJob(user.getId(), jobId);
 
             if (alreadyApplied) {
                 MainLogger.logInfo(SERVLET_NAME, "Duplicate application blocked - user: " + currentUserId + " already applied for job: " + jobId);
                 req.setAttribute("error", "You have already applied for this job.");
                 req.setAttribute("job", job);
+                req.setAttribute("cvFileName", cvOpt.get().getFileName());
                 req.setAttribute("isAuthenticated", true);
                 req.setAttribute("role", Role.APPLICANT.name());
                 req.getRequestDispatcher("/views/applicant/apply-job.jsp").forward(req, resp);
@@ -149,6 +175,7 @@ public class ApplyJobServlet extends HttpServlet {
 
             // Create new application
             Application application = new Application(user, job, Status.PENDING);
+            attachCvSnapshot(application, cvOpt.get(), jobId);
             applicationDAO.create(application);
 
             // Send email notifications
@@ -188,5 +215,35 @@ public class ApplyJobServlet extends HttpServlet {
             req.setAttribute("error", "Failed to submit application. Please try again.");
             req.getRequestDispatcher("/views/applicant/apply-job.jsp").forward(req, resp);
         }
+    }
+
+    private void attachCvSnapshot(Application application, CV cv, String jobId) throws IOException {
+        if (cv.getFilePath() == null || cv.getFileName() == null) {
+            throw new IOException("Current CV file is not available.");
+        }
+
+        File sourceFile = new File(cv.getFilePath());
+        if (!sourceFile.exists()) {
+            throw new IOException("Current CV file is missing from storage.");
+        }
+
+        Path snapshotDir = Path.of(APPLICATION_CV_DIR);
+        Files.createDirectories(snapshotDir);
+
+        String originalFileName = cv.getFileName();
+        String extension = "";
+        int extensionIndex = originalFileName.lastIndexOf('.');
+        if (extensionIndex >= 0) {
+            extension = originalFileName.substring(extensionIndex);
+        }
+
+        String snapshotFileName = "application-" + jobId + "-"
+                + DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS").format(java.time.LocalDateTime.now())
+                + extension;
+        Path snapshotPath = snapshotDir.resolve(snapshotFileName);
+        Files.copy(sourceFile.toPath(), snapshotPath, StandardCopyOption.REPLACE_EXISTING);
+
+        application.setCvFileName(originalFileName);
+        application.setCvFilePath(snapshotPath.toString());
     }
 }
