@@ -151,14 +151,14 @@
                                                 <!-- CV Download -->
                                                 <form action="${pageContext.request.contextPath}/company/applicants" method="post" class="action-form">
                                                     <input type="hidden" name="action" value="downloadCV">
-                                                    <input type="hidden" name="applicantId" value="${application.applicant.id}">
+                                                    <input type="hidden" name="applicationId" value="${application.id}">
                                                     <button type="submit" class="btn btn-sm btn-info" title="Download CV">
                                                         <i class="fas fa-download"></i> CV
                                                     </button>
                                                 </form>
                                                 
                                                 <!-- CV View in New Tab -->
-                                                <a href="${pageContext.request.contextPath}/view-cv?applicantId=${application.applicant.id}" 
+                                                <a href="${pageContext.request.contextPath}/view-cv?applicationId=${application.id}" 
                                                    target="_blank" class="btn btn-sm btn-info" title="View CV">
                                                     <i class="fas fa-file-alt"></i> View CV
                                                 </a>

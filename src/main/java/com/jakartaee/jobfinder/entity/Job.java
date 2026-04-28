@@ -12,6 +12,8 @@ import jakarta.persistence.Table;
 import jakarta.persistence.PrePersist;
 import java.time.LocalDateTime;
 
+import com.jakartaee.jobfinder.util.SalaryFormatter;
+
 @Entity
 @Table(name = "jobs")
 public class Job {
@@ -111,11 +113,11 @@ public class Job {
     }
 
     public String getSalaryRange() {
-        return salaryRange;
+        return SalaryFormatter.normalizeToRand(salaryRange);
     }
 
     public void setSalaryRange(String salaryRange) {
-        this.salaryRange = salaryRange;
+        this.salaryRange = SalaryFormatter.normalizeToRand(salaryRange);
     }
 
     public String getJobType() {

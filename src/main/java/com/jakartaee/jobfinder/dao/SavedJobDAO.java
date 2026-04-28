@@ -155,6 +155,19 @@ public class SavedJobDAO {
     }
 
     /**
+     * Deletes all saved-job bookmarks for a specific job.
+     *
+     * @param jobId the unique identifier of the job
+     * @return the number of deleted saved-job records
+     */
+    @Transactional
+    public int deleteByJobId(String jobId) {
+        return em.createQuery("DELETE FROM SavedJob s WHERE s.job.id = :jobId")
+                .setParameter("jobId", jobId)
+                .executeUpdate();
+    }
+
+    /**
      * Checks if a job is saved by a specific applicant.
      *
      * @param applicant the User entity

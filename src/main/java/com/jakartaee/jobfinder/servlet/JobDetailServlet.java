@@ -81,6 +81,13 @@ public class JobDetailServlet extends HttpServlet {
                 }
             }
 
+            User currentUser = resolveCurrentUser(req, userId);
+            if (currentUser != null) {
+                userId = currentUser.getId();
+                req.getSession().setAttribute("userId", userId);
+                req.getSession().setAttribute("role", currentUser.getRole().name());
+            }
+
             boolean isAuthenticated = userId != null;
             req.setAttribute("isAuthenticated", isAuthenticated);
 
@@ -90,21 +97,14 @@ public class JobDetailServlet extends HttpServlet {
                 userRole = roleObj != null ? roleObj.toString() : "";
                 req.setAttribute("userRole", userRole);
 
-                User user = userDAO.findById(userId);
-                if (user != null) {
-                    req.setAttribute("user", user);
+                if (currentUser != null) {
+                    req.setAttribute("user", currentUser);
 
-                    // Check if job is saved (for applicants)
-                    if (user.getRole() == Role.APPLICANT) {
-                        List<SavedJob> savedJobs = savedJobDAO.findByApplicant(user);
-                        boolean isSaved = savedJobs.stream()
-                                .anyMatch(sj -> sj.getJob().getId().equals(jobId));
-                        req.setAttribute("isSaved", isSaved);
-
-                        // Check if already applied
-                        boolean hasApplied = jobService.hasUserApplied(jobId, userId);
-                        req.setAttribute("hasApplied", hasApplied);
+                    if (currentUser.getRole() == Role.APPLICANT) {
+                        populateApplicantFlags(req, currentUser, jobId);
                     }
+                } else {
+                    MainLogger.logInfo(SERVLET_NAME, "Authenticated session could not be resolved to a user for identifier: " + userId);
                 }
             }
 
@@ -115,6 +115,44 @@ public class JobDetailServlet extends HttpServlet {
         } catch (Exception e) {
             MainLogger.logError(SERVLET_NAME, "Error loading job details for: " + jobId, e);
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Unable to load job details");
+        }
+    }
+
+    private User resolveCurrentUser(HttpServletRequest req, String userIdentifier) {
+        if (userIdentifier == null || userIdentifier.trim().isEmpty()) {
+            return null;
+        }
+
+        User user = userDAO.findById(userIdentifier);
+        if (user != null) {
+            return user;
+        }
+
+        try {
+            return userDAO.findByEmail(userIdentifier).orElse(null);
+        } catch (Exception e) {
+            MainLogger.logError(SERVLET_NAME, "Failed to resolve user by identifier: " + userIdentifier, e);
+            return null;
+        }
+    }
+
+    private void populateApplicantFlags(HttpServletRequest req, User user, String jobId) {
+        try {
+            List<SavedJob> savedJobs = savedJobDAO.findByApplicant(user);
+            boolean isSaved = savedJobs.stream()
+                    .anyMatch(sj -> sj.getJob() != null && jobId.equals(sj.getJob().getId()));
+            req.setAttribute("isSaved", isSaved);
+        } catch (Exception e) {
+            req.setAttribute("isSaved", false);
+            MainLogger.logError(SERVLET_NAME, "Failed to determine saved state for job: " + jobId, e);
+        }
+
+        try {
+            boolean hasApplied = jobService.hasUserApplied(jobId, user.getId());
+            req.setAttribute("hasApplied", hasApplied);
+        } catch (Exception e) {
+            req.setAttribute("hasApplied", false);
+            MainLogger.logError(SERVLET_NAME, "Failed to determine application state for job: " + jobId, e);
         }
     }
 }

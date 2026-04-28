@@ -220,12 +220,26 @@
                 <h2>${pageTitle}</h2>
                 <p>${pageSubtitle}</p>
                 <div class="info-actions">
-                    <a href="${pageContext.request.contextPath}/home" class="btn btn-secondary">
-                        <i class="fas fa-arrow-left"></i> Back Home
-                    </a>
-                    <a href="${pageContext.request.contextPath}/jobs" class="btn btn-primary">
-                        <i class="fas fa-search"></i> Explore Jobs
-                    </a>
+                    <c:choose>
+                        <c:when test="${isAuthenticated && userRole == 'SYSTEM_ADMIN'}">
+                            <a href="${pageContext.request.contextPath}/admin/dashboard" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Back Home
+                            </a>
+                        </c:when>
+                        <c:when test="${isAuthenticated && userRole == 'COMPANY_ADMIN'}">
+                            <a href="${pageContext.request.contextPath}/company/dashboard" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Back Home
+                            </a>
+                        </c:when>
+                        <c:otherwise>
+                            <a href="${pageContext.request.contextPath}/home" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Back Home
+                            </a>
+                            <a href="${pageContext.request.contextPath}/jobs" class="btn btn-primary">
+                                <i class="fas fa-search"></i> Explore Jobs
+                            </a>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
             </div>
         </div>

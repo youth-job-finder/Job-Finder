@@ -7,7 +7,7 @@
 <nav class="navbar">
     <div class="navbar-container">
         <!-- Logo -->
-        <a href="${pageContext.request.contextPath}/admin/dashboard" class="logo-link" aria-label="JobFinder dashboard">
+        <a href="${pageContext.request.contextPath}/admin/dashboard" class="logo-link admin-logo-link" aria-label="JobFinder dashboard">
             <span class="logo-icon"><i class="fas fa-search"></i></span>
             <span class="logo">JobFinder</span>
         </a>

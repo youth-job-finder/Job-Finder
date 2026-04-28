@@ -27,6 +27,13 @@
                 <span>${error}</span>
             </div>
         </c:if>
+
+        <c:if test="${param.cvUploaded eq 'true'}">
+            <div class="alert alert-success">
+                <i class="fas fa-check-circle"></i>
+                <span>Your CV was uploaded successfully. You can now submit your application.</span>
+            </div>
+        </c:if>
         
         <c:if test="${not empty job}">
             <div class="job-summary">
@@ -66,28 +73,50 @@
             <div class="application-form">
                 <h4><i class="fas fa-user-check"></i> Confirm Your Application</h4>
                 <p>You are about to apply for this position. Please review the job details above before confirming.</p>
+
+                <div class="applicant-info">
+                    <div class="info-row">
+                        <span class="info-label">Applicant Name:</span>
+                        <span class="info-value">${sessionScope.userName}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Email:</span>
+                        <span class="info-value">${sessionScope.userEmail}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Attached CV:</span>
+                        <span class="info-value">
+                            <c:choose>
+                                <c:when test="${not empty cvFileName}">
+                                    <i class="fas fa-file-pdf"></i> ${cvFileName}
+                                </c:when>
+                                <c:otherwise>
+                                    <i class="fas fa-exclamation-triangle"></i> No CV uploaded
+                                </c:otherwise>
+                            </c:choose>
+                        </span>
+                    </div>
+                </div>
                 
                 <form action="${pageContext.request.contextPath}/applicant/apply" method="post">
                     <input type="hidden" name="jobId" value="${job.id}">
-                    
-                    <div class="applicant-info">
-                        <div class="info-row">
-                            <span class="info-label">Applicant Name:</span>
-                            <span class="info-value">${sessionScope.userName}</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="info-label">Email:</span>
-                            <span class="info-value">${sessionScope.userEmail}</span>
-                        </div>
-                    </div>
-                    
+
                     <div class="form-actions">
                         <a href="${pageContext.request.contextPath}/jobs" class="btn btn-secondary">
                             <i class="fas fa-arrow-left"></i> Cancel
                         </a>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-paper-plane"></i> Submit Application
-                        </button>
+                        <c:choose>
+                            <c:when test="${missingCv}">
+                                <a href="${pageContext.request.contextPath}/applicant/cv?returnJobId=${job.id}" class="btn btn-primary">
+                                    <i class="fas fa-upload"></i> Upload CV to Continue
+                                </a>
+                            </c:when>
+                            <c:otherwise>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-paper-plane"></i> Submit Application
+                                </button>
+                            </c:otherwise>
+                        </c:choose>
                     </div>
                 </form>
             </div>

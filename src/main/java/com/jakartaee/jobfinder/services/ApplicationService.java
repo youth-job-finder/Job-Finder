@@ -194,6 +194,26 @@ public class ApplicationService {
         return updated;
     }
 
+    public Application getApplicationForCompany(String applicationId, User companyUser) {
+        Application application = applicationDAO.findById(applicationId);
+        if (application == null) {
+            throw new IllegalArgumentException("Application not found");
+        }
+
+        List<Company> companies = companyDAO.findByUser(companyUser);
+        if (companies.isEmpty()) {
+            throw new IllegalStateException("No company associated with user");
+        }
+
+        Company company = companies.get(0);
+        Job job = application.getJob();
+        if (job == null || job.getCompany() == null || !job.getCompany().getId().equals(company.getId())) {
+            throw new IllegalStateException("Application does not belong to your company");
+        }
+
+        return application;
+    }
+
     public boolean validateApplicantForCompany(User applicant, User companyUser) {
         List<Company> companies = companyDAO.findByUser(companyUser);
         if (companies.isEmpty()) {

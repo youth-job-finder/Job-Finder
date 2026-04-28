@@ -315,8 +315,26 @@
 .job-type.full-time { background: rgba(16, 185, 129, 0.1); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.3); }
 .job-type.internship { background: rgba(56, 189, 248, 0.1); color: #7dd3fc; border: 1px solid rgba(56, 189, 248, 0.3); }
 
-.job-meta span { color: var(--text-muted); font-size: 0.9rem; font-weight: 500; }
-.job-meta i { color: var(--accent-gold); }
+.job-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.65rem;
+    margin-bottom: 1rem;
+}
+
+.job-meta span {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+}
+
+.job-meta i {
+    color: var(--accent-gold);
+    margin-right: 0.5rem;
+}
 
 .job-actions {
     display: flex;
