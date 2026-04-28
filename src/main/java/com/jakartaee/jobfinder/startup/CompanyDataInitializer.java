@@ -11,7 +11,6 @@ import com.jakartaee.jobfinder.entity.User;
 import com.jakartaee.jobfinder.logging.MainLogger;
 import com.jakartaee.jobfinder.security.utils.BCryptHashAlgorithm;
 import com.jakartaee.jobfinder.services.CompanyRegistrationService;
-import jakarta.annotation.PostConstruct;
 import jakarta.ejb.Singleton;
 import jakarta.ejb.Startup;
 import jakarta.inject.Inject;

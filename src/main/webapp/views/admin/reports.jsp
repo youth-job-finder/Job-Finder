@@ -20,7 +20,7 @@
     <div class="dashboard-container">
         <div class="reports-header">
             <h2><i class="fas fa-chart-bar"></i> Reports & Analytics</h2>
-            <a href="${currentUri}" class="btn btn-secondary">
+            <a href="${currentUri}" class="btn btn-primary">
                 <i class="fas fa-sync"></i> Refresh
             </a>
         </div>
