@@ -12,7 +12,7 @@ import jakarta.security.enterprise.identitystore.DatabaseIdentityStoreDefinition
         )
 )
 @DatabaseIdentityStoreDefinition(
-        dataSourceLookup = "jdbc/youth_job_finder", // JNDI name of your MySQL datasource
+        dataSourceLookup = "jdbc/MySQLPool", // JNDI name of your MySQL datasource
         callerQuery = "SELECT password_hash FROM users WHERE email = ?",
         groupsQuery = "SELECT role FROM users WHERE email = ?",
         hashAlgorithm = BCryptHashAlgorithm.class,
