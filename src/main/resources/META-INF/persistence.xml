@@ -11,7 +11,7 @@
     <class>com.jakartaee.jobfinder.entity.Application</class>
     <class>com.jakartaee.jobfinder.entity.Review</class>
     <properties>
-      <property name="jakarta.persistence.schema-generation.database.action" value="create"/>
+      <property name="jakarta.persistence.schema-generation.database.action" value="drop-and-create"/>
       <!-- Optional: show SQL in logs -->
       <property name="eclipselink.logging.level" value="FINE"/>
       <property name="eclipselink.logging.parameters" value="true"/>

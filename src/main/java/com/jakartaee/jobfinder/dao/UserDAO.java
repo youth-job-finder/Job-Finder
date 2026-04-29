@@ -97,6 +97,7 @@ public class UserDAO {
     // --- 5. DELETE ---
     /**
      * Deletes a User entity by its unique identifier.
+     * Also handles related entities (applications) to prevent FK constraint violations.
      *
      * Runs inside a transactional context. If any error occurs,
      * the transaction will roll back.
@@ -107,6 +108,29 @@ public class UserDAO {
     public void delete(String id) {
         User user = findById(id);
         if (user != null) {
+            // Delete applications for jobs posted by companies owned by this user
+            em.createQuery("DELETE FROM Application a WHERE a.job.id IN " +
+                          "(SELECT j.id FROM Job j WHERE j.company.id IN " +
+                          "(SELECT c.id FROM Company c WHERE c.companyAdmin.id = :userId))")
+              .setParameter("userId", id)
+              .executeUpdate();
+
+            // Delete jobs posted by companies owned by this user
+            em.createQuery("DELETE FROM Job j WHERE j.company.id IN " +
+                          "(SELECT c.id FROM Company c WHERE c.companyAdmin.id = :userId)")
+              .setParameter("userId", id)
+              .executeUpdate();
+
+            // Delete companies where user is company admin
+            em.createQuery("DELETE FROM Company c WHERE c.companyAdmin.id = :userId")
+              .setParameter("userId", id)
+              .executeUpdate();
+
+            // Delete applications where user is the applicant
+            em.createQuery("DELETE FROM Application a WHERE a.applicant.id = :userId")
+              .setParameter("userId", id)
+              .executeUpdate();
+
             em.remove(user); // Executes DELETE FROM users WHERE id = ?
         }
     }
