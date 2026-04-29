@@ -91,12 +91,30 @@ public class CompanyDAO {
     // --- 5. DELETE ---
     /**
      * Deletes a Company entity by its unique identifier.
+     * Also handles related entities (jobs and applications) to prevent FK constraint violations.
      *
      * @param id the primary key of the Company to delete
      */
+    @Transactional
     public void delete(String id) {
         Company company = findById(id);
         if (company != null) {
+            // Delete reviews for this company
+            em.createQuery("DELETE FROM Review r WHERE r.company.id = :companyId")
+              .setParameter("companyId", id)
+              .executeUpdate();
+
+            // Delete applications for jobs of this company
+            em.createQuery("DELETE FROM Application a WHERE a.job.id IN " +
+                          "(SELECT j.id FROM Job j WHERE j.company.id = :companyId)")
+              .setParameter("companyId", id)
+              .executeUpdate();
+
+            // Delete jobs of this company
+            em.createQuery("DELETE FROM Job j WHERE j.company.id = :companyId")
+              .setParameter("companyId", id)
+              .executeUpdate();
+
             em.remove(company);
         }
     }
