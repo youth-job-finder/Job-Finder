@@ -150,7 +150,7 @@ Collections from **`java.util`** (List, Set, Map, Queue) manage groups of entiti
 ## 🗂️ DAO & DTO packages (this project)
 
 ```
-com.jakartaee.jobfinder.entity.*
+com.jakartaee.jobfinder.models.*
 com.jakartaee.jobfinder.dao.*
 com.jakartaee.jobfinder.dto.*
 com.jakartaee.jobfinder.service.*   # when service beans are added

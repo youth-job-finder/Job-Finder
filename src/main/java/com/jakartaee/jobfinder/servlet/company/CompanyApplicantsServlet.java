@@ -1,13 +1,15 @@
 package com.jakartaee.jobfinder.servlet.company;
 
-import com.jakartaee.jobfinder.entity.Application;
-import com.jakartaee.jobfinder.entity.Company;
-import com.jakartaee.jobfinder.entity.User;
-import com.jakartaee.jobfinder.entity.role.Role;
+import com.jakartaee.jobfinder.dto.PaginationDTO;
+import com.jakartaee.jobfinder.models.Application;
+import com.jakartaee.jobfinder.models.Company;
+import com.jakartaee.jobfinder.models.User;
+import com.jakartaee.jobfinder.models.role.Role;
 import com.jakartaee.jobfinder.logging.MainLogger;
 import com.jakartaee.jobfinder.services.ApplicationService;
 import com.jakartaee.jobfinder.services.AuthService;
 import com.jakartaee.jobfinder.services.CompanyService;
+import com.jakartaee.jobfinder.utils.PaginationUtil;
 import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -75,7 +77,12 @@ public class CompanyApplicantsServlet extends HttpServlet {
                     MainLogger.logUserAction(SERVLET_NAME, currentUserId, "VIEW_ALL_APPLICANTS");
                 }
                 
-                req.setAttribute("applications", applications);
+                // Pagination
+                int page = PaginationUtil.parsePageParameter(req.getParameter("page"));
+                PaginationDTO<Application> pagination = PaginationUtil.paginate(applications, page, 10);
+                
+                req.setAttribute("applications", pagination.getItems());
+                req.setAttribute("pagination", pagination);
                 req.setAttribute("company", company);
             }
 

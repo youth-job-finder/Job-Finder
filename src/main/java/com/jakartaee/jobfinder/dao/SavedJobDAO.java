@@ -1,8 +1,8 @@
 package com.jakartaee.jobfinder.dao;
 
-import com.jakartaee.jobfinder.entity.SavedJob;
-import com.jakartaee.jobfinder.entity.User;
-import com.jakartaee.jobfinder.entity.Job;
+import com.jakartaee.jobfinder.models.SavedJob;
+import com.jakartaee.jobfinder.models.User;
+import com.jakartaee.jobfinder.models.Job;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;

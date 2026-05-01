@@ -1,8 +1,8 @@
 package com.jakartaee.jobfinder.servlet.dashboard;
 
 import com.jakartaee.jobfinder.dao.UserDAO;
-import com.jakartaee.jobfinder.entity.User;
-import com.jakartaee.jobfinder.entity.role.Role;
+import com.jakartaee.jobfinder.models.User;
+import com.jakartaee.jobfinder.models.role.Role;
 import com.jakartaee.jobfinder.logging.MainLogger;
 import com.jakartaee.jobfinder.services.ApplicationService;
 import com.jakartaee.jobfinder.services.CompanyService;

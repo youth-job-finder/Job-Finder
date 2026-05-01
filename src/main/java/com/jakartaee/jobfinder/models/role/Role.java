@@ -1,4 +1,4 @@
-package com.jakartaee.jobfinder.entity.role;
+package com.jakartaee.jobfinder.models.role;
 
 // Enum definition
 public enum Role {

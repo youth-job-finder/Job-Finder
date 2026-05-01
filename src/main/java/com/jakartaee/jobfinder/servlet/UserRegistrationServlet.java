@@ -1,6 +1,6 @@
 package com.jakartaee.jobfinder.servlet;
 
-import com.jakartaee.jobfinder.entity.role.Role;
+import com.jakartaee.jobfinder.models.role.Role;
 import com.jakartaee.jobfinder.services.UserService;
 import com.jakartaee.jobfinder.logging.MainLogger;
 import jakarta.inject.Inject;

@@ -1,4 +1,4 @@
-package com.jakartaee.jobfinder.entity;
+package com.jakartaee.jobfinder.models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

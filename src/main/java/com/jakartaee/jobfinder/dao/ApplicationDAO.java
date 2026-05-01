@@ -7,8 +7,7 @@
 
 package com.jakartaee.jobfinder.dao;
 
-import com.jakartaee.jobfinder.entity.Application;
-import com.jakartaee.jobfinder.entity.User;
+import com.jakartaee.jobfinder.models.Application;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -139,7 +138,7 @@ public class ApplicationDAO {
      * @param job the Job entity
      * @return a list of Application entities submitted for the job
      */
-    public List<Application> findByJob(com.jakartaee.jobfinder.entity.Job job) {
+    public List<Application> findByJob(com.jakartaee.jobfinder.models.Job job) {
         TypedQuery<Application> query = em.createQuery(
                 "SELECT a FROM Application a WHERE a.job = :job",
                 Application.class
@@ -155,7 +154,7 @@ public class ApplicationDAO {
      * @param applicant the User entity representing the applicant
      * @return a list of Application entities submitted by the applicant
      */
-    public List<Application> findByApplicant(com.jakartaee.jobfinder.entity.User applicant) {
+    public List<Application> findByApplicant(com.jakartaee.jobfinder.models.User applicant) {
         TypedQuery<Application> query = em.createQuery(
                 "SELECT a FROM Application a WHERE a.applicant = :applicant",
                 Application.class

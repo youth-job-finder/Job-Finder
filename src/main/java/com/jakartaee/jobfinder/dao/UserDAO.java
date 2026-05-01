@@ -7,7 +7,7 @@
 
 package com.jakartaee.jobfinder.dao;
 
-import com.jakartaee.jobfinder.entity.User;
+import com.jakartaee.jobfinder.models.User;
 import com.jakartaee.jobfinder.security.utils.BCryptHashAlgorithm;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;

@@ -11,7 +11,7 @@
 
 <c:set var="currentUri" value="${pageContext.request.requestURI}" />
 
-<nav class="navbar">
+<nav class="navbar navbar-with-actions">
     <div class="navbar-container">
         <!-- Logo centered -->
         <a href="${pageContext.request.contextPath}/home" class="logo-link" aria-label="JobFinder home">
@@ -34,15 +34,15 @@
                    class="${fn:contains(currentUri, '/jobs') ? 'active' : ''}">Jobs</a></li>
             <li><a href="${pageContext.request.contextPath}/companies"
                    class="${fn:contains(currentUri, '/companies') ? 'active' : ''}">Companies</a></li>
-
-            <!-- Sign In as button -->
-            <li><a href="${pageContext.request.contextPath}/login"
-                   class="btn btn-primary ${fn:contains(currentUri, '/login') ? 'active' : ''}">Sign In</a></li>
-
-            <!-- Sign Up as button -->
-            <li><a href="${pageContext.request.contextPath}/signup-options"
-                   class="btn btn-primary ${fn:contains(currentUri, '/signup-options') ? 'active' : ''}">Sign Up</a></li>
         </ul>
+
+        <!-- Actions (right side) -->
+        <div class="nav-actions">
+            <a href="${pageContext.request.contextPath}/login"
+               class="btn btn-primary ${fn:contains(currentUri, '/login') ? 'active' : ''}">Sign In</a>
+            <a href="${pageContext.request.contextPath}/signup-options"
+               class="btn btn-primary ${fn:contains(currentUri, '/signup-options') ? 'active' : ''}">Sign Up</a>
+        </div>
     </div>
 </nav>
 
@@ -50,10 +50,12 @@
 document.addEventListener('DOMContentLoaded', function() {
     const hamburger = document.getElementById('hamburger-menu');
     const navMenu = document.getElementById('nav-menu');
+    const navActions = document.querySelector('.nav-actions');
     
     hamburger.addEventListener('click', function() {
         hamburger.classList.toggle('active');
         navMenu.classList.toggle('active');
+        if (navActions) navActions.classList.toggle('active');
     });
     
     // Close menu when clicking on a link
@@ -61,14 +63,28 @@ document.addEventListener('DOMContentLoaded', function() {
         link.addEventListener('click', () => {
             hamburger.classList.remove('active');
             navMenu.classList.remove('active');
+            if (navActions) navActions.classList.remove('active');
         });
     });
     
+    // Close menu when clicking on buttons in nav-actions
+    if (navActions) {
+        navActions.querySelectorAll('a, button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+                navActions.classList.remove('active');
+            });
+        });
+    }
+    
     // Close menu when clicking outside
     document.addEventListener('click', function(event) {
-        if (!hamburger.contains(event.target) && !navMenu.contains(event.target)) {
+        if (!hamburger.contains(event.target) && !navMenu.contains(event.target) && 
+            !(navActions && navActions.contains(event.target))) {
             hamburger.classList.remove('active');
             navMenu.classList.remove('active');
+            if (navActions) navActions.classList.remove('active');
         }
     });
 });

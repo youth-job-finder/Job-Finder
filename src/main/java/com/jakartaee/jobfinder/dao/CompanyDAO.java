@@ -7,7 +7,7 @@
 
 package com.jakartaee.jobfinder.dao;
 
-import com.jakartaee.jobfinder.entity.Company;
+import com.jakartaee.jobfinder.models.Company;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -162,7 +162,7 @@ public class CompanyDAO {
      * @param user the User entity
      * @return a list of Company entities associated with the user
      */
-    public List<Company> findByUser(com.jakartaee.jobfinder.entity.User user) {
+    public List<Company> findByUser(com.jakartaee.jobfinder.models.User user) {
         TypedQuery<Company> query = em.createQuery(
                 "SELECT c FROM Company c WHERE c.companyAdmin.id = :userId",
                 Company.class
@@ -178,7 +178,7 @@ public class CompanyDAO {
      * @param status the status to search for (e.g., PENDING, APPROVED, REJECTED)
      * @return a list of Company entities with the specified status
      */
-    public List<Company> findByStatus(com.jakartaee.jobfinder.entity.status.Status status) {
+    public List<Company> findByStatus(com.jakartaee.jobfinder.models.status.Status status) {
         TypedQuery<Company> query = em.createQuery(
                 "SELECT c FROM Company c WHERE c.status = :status",
                 Company.class

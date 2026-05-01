@@ -9,8 +9,8 @@ package com.jakartaee.jobfinder.dto;
  * @author PilmanGDM
  */
 
-import com.jakartaee.jobfinder.entity.User;
-import com.jakartaee.jobfinder.entity.role.Role;
+import com.jakartaee.jobfinder.models.User;
+import com.jakartaee.jobfinder.models.role.Role;
 
 public class UserDTO {
 

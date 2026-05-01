@@ -55,6 +55,7 @@ Pool Name: the one you created above.
 5. Persistence.xml (Jakarta EE 9+)
    Place this inside src/main/resources/META-INF/persistence.xml (or WEB-INF/classes/META-INF/persistence.xml):
 ```
+
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence xmlns="https://jakarta.ee/xml/ns/persistence"
@@ -63,32 +64,32 @@ Pool Name: the one you created above.
                                  https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
              version="3.0">
 
-    <persistence-unit name="youth-job-finder" transaction-type="JTA">
-        <!-- Reference the JDBC resource you created in the server -->
-        <jta-data-source>jdbc/MySQLPool</jta-data-source>
+   <persistence-unit name="youth-job-finder" transaction-type="JTA">
+      <!-- Reference the JDBC resource you created in the server -->
+      <jta-data-source>jdbc/MySQLPool</jta-data-source>
 
-        <!-- List your entity classes (or rely on automatic scanning if your provider supports it) -->
-        <class>com.jakartaee.jobfinder.entity.Company</class>
-        <class>com.jakartaee.jobfinder.entity.User</class>
-        <class>com.jakartaee.jobfinder.entity.Job</class>
-        <class>com.jakartaee.jobfinder.entity.Application</class>
-        <class>com.jakartaee.jobfinder.entity.Review</class>
+      <!-- List your entity classes (or rely on automatic scanning if your provider supports it) -->
+      <class>com.jakartaee.jobfinder.models.Company</class>
+      <class>com.jakartaee.jobfinder.models.User</class>
+      <class>com.jakartaee.jobfinder.models.Job</class>
+      <class>com.jakartaee.jobfinder.models.Application</class>
+      <class>com.jakartaee.jobfinder.models.Review</class>
 
-        <properties>
-            <!-- CRITICAL: Tell JPA to create/drop tables -->
-            <property name="jakarta.persistence.schema-generation.database.action" value="drop-and-create"/>
+      <properties>
+         <!-- CRITICAL: Tell JPA to create/drop tables -->
+         <property name="jakarta.persistence.schema-generation.database.action" value="drop-and-create"/>
 
-            <!-- Optional: Log the generated SQL to verify -->
-            <property name="jakarta.persistence.show_sql" value="true"/>
-            <property name="jakarta.persistence.format_sql" value="true"/>
+         <!-- Optional: Log the generated SQL to verify -->
+         <property name="jakarta.persistence.show_sql" value="true"/>
+         <property name="jakarta.persistence.format_sql" value="true"/>
 
-            <!-- If you want to specify the database dialect (helps with schema generation) -->
-            <!-- For Hibernate (if it's your provider) -->
-            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>
-            <!-- For EclipseLink (default in many servers) -->
-            <!-- <property name="eclipselink.target-database" value="MySQL"/> -->
-        </properties>
-    </persistence-unit>
+         <!-- If you want to specify the database dialect (helps with schema generation) -->
+         <!-- For Hibernate (if it's your provider) -->
+         <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>
+         <!-- For EclipseLink (default in many servers) -->
+         <!-- <property name="eclipselink.target-database" value="MySQL"/> -->
+      </properties>
+   </persistence-unit>
 </persistence>
 ```
 🔍 Key Changes from the Old Version:

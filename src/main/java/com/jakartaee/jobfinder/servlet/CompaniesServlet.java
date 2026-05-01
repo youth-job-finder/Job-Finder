@@ -1,8 +1,10 @@
 package com.jakartaee.jobfinder.servlet;
 
 import com.jakartaee.jobfinder.dao.CompanyDAO;
-import com.jakartaee.jobfinder.entity.Company;
+import com.jakartaee.jobfinder.dto.PaginationDTO;
+import com.jakartaee.jobfinder.models.Company;
 import com.jakartaee.jobfinder.logging.BusinessLogger;
+import com.jakartaee.jobfinder.utils.PaginationUtil;
 import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -47,10 +49,14 @@ public class CompaniesServlet extends HttpServlet {
             // Fetch all companies from database
             List<Company> companies = companyDAO.findAll();
             
-            // Set companies as request attribute
-            req.setAttribute("companies", companies);
+            // Pagination
+            int page = PaginationUtil.parsePageParameter(req.getParameter("page"));
+            PaginationDTO<Company> pagination = PaginationUtil.paginate(companies, page, 10);
             
-            BusinessLogger.logDataAccess(SERVLET_NAME, "Company", companies.size(), currentUser);
+            BusinessLogger.logDataAccess(SERVLET_NAME, "Company", pagination.getTotalItems(), currentUser);
+            
+            req.setAttribute("companies", pagination.getItems());
+            req.setAttribute("pagination", pagination);
             
             // Forward to companies.jsp
             req.getRequestDispatcher("/views/companies.jsp").forward(req, resp);

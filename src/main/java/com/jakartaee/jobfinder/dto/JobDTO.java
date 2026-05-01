@@ -8,7 +8,7 @@ package com.jakartaee.jobfinder.dto;
  *
  * @author PilmanGDM
  */
-import com.jakartaee.jobfinder.entity.Job;
+import com.jakartaee.jobfinder.models.Job;
 
 public class JobDTO {
 

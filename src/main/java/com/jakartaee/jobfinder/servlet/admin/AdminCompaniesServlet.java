@@ -2,12 +2,14 @@ package com.jakartaee.jobfinder.servlet.admin;
 
 import com.jakartaee.jobfinder.dao.CompanyDAO;
 import com.jakartaee.jobfinder.dao.UserDAO;
-import com.jakartaee.jobfinder.entity.Company;
-import com.jakartaee.jobfinder.entity.User;
-import com.jakartaee.jobfinder.entity.role.Role;
-import com.jakartaee.jobfinder.entity.status.Status;
+import com.jakartaee.jobfinder.dto.PaginationDTO;
+import com.jakartaee.jobfinder.models.Company;
+import com.jakartaee.jobfinder.models.User;
+import com.jakartaee.jobfinder.models.role.Role;
+import com.jakartaee.jobfinder.models.status.Status;
 import com.jakartaee.jobfinder.logging.MainLogger;
 import com.jakartaee.jobfinder.services.CompanyRegistrationService;
+import com.jakartaee.jobfinder.utils.PaginationUtil;
 import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -95,7 +97,12 @@ public class AdminCompaniesServlet extends HttpServlet {
             long approvedCount = companies.stream().filter(c -> c.getStatus() == Status.APPROVED).count();
             long rejectedCount = companies.stream().filter(c -> c.getStatus() == Status.REJECTED).count();
 
-            req.setAttribute("companies", companies);
+            // Pagination
+            int page = PaginationUtil.parsePageParameter(req.getParameter("page"));
+            PaginationDTO<Company> pagination = PaginationUtil.paginate(companies, page, 10);
+            
+            req.setAttribute("companies", pagination.getItems());
+            req.setAttribute("pagination", pagination);
             req.setAttribute("companyCount", companies.size());
             req.setAttribute("pendingCount", pendingCount);
             req.setAttribute("approvedCount", approvedCount);

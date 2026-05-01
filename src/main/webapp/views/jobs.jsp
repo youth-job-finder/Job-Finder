@@ -14,11 +14,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Job Opportunities - JobFinder</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/index.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/index.css?v=4">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/responsive.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/mobile-responsive.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/user-dashboard.css">
 
     <style>
         /* 🏛️ Enterprise Navy & Gold Styling Overlays (The "Blend" Theme) */
@@ -249,6 +248,62 @@
                     </c:otherwise>
                 </c:choose>
             </div>
+            
+            <!-- Pagination -->
+            <c:if test="${pagination.totalPages > 1}">
+                <div class="pagination" style="display: flex; justify-content: center; align-items: center; gap: 0.5rem; margin-top: 2rem;">
+                    <c:url var="baseUrl" value="/jobs">
+                        <c:if test="${not empty param.filter}"><c:param name="filter" value="${param.filter}"/></c:if>
+                        <c:if test="${not empty param.q}"><c:param name="q" value="${param.q}"/></c:if>
+                    </c:url>
+                    <c:set var="pageSeparator" value="${fn:contains(baseUrl, '?') ? '&' : '?'}" />
+                    
+                    <!-- Previous Page -->
+                    <c:choose>
+                        <c:when test="${pagination.hasPreviousPage}">
+                            <a href="${baseUrl}${pageSeparator}page=${pagination.currentPage - 1}" class="pagination-btn" style="padding: 0.5rem 1rem; border-radius: 8px; background: var(--glass-white); color: var(--text-light); text-decoration: none; border: 1px solid var(--border-soft);">
+                                <i class="fas fa-chevron-left"></i>
+                            </a>
+                        </c:when>
+                        <c:otherwise>
+                            <span class="pagination-btn disabled" style="padding: 0.5rem 1rem; border-radius: 8px; background: rgba(255,255,255,0.05); color: var(--text-muted); border: 1px solid var(--border-soft); cursor: not-allowed;">
+                                <i class="fas fa-chevron-left"></i>
+                            </span>
+                        </c:otherwise>
+                    </c:choose>
+                    
+                    <!-- Page Numbers -->
+                    <c:forEach begin="1" end="${pagination.totalPages}" var="pageNum">
+                        <c:choose>
+                            <c:when test="${pageNum == pagination.currentPage}">
+                                <span class="pagination-btn active" style="padding: 0.5rem 1rem; border-radius: 8px; background: var(--accent-gold); color: var(--deep-navy); font-weight: 700; min-width: 40px; text-align: center;">${pageNum}</span>
+                            </c:when>
+                            <c:otherwise>
+                                <a href="${baseUrl}${pageSeparator}page=${pageNum}" class="pagination-btn" style="padding: 0.5rem 1rem; border-radius: 8px; background: var(--glass-white); color: var(--text-light); text-decoration: none; border: 1px solid var(--border-soft); min-width: 40px; text-align: center;">${pageNum}</a>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:forEach>
+                    
+                    <!-- Next Page -->
+                    <c:choose>
+                        <c:when test="${pagination.hasNextPage}">
+                            <a href="${baseUrl}${pageSeparator}page=${pagination.currentPage + 1}" class="pagination-btn" style="padding: 0.5rem 1rem; border-radius: 8px; background: var(--glass-white); color: var(--text-light); text-decoration: none; border: 1px solid var(--border-soft);">
+                                <i class="fas fa-chevron-right"></i>
+                            </a>
+                        </c:when>
+                        <c:otherwise>
+                            <span class="pagination-btn disabled" style="padding: 0.5rem 1rem; border-radius: 8px; background: rgba(255,255,255,0.05); color: var(--text-muted); border: 1px solid var(--border-soft); cursor: not-allowed;">
+                                <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+                
+                <!-- Showing X of Y results -->
+                <div style="text-align: center; margin-top: 1rem; color: var(--slate-text); font-size: 0.9rem;">
+                    Showing ${pagination.startIndex} - ${pagination.endIndex} of ${pagination.totalItems} jobs
+                </div>
+            </c:if>
         </div>
     </div>
 </section>

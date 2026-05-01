@@ -1,6 +1,6 @@
 package com.jakartaee.jobfinder.servlet;
 
-import com.jakartaee.jobfinder.entity.Company;
+import com.jakartaee.jobfinder.models.Company;
 import com.jakartaee.jobfinder.logging.MainLogger;
 import com.jakartaee.jobfinder.services.CompanyRegistrationService;
 import com.jakartaee.jobfinder.services.UserService;

@@ -8,8 +8,8 @@ package com.jakartaee.jobfinder.dto;
  *
  * @author PilmanGDM
  */
-import com.jakartaee.jobfinder.entity.Application;
-import com.jakartaee.jobfinder.entity.status.Status;
+import com.jakartaee.jobfinder.models.Application;
+import com.jakartaee.jobfinder.models.status.Status;
 
 public class ApplicationDTO {
 

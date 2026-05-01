@@ -1,6 +1,6 @@
-package com.jakartaee.jobfinder.entity;
+package com.jakartaee.jobfinder.models;
 
-import com.jakartaee.jobfinder.entity.status.Status;
+import com.jakartaee.jobfinder.models.status.Status;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

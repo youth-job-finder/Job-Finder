@@ -8,7 +8,7 @@ package com.jakartaee.jobfinder.dto;
  *
  * @author PilmanGDM
  */
-import com.jakartaee.jobfinder.entity.Review;
+import com.jakartaee.jobfinder.models.Review;
 
 public class ReviewDTO {
 

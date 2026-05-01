@@ -1,4 +1,4 @@
-package com.jakartaee.jobfinder.util;
+package com.jakartaee.jobfinder.utils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

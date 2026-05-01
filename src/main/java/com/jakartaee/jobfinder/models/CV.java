@@ -1,4 +1,4 @@
-package com.jakartaee.jobfinder.entity;
+package com.jakartaee.jobfinder.models;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
