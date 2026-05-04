@@ -5,7 +5,7 @@
 The **Youth Job & Internship Finder** is a modern, responsive web platform designed to connect students with legitimate companies offering jobs and internships. The system emphasizes **trust, transparency, and accessibility** through company vetting workflows, student reviews, and admin oversight, now featuring a **sleek, modern UI design**.
 
 ### Objectives
-- Provide students with a secure, user-friendly portal to discover opportunities, manage applications, and track progress.
+- Provide Job Seekers with a secure, user-friendly portal to discover opportunities, manage applications, and track progress.
 - Enable companies to post verified job listings, manage applicants, and gain insights through analytics.
 - Empower administrators to oversee the ecosystem, ensuring legitimacy and fairness via semi-automated vetting and approval workflows.
 
