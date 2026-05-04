@@ -8,6 +8,7 @@
 package com.jakartaee.jobfinder.dao;
 
 import com.jakartaee.jobfinder.models.Company;
+import com.jakartaee.jobfinder.models.User;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -91,7 +92,8 @@ public class CompanyDAO {
     // --- 5. DELETE ---
     /**
      * Deletes a Company entity by its unique identifier.
-     * Also handles related entities (jobs and applications) to prevent FK constraint violations.
+     * Also handles related entities (jobs, applications, reviews) and deletes
+     * the associated company admin user to prevent orphaned user accounts.
      *
      * @param id the primary key of the Company to delete
      */
@@ -99,6 +101,9 @@ public class CompanyDAO {
     public void delete(String id) {
         Company company = findById(id);
         if (company != null) {
+            // Get company admin reference before deleting company
+            User companyAdmin = company.getCompanyAdmin();
+
             // Delete reviews for this company
             em.createQuery("DELETE FROM Review r WHERE r.company.id = :companyId")
               .setParameter("companyId", id)
@@ -115,7 +120,13 @@ public class CompanyDAO {
               .setParameter("companyId", id)
               .executeUpdate();
 
+            // Remove the company entity
             em.remove(company);
+
+            // Delete the company admin user (cascade delete)
+            if (companyAdmin != null) {
+                em.remove(companyAdmin);
+            }
         }
     }
 

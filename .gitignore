@@ -39,3 +39,6 @@ build/
 
 # Ignore persistence.xml
 # src/main/resources/META-INF/persistence.xml
+
+.env
+deploy.ps1

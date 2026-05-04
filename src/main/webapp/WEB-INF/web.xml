@@ -20,9 +20,9 @@
         <role-name>SYSTEM_ADMIN</role-name>
     </security-role>
 
-    <!-- Session configuration - 30 minutes timeout -->
+    <!-- Session configuration - 60 minutes timeout -->
     <session-config>
-        <session-timeout>30</session-timeout>
+        <session-timeout>60</session-timeout>
         <cookie-config>
             <http-only>true</http-only>
             <secure>false</secure>

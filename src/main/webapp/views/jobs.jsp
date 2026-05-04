@@ -198,7 +198,7 @@
     <div class="container">
         <div class="dashboard-card">
             <div class="card-header">
-                <h3><i class="fas fa-star"></i> Recommended Jobs</h3>
+                <h3><i class="fas fa-star"></i> Recent Jobs</h3>
                 <a href="${pageContext.request.contextPath}/jobs" class="view-all-link">View All Jobs</a>
             </div>
             <div class="job-recommendations" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">

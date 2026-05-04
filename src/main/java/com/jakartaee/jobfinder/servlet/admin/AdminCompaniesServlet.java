@@ -178,7 +178,7 @@ public class AdminCompaniesServlet extends HttpServlet {
 
         companyDAO.delete(companyId);
         MainLogger.logUserAction(SERVLET_NAME, adminId, "DELETE_COMPANY: " + companyId);
-        req.getSession().setAttribute("successMessage", "Company deleted successfully");
+        req.getSession().setAttribute("successMessage", "Company and associated admin deleted successfully");
         resp.sendRedirect(req.getRequestURI());
     }
 

@@ -66,7 +66,7 @@ public class JobDAO {
      * @return a list of all Job entities
      */
     public List<Job> findAll() {
-        return em.createQuery("SELECT j FROM Job j", Job.class)
+        return em.createQuery("SELECT j FROM Job j ORDER BY j.created_at DESC", Job.class)
                 .getResultList();
     }
 
@@ -78,7 +78,7 @@ public class JobDAO {
      */
     public List<Job> findByJobType(String jobType) {
         return em.createQuery(
-                        "SELECT j FROM Job j WHERE LOWER(j.jobType) = LOWER(:jobType)",
+                        "SELECT j FROM Job j WHERE LOWER(j.jobType) = LOWER(:jobType) ORDER BY j.created_at DESC",
                         Job.class
                 )
                 .setParameter("jobType", jobType)
@@ -99,7 +99,7 @@ public class JobDAO {
                                 + "LOWER(j.physicalAddress) LIKE :p ESCAPE '|' OR "
                                 + "LOWER(j.salaryRange) LIKE :p ESCAPE '|' OR "
                                 + "LOWER(j.jobType) LIKE :p ESCAPE '|' OR "
-                                + "LOWER(c.name) LIKE :p ESCAPE '|'",
+                                + "LOWER(c.name) LIKE :p ESCAPE '|' ORDER BY j.created_at DESC",
                         Job.class
                 )
                 .setParameter("p", pattern)
@@ -118,7 +118,7 @@ public class JobDAO {
                                 + "LOWER(j.jobRequirements) LIKE :p ESCAPE '|' OR "
                                 + "LOWER(j.physicalAddress) LIKE :p ESCAPE '|' OR "
                                 + "LOWER(j.salaryRange) LIKE :p ESCAPE '|' OR "
-                                + "LOWER(c.name) LIKE :p ESCAPE '|')",
+                                + "LOWER(c.name) LIKE :p ESCAPE '|') ORDER BY j.created_at DESC",
                         Job.class
                 )
                 .setParameter("jobType", jobType)
@@ -172,7 +172,7 @@ public class JobDAO {
      */
     public List<Job> findByCompanyId(String companyId) {
         TypedQuery<Job> query = em.createQuery(
-                "SELECT j FROM Job j WHERE j.company.id = :companyId",
+                "SELECT j FROM Job j WHERE j.company.id = :companyId ORDER BY j.created_at DESC",
                 Job.class
         );
         query.setParameter("companyId", companyId);
@@ -188,7 +188,7 @@ public class JobDAO {
      */
     public List<Job> findByCompany(com.jakartaee.jobfinder.models.Company company) {
         TypedQuery<Job> query = em.createQuery(
-                "SELECT j FROM Job j WHERE j.company = :company",
+                "SELECT j FROM Job j WHERE j.company = :company ORDER BY j.created_at DESC",
                 Job.class
         );
         query.setParameter("company", company);

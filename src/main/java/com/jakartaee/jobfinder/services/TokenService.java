@@ -28,7 +28,7 @@ public class TokenService implements Serializable {
     }
 
     public LocalDateTime getVerificationTokenExpiry() {
-        return LocalDateTime.now().plusHours(24); // 24 hours expiry
+        return LocalDateTime.now().plusHours(2); // 2 hours expiry
     }
 
     public LocalDateTime getPasswordResetTokenExpiry() {

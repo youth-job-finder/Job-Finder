@@ -89,28 +89,34 @@ public class CompanyDataInitializer {
         String companyName = "Google";
 
         // Check if company already exists
-        if (companyDAO.findByName(companyName).isPresent()) {
-            MainLogger.logInfo(INITIALIZER_NAME, "Google company already exists, skipping");
+        var existingCompanyOpt = companyDAO.findByName(companyName);
+        if (existingCompanyOpt.isPresent()) {
+            Company existingCompany = existingCompanyOpt.get();
+
+            // Check if company has a valid admin
+            if (existingCompany.getCompanyAdmin() == null) {
+                MainLogger.logInfo(INITIALIZER_NAME, "Google company exists but has no admin. Recreating admin...");
+                User googleAdmin = createGoogleAdmin(email);
+                existingCompany.setCompanyAdmin(googleAdmin);
+                companyDAO.update(existingCompany);
+                MainLogger.logInfo(INITIALIZER_NAME, "Updated Google company with new admin");
+            } else {
+                MainLogger.logInfo(INITIALIZER_NAME, "Google company already exists with admin");
+            }
+
+            // Check if company has jobs, create if not
+            List<Job> existingJobs = jobDAO.findByCompany(existingCompany);
+            if (existingJobs.isEmpty()) {
+                MainLogger.logInfo(INITIALIZER_NAME, "Google company has no jobs. Creating jobs...");
+                createGoogleJobs(existingCompany);
+            } else {
+                MainLogger.logInfo(INITIALIZER_NAME, "Google company already has " + existingJobs.size() + " jobs, skipping job creation");
+            }
             return;
         }
 
-        // Check if admin user exists, create if not
-        User googleAdmin;
-        var existingUser = userDAO.findByEmail(email);
-        if (existingUser.isPresent()) {
-            googleAdmin = existingUser.get();
-            MainLogger.logInfo(INITIALIZER_NAME, "Using existing Google admin user: " + email);
-        } else {
-            // Create Google Admin User
-            googleAdmin = new User();
-            googleAdmin.setName("Google Admin");
-            googleAdmin.setEmail(email);
-            googleAdmin.setPasswordHash(passwordHasher.generate("google123".toCharArray()));
-            googleAdmin.setRole(Role.COMPANY_ADMIN);
-            googleAdmin.setEmailVerified(true);
-            googleAdmin = userDAO.create(googleAdmin);
-            MainLogger.logInfo(INITIALIZER_NAME, "Created Google admin user: " + email);
-        }
+        // Create Google Admin User
+        User googleAdmin = createGoogleAdmin(email);
 
         // Create Google Company
         Company google = new Company();
@@ -123,7 +129,7 @@ public class CompanyDataInitializer {
         google.setLocation("Mountain View, California, USA");
         google.setCompanyAdmin(googleAdmin);
         google.setStatus(Status.APPROVED);
-        
+
         // Verify Google URL
         String googleUrl = "https://www.google.com";
         boolean googleUrlValid = companyRegistrationService.verifyCompanyUrl(googleUrl);
@@ -134,7 +140,7 @@ public class CompanyDataInitializer {
         } else {
             MainLogger.logError(INITIALIZER_NAME, "Google URL verification failed: " + googleUrl);
         }
-        
+
         google = companyDAO.create(google);
 
         MainLogger.logInfo(INITIALIZER_NAME, "Created Google company");
@@ -148,28 +154,34 @@ public class CompanyDataInitializer {
         String companyName = "Amazon";
 
         // Check if company already exists
-        if (companyDAO.findByName(companyName).isPresent()) {
-            MainLogger.logInfo(INITIALIZER_NAME, "Amazon company already exists, skipping");
+        var existingCompanyOpt = companyDAO.findByName(companyName);
+        if (existingCompanyOpt.isPresent()) {
+            Company existingCompany = existingCompanyOpt.get();
+
+            // Check if company has a valid admin
+            if (existingCompany.getCompanyAdmin() == null) {
+                MainLogger.logInfo(INITIALIZER_NAME, "Amazon company exists but has no admin. Recreating admin...");
+                User amazonAdmin = createAmazonAdmin(email);
+                existingCompany.setCompanyAdmin(amazonAdmin);
+                companyDAO.update(existingCompany);
+                MainLogger.logInfo(INITIALIZER_NAME, "Updated Amazon company with new admin");
+            } else {
+                MainLogger.logInfo(INITIALIZER_NAME, "Amazon company already exists with admin");
+            }
+
+            // Check if company has jobs, create if not
+            List<Job> existingJobs = jobDAO.findByCompany(existingCompany);
+            if (existingJobs.isEmpty()) {
+                MainLogger.logInfo(INITIALIZER_NAME, "Amazon company has no jobs. Creating jobs...");
+                createAmazonJobs(existingCompany);
+            } else {
+                MainLogger.logInfo(INITIALIZER_NAME, "Amazon company already has " + existingJobs.size() + " jobs, skipping job creation");
+            }
             return;
         }
 
-        // Check if admin user exists, create if not
-        User amazonAdmin;
-        var existingUser = userDAO.findByEmail(email);
-        if (existingUser.isPresent()) {
-            amazonAdmin = existingUser.get();
-            MainLogger.logInfo(INITIALIZER_NAME, "Using existing Amazon admin user: " + email);
-        } else {
-            // Create Amazon Admin User
-            amazonAdmin = new User();
-            amazonAdmin.setName("Amazon Admin");
-            amazonAdmin.setEmail(email);
-            amazonAdmin.setPasswordHash(passwordHasher.generate("amazon123".toCharArray()));
-            amazonAdmin.setRole(Role.COMPANY_ADMIN);
-            amazonAdmin.setEmailVerified(true);
-            amazonAdmin = userDAO.create(amazonAdmin);
-            MainLogger.logInfo(INITIALIZER_NAME, "Created Amazon admin user: " + email);
-        }
+        // Create Amazon Admin User
+        User amazonAdmin = createAmazonAdmin(email);
 
         // Create Amazon Company
         Company amazon = new Company();
@@ -182,7 +194,7 @@ public class CompanyDataInitializer {
         amazon.setLocation("Seattle, Washington, USA");
         amazon.setCompanyAdmin(amazonAdmin);
         amazon.setStatus(Status.APPROVED);
-        
+
         // Verify Amazon URL
         String amazonUrl = "https://www.amazon.com";
         boolean amazonUrlValid = companyRegistrationService.verifyCompanyUrl(amazonUrl);
@@ -193,7 +205,7 @@ public class CompanyDataInitializer {
         } else {
             MainLogger.logError(INITIALIZER_NAME, "Amazon URL verification failed: " + amazonUrl);
         }
-        
+
         amazon = companyDAO.create(amazon);
 
         MainLogger.logInfo(INITIALIZER_NAME, "Created Amazon company");
@@ -360,6 +372,46 @@ public class CompanyDataInitializer {
         }
 
         MainLogger.logInfo(INITIALIZER_NAME, "Created " + jobs.size() + " jobs for Amazon");
+    }
+
+    private User createGoogleAdmin(String email) {
+        // Check if admin user already exists
+        var existingUser = userDAO.findByEmail(email);
+        if (existingUser.isPresent()) {
+            MainLogger.logInfo(INITIALIZER_NAME, "Using existing Google admin user: " + email);
+            return existingUser.get();
+        }
+
+        // Create Google Admin User
+        User googleAdmin = new User();
+        googleAdmin.setName("Google Admin");
+        googleAdmin.setEmail(email);
+        googleAdmin.setPasswordHash(passwordHasher.generate("google123".toCharArray()));
+        googleAdmin.setRole(Role.COMPANY_ADMIN);
+        googleAdmin.setEmailVerified(true);
+        googleAdmin = userDAO.create(googleAdmin);
+        MainLogger.logInfo(INITIALIZER_NAME, "Created Google admin user: " + email);
+        return googleAdmin;
+    }
+
+    private User createAmazonAdmin(String email) {
+        // Check if admin user already exists
+        var existingUser = userDAO.findByEmail(email);
+        if (existingUser.isPresent()) {
+            MainLogger.logInfo(INITIALIZER_NAME, "Using existing Amazon admin user: " + email);
+            return existingUser.get();
+        }
+
+        // Create Amazon Admin User
+        User amazonAdmin = new User();
+        amazonAdmin.setName("Amazon Admin");
+        amazonAdmin.setEmail(email);
+        amazonAdmin.setPasswordHash(passwordHasher.generate("amazon123".toCharArray()));
+        amazonAdmin.setRole(Role.COMPANY_ADMIN);
+        amazonAdmin.setEmailVerified(true);
+        amazonAdmin = userDAO.create(amazonAdmin);
+        MainLogger.logInfo(INITIALIZER_NAME, "Created Amazon admin user: " + email);
+        return amazonAdmin;
     }
 
     private Job createJob(Company company, String title, String description, String location, String requirements, String salaryRange, String jobType) {

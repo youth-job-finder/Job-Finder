@@ -33,6 +33,14 @@
             </div>
         </c:if>
 
+        <!-- URL Verification Warning -->
+        <c:if test="${not empty urlVerificationFailed}">
+            <div class="alert alert-warning">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span>${urlVerificationFailed}</span>
+            </div>
+        </c:if>
+
         <!-- Error Message -->
         <c:if test="${not empty error}">
             <div class="alert alert-error">
@@ -90,17 +98,33 @@
                         <div class="form-group">
                             <label for="companyUrl">
                                 <i class="fas fa-globe"></i> Company Website
+                                <c:choose>
+                                    <c:when test="${company.urlVerified}">
+                                        <span class="verified-badge" style="color: #27ae60; font-size: 0.85em; margin-left: 8px;">
+                                            <i class="fas fa-check-circle"></i> Verified
+                                        </span>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <span class="unverified-badge" style="color: #e74c3c; font-size: 0.85em; margin-left: 8px;">
+                                            <i class="fas fa-times-circle"></i> Not Verified
+                                        </span>
+                                    </c:otherwise>
+                                </c:choose>
                             </label>
                             <input type="url" id="companyUrl" name="companyUrl" 
                                    value="${company.url}" required 
-                                   placeholder="https://www.company.com">
+                                   placeholder="https://www.company.com"
+                                   class="${company.urlVerified ? '' : 'unverified-input'}">
                             <small class="form-hint">
                                 <c:choose>
                                     <c:when test="${company.urlVerified}">
-                                        <i class="fas fa-check-circle" style="color: #27ae60;"></i> URL verified
+                                        <i class="fas fa-check-circle" style="color: #27ae60;"></i> URL verified on 
+                                        <fmt:parseDate value="${company.urlVerifiedAt}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="verifiedDate" />
+                                        <fmt:formatDate value="${verifiedDate}" pattern="MMMM d, yyyy 'at' h:mm a" />
                                     </c:when>
                                     <c:otherwise>
-                                        <i class="fas fa-clock" style="color: #f39c12;"></i> URL verification pending
+                                        <i class="fas fa-exclamation-triangle" style="color: #f39c12;"></i> 
+                                        <strong>URL not verified.</strong> Updating the URL will trigger verification.
                                     </c:otherwise>
                                 </c:choose>
                             </small>

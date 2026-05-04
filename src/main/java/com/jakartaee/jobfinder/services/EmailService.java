@@ -1,5 +1,7 @@
 package com.jakartaee.jobfinder.services;
 
+import com.jakartaee.jobfinder.logging.MainLogger;
+import io.github.cdimascio.dotenv.Dotenv;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
@@ -11,34 +13,114 @@ import java.util.Properties;
  * Service for sending email notifications throughout the JobFinder application.
  * Provides methods for sending various types of emails including verification,
  * password reset, application notifications, and company approval/rejection emails.
+ *
+ * ⚠️ IMPORTANT: Before running this application, you MUST configure your own SMTP server.
+ * Email features will not work without valid SMTP credentials.
+ *
+ * 1. Copy .env to .env
+ * 2. Add your SMTP details to the .env file:
+ *    SMTP_HOST=smtp.gmail.com
+ *    SMTP_PORT=587
+ *    SMTP_USERNAME=your-email@gmail.com
+ *    SMTP_PASSWORD=your-app-password
+ * 3. Load environment variables before starting the application
+ *
+ * See README.md section 11 for detailed SMTP setup instructions.
  */
 @ApplicationScoped
 public class EmailService implements Serializable {
 
-    private static final String SMTP_HOST = "smtp.gmail.com";
-    private static final int SMTP_PORT = 587;
-
     /**
-     * SMTP username loaded from environment variable or fallback to default.
+     * SMTP configuration loaded from GlassFish JVM properties, environment variables,
+     * or .env file (in that priority order).
+     *
+     * Priority:
+     * 1. GlassFish JVM Options (-DSMTP_HOST=value) - System.getProperty()
+     * 2. System Environment Variables - System.getenv()
+     * 3. .env file in project root (fallback for development)
+     *
+     * Required variables:
+     * - SMTP_HOST: SMTP server host (e.g., smtp.gmail.com)
+     * - SMTP_PORT: SMTP server port (e.g., 587)
+     * - SMTP_USERNAME: SMTP authentication username/email
+     * - SMTP_PASSWORD: SMTP authentication password/app password
+     *
+     * Optional:
+     * - SMTP_FROM_NAME: Display name for sent emails (default: JobFinder)
      */
-    private static final String SMTP_USERNAME =
-            System.getenv("SMTP_USERNAME") != null ? System.getenv("SMTP_USERNAME") : "aubreymapaile@gmail.com";
+    private static final Dotenv DOTENV = loadDotenv();
 
-    /**
-     * SMTP password loaded from environment variable or fallback to default.
-     */
-    private static final String SMTP_PASSWORD =
-            System.getenv("SMTP_PASSWORD") != null ? System.getenv("SMTP_PASSWORD") : "gend iwex accw gopn";
-
-    /**
-     * From email address used for sending emails.
-     */
+    private static final String SMTP_HOST = getConfig("SMTP_HOST");
+    private static final int SMTP_PORT = parsePort(getConfig("SMTP_PORT"));
+    private static final String SMTP_USERNAME = getConfig("SMTP_USERNAME");
+    private static final String SMTP_PASSWORD = getConfig("SMTP_PASSWORD");
     private static final String FROM_EMAIL = SMTP_USERNAME;
+    private static final String FROM_NAME = getConfigOrDefault("SMTP_FROM_NAME", "JobFinder");
 
-    /**
-     * From name displayed in sent emails.
-     */
-    private static final String FROM_NAME = "JobFinder";
+    private static Dotenv loadDotenv() {
+        try {
+            return Dotenv.configure()
+                    .directory("./")
+                    .filename(".env")
+                    .ignoreIfMissing()
+                    .load();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    private static String getConfig(String key) {
+        // 1. First try GlassFish JVM properties (set via asadmin create-jvm-options -DKEY=value)
+        String value = System.getProperty(key);
+        if (value != null && !value.isEmpty()) {
+            return value;
+        }
+        // 2. Then try system environment variables
+        value = System.getenv(key);
+        if (value != null && !value.isEmpty()) {
+            return value;
+        }
+        // 3. Finally try .env file (development fallback)
+        if (DOTENV != null) {
+            value = DOTENV.get(key);
+            if (value != null && !value.isEmpty()) {
+                return value;
+            }
+        }
+        return null;
+    }
+
+    private static String getConfigOrDefault(String key, String defaultValue) {
+        String value = getConfig(key);
+        return value != null ? value : defaultValue;
+    }
+
+    static {
+        validateSmtpConfiguration();
+    }
+
+    private static void validateSmtpConfiguration() {
+        if (SMTP_HOST == null || SMTP_HOST.isEmpty()) {
+            throw new IllegalStateException("SMTP_HOST is required. Configure via: 1) GlassFish JVM options (-DSMTP_HOST=value), 2) Environment variable, or 3) .env file");
+        }
+        if (SMTP_USERNAME == null || SMTP_USERNAME.isEmpty()) {
+            throw new IllegalStateException("SMTP_USERNAME is required. Configure via: 1) GlassFish JVM options (-DSMTP_USERNAME=value), 2) Environment variable, or 3) .env file");
+        }
+        if (SMTP_PASSWORD == null || SMTP_PASSWORD.isEmpty()) {
+            throw new IllegalStateException("SMTP_PASSWORD environment variable is required");
+        }
+    }
+
+    private static int parsePort(String portStr) {
+        if (portStr == null || portStr.isEmpty()) {
+            return 587; // Default SMTP port
+        }
+        try {
+            return Integer.parseInt(portStr);
+        } catch (NumberFormatException e) {
+            throw new IllegalStateException("Invalid SMTP_PORT value: " + portStr);
+        }
+    }
 
     /**
      * Sends a verification email to a user.
@@ -64,8 +146,11 @@ public class EmailService implements Serializable {
             Transport.send(message);
             return true;
 
+        } catch (MessagingException e) {
+            MainLogger.logError("EmailService", "Failed to send verification email to: " + toEmail, e);
+            return false;
         } catch (Exception e) {
-            e.printStackTrace();
+            MainLogger.logError("EmailService", "Unexpected error sending verification email to: " + toEmail, e);
             return false;
         }
     }
@@ -121,10 +206,14 @@ public class EmailService implements Serializable {
 
             message.setContent(emailContent, "text/html");
             Transport.send(message);
+            MainLogger.logInfo("EmailService", "Shortlisted email sent to: " + toEmail);
             return true;
 
+        } catch (MessagingException e) {
+            MainLogger.logError("EmailService", "Failed to send shortlisted email to: " + toEmail, e);
+            return false;
         } catch (Exception e) {
-            e.printStackTrace();
+            MainLogger.logError("EmailService", "Unexpected error sending shortlisted email", e);
             return false;
         }
     }
@@ -142,10 +231,14 @@ public class EmailService implements Serializable {
 
             message.setContent(emailContent, "text/html");
             Transport.send(message);
+            MainLogger.logInfo("EmailService", "Company approval email sent to: " + toEmail);
             return true;
 
+        } catch (MessagingException e) {
+            MainLogger.logError("EmailService", "Failed to send approval email to: " + toEmail, e);
+            return false;
         } catch (Exception e) {
-            e.printStackTrace();
+            MainLogger.logError("EmailService", "Unexpected error sending approval email", e);
             return false;
         }
     }
@@ -162,10 +255,14 @@ public class EmailService implements Serializable {
 
             message.setContent(emailContent, "text/html");
             Transport.send(message);
+            MainLogger.logInfo("EmailService", "Company rejection email sent to: " + toEmail);
             return true;
 
+        } catch (MessagingException e) {
+            MainLogger.logError("EmailService", "Failed to send rejection email to: " + toEmail, e);
+            return false;
         } catch (Exception e) {
-            e.printStackTrace();
+            MainLogger.logError("EmailService", "Unexpected error sending rejection email", e);
             return false;
         }
     }
@@ -191,10 +288,14 @@ public class EmailService implements Serializable {
 
             message.setContent(emailContent, "text/html");
             Transport.send(message);
+            MainLogger.logInfo("EmailService", "Application submitted email sent to: " + toEmail);
             return true;
 
+        } catch (MessagingException e) {
+            MainLogger.logError("EmailService", "Failed to send application submitted email to: " + toEmail, e);
+            return false;
         } catch (Exception e) {
-            e.printStackTrace();
+            MainLogger.logError("EmailService", "Unexpected error sending application submitted email", e);
             return false;
         }
     }
@@ -220,10 +321,14 @@ public class EmailService implements Serializable {
 
             message.setContent(emailContent, "text/html");
             Transport.send(message);
+            MainLogger.logInfo("EmailService", "New application notification sent to: " + toEmail);
             return true;
 
+        } catch (MessagingException e) {
+            MainLogger.logError("EmailService", "Failed to send new application notification to: " + toEmail, e);
+            return false;
         } catch (Exception e) {
-            e.printStackTrace();
+            MainLogger.logError("EmailService", "Unexpected error sending application notification", e);
             return false;
         }
     }
@@ -235,6 +340,11 @@ public class EmailService implements Serializable {
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.ssl.trust", SMTP_HOST);
+        props.put("mail.smtp.ssl.protocols", "TLSv1.2");
+        props.put("mail.smtp.connectiontimeout", "10000");
+        props.put("mail.smtp.timeout", "10000");
+
+        MainLogger.logInfo("EmailService", "Creating SMTP session for host: " + SMTP_HOST + ", port: " + SMTP_PORT + ", user: " + SMTP_USERNAME);
 
         return Session.getInstance(props, new Authenticator() {
             @Override

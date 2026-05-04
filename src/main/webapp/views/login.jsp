@@ -76,22 +76,25 @@
                 <i class="fas fa-exclamation-triangle"></i> ${requestScope.error}
             </div>
         </c:if>
-        
+
+        <!-- Resend Email Result Message (Moved to top) -->
+        <div class="alert" id="resendMessage"></div>
+
         <!-- Resend Verification Section for Unverified Users -->
         <c:if test="${not empty requestScope.unverifiedEmail}">
-            <div class="resend-verification-section" style="margin: 1rem 0; padding: 1rem; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;">
-                <h4 style="margin-bottom: 0.5rem;"><i class="fas fa-envelope"></i> Resend Verification Email</h4>
-                <p style="margin-bottom: 1rem; font-size: 0.9rem; color: #666;">
+            <div class="resend-verification-section">
+                <h4><i class="fas fa-envelope"></i> Resend Verification Email</h4>
+                <p>
                     Didn't receive the verification email? Enter your email below to request a new one.
                 </p>
-                <form id="resendForm" style="display: flex; gap: 0.5rem;">
-                    <input type="email" name="email" value="${requestScope.unverifiedEmail}" placeholder="Enter your email" required 
-                           style="flex: 1; padding: 0.5rem; border: 1px solid #ced4da; border-radius: 4px;">
-                    <button type="submit" class="btn btn-secondary" style="white-space: nowrap;">
+                <form id="resendForm" class="resend-form-compact">
+                    <div class="form-group" style="flex: 1; margin-bottom: 0;">
+                        <input type="email" id="resendEmail" name="email" value="${requestScope.unverifiedEmail}" placeholder="Enter your email" required>
+                    </div>
+                    <button type="submit" class="btn-resend-small">
                         <i class="fas fa-paper-plane"></i> Resend
                     </button>
                 </form>
-                <div id="resendMessage" style="margin-top: 0.5rem;"></div>
             </div>
         </c:if>
         
@@ -145,7 +148,7 @@
             const formData = new FormData(resendForm);
             const email = formData.get('email');
             
-            resendMessage.innerHTML = '<span style="color: #666;"><i class="fas fa-spinner fa-spin"></i> Sending...</span>';
+            resendMessage.innerHTML = '<div class="alert alert-info"><i class="fas fa-spinner fa-spin"></i> Sending verification email...</div>';
             
             fetch('${pageContext.request.contextPath}/resend-verification', {
                 method: 'POST',
@@ -157,14 +160,14 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    resendMessage.innerHTML = '<span style="color: #28a745;"><i class="fas fa-check-circle"></i> ' + data.message + '</span>';
+                    resendMessage.innerHTML = '<div class="alert alert-success"><i class="fas fa-check-circle"></i> ' + data.message + '</div>';
                 } else {
-                    resendMessage.innerHTML = '<span style="color: #dc3545;"><i class="fas fa-exclamation-triangle"></i> ' + data.message + '</span>';
+                    resendMessage.innerHTML = '<div class="alert alert-error"><i class="fas fa-exclamation-triangle"></i> ' + data.message + '</div>';
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                resendMessage.innerHTML = '<span style="color: #dc3545;"><i class="fas fa-exclamation-triangle"></i> An error occurred. Please try again.</span>';
+                resendMessage.innerHTML = '<div class="alert alert-error"><i class="fas fa-exclamation-triangle"></i> An error occurred. Please try again.</div>';
             });
         });
     }

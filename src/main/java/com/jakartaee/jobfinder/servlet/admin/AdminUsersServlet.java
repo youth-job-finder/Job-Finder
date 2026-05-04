@@ -1,7 +1,15 @@
 package com.jakartaee.jobfinder.servlet.admin;
 
+import com.jakartaee.jobfinder.dao.ApplicationDAO;
+import com.jakartaee.jobfinder.dao.CompanyDAO;
+import com.jakartaee.jobfinder.dao.ReviewDAO;
+import com.jakartaee.jobfinder.dao.SavedJobDAO;
 import com.jakartaee.jobfinder.dao.UserDAO;
 import com.jakartaee.jobfinder.dto.PaginationDTO;
+import com.jakartaee.jobfinder.models.Application;
+import com.jakartaee.jobfinder.models.Company;
+import com.jakartaee.jobfinder.models.Review;
+import com.jakartaee.jobfinder.models.SavedJob;
 import com.jakartaee.jobfinder.models.User;
 import com.jakartaee.jobfinder.models.role.Role;
 import com.jakartaee.jobfinder.logging.MainLogger;
@@ -13,6 +21,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.transaction.Transactional;
 
 import java.io.IOException;
 import java.util.List;
@@ -31,6 +40,18 @@ public class AdminUsersServlet extends HttpServlet {
 
     @Inject
     private UserDAO userDAO;
+
+    @Inject
+    private CompanyDAO companyDAO;
+
+    @Inject
+    private ApplicationDAO applicationDAO;
+
+    @Inject
+    private SavedJobDAO savedJobDAO;
+
+    @Inject
+    private ReviewDAO reviewDAO;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -134,6 +155,7 @@ public class AdminUsersServlet extends HttpServlet {
         }
     }
 
+    @Transactional
     private void deleteUser(String userId, String adminId, HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
         User user = userDAO.findById(userId);
@@ -150,9 +172,45 @@ public class AdminUsersServlet extends HttpServlet {
             return;
         }
 
+        // Prevent deleting the only admin of a company
+        if (user.getRole() == Role.COMPANY_ADMIN) {
+            Company company = companyDAO.findByUserId(userId);
+            if (company != null) {
+                req.getSession().setAttribute("errorMessage",
+                    "Cannot delete this user - they are the only administrator of company: " + company.getName() +
+                    ". Delete the company first or assign a new admin.");
+                resp.sendRedirect(req.getRequestURI());
+                return;
+            }
+        }
+
+        // Delete related records for applicants
+        if (user.getRole() == Role.APPLICANT) {
+            // Delete reviews
+            List<Review> reviews = reviewDAO.findByApplicantId(userId);
+            for (Review review : reviews) {
+                reviewDAO.delete(review.getId());
+                MainLogger.logInfo(SERVLET_NAME, "Deleted review: " + review.getId() + " for user: " + userId);
+            }
+
+            // Delete saved jobs
+            List<SavedJob> savedJobs = savedJobDAO.findByApplicant(user);
+            for (SavedJob savedJob : savedJobs) {
+                savedJobDAO.delete(savedJob.getId());
+                MainLogger.logInfo(SERVLET_NAME, "Deleted saved job: " + savedJob.getId() + " for user: " + userId);
+            }
+
+            // Delete applications
+            List<Application> applications = applicationDAO.findByApplicant(user);
+            for (Application application : applications) {
+                applicationDAO.delete(application.getId());
+                MainLogger.logInfo(SERVLET_NAME, "Deleted application: " + application.getId() + " for user: " + userId);
+            }
+        }
+
         userDAO.delete(userId);
         MainLogger.logUserAction(SERVLET_NAME, adminId, "DELETE_USER: " + userId);
-        req.getSession().setAttribute("successMessage", "User deleted successfully");
+        req.getSession().setAttribute("successMessage", "User and related records deleted successfully");
         resp.sendRedirect(req.getRequestURI());
     }
 

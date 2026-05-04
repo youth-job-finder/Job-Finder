@@ -7,6 +7,7 @@ import com.jakartaee.jobfinder.models.User;
 import com.jakartaee.jobfinder.models.role.Role;
 import com.jakartaee.jobfinder.logging.MainLogger;
 import com.jakartaee.jobfinder.services.AuthService;
+import com.jakartaee.jobfinder.services.CompanyRegistrationService;
 import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -15,6 +16,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 /**
  * Servlet for managing Company Profile.
@@ -33,6 +35,9 @@ public class CompanyProfileServlet extends HttpServlet {
 
     @Inject
     private UserDAO userDAO;
+
+    @Inject
+    private CompanyRegistrationService companyRegistrationService;
 
     /**
      * Handles GET requests to display the company profile.
@@ -124,18 +129,48 @@ public class CompanyProfileServlet extends HttpServlet {
             // Update company fields
             company.setName(companyName.trim());
             company.setEmail(companyEmail.trim());
-            company.setUrl(companyUrl.trim());
             company.setRegistrationNumber(registrationNumber.trim());
             company.setDescription(description != null ? description.trim() : null);
             company.setIndustry(industry != null ? industry.trim() : null);
             company.setLocation(location != null ? location.trim() : null);
+
+            // Verify URL if it has changed
+            String trimmedUrl = companyUrl.trim();
+            boolean urlChanged = !trimmedUrl.equals(company.getUrl());
+            boolean urlVerificationFailed = false;
+
+            if (urlChanged) {
+                boolean urlValid = companyRegistrationService.verifyCompanyUrl(trimmedUrl);
+                if (urlValid) {
+                    company.setUrl(trimmedUrl);
+                    company.setUrlVerified(true);
+                    company.setUrlVerifiedAt(LocalDateTime.now());
+                    MainLogger.logServiceOperation(SERVLET_NAME, "URL_VERIFICATION",
+                            true, "URL: " + trimmedUrl);
+                } else {
+                    company.setUrl(trimmedUrl);
+                    company.setUrlVerified(false);
+                    company.setUrlVerifiedAt(null);
+                    urlVerificationFailed = true;
+                    MainLogger.logAuthenticationError(SERVLET_NAME, "URL_VERIFICATION",
+                            "URL verification failed", trimmedUrl);
+                }
+            } else {
+                company.setUrl(trimmedUrl);
+            }
 
             // Save to database
             companyDAO.update(company);
 
             MainLogger.logUserAction(SERVLET_NAME, currentUserId, "UPDATE_COMPANY_PROFILE");
 
-            req.setAttribute("success", "Company profile updated successfully!");
+            if (urlChanged && !urlVerificationFailed) {
+                req.setAttribute("success", "Company profile updated successfully! URL has been verified.");
+            } else if (urlVerificationFailed) {
+                req.setAttribute("success", "Company profile updated, but URL verification failed. Please check your website URL.");
+            } else {
+                req.setAttribute("success", "Company profile updated successfully!");
+            }
             req.setAttribute("company", company);
             req.setAttribute("isAuthenticated", true);
             req.setAttribute("role", Role.COMPANY_ADMIN.name());

@@ -37,7 +37,7 @@ The **Youth Job & Internship Finder** is a modern, responsive web platform desig
 ## 3. Core Features
 
 - **Role-Based Access Control (RBAC):** Distinct permissions for students, companies, and admins.
-- **Modern Authentication & Authorization:** JWT-based security with bcrypt password hashing.
+- **Modern Authentication & Authorization:** Jakarta Security with database identity store and bcrypt password hashing.
 - **Advanced Job Search & Filtering:** Filter by category, location, duration, and requirements with real-time search.
 - **Company Vetting Workflow:** Automated checks (email domain, URL validation) + admin approval.
 - **Analytics Dashboards:**
@@ -55,9 +55,7 @@ The **Youth Job & Internship Finder** is a modern, responsive web platform desig
 | Backend            | Jakarta EE 10 (Servlets, CDI, JSP, JPA) |
 | Frontend           | Modern JSP + CSS3 + Font Awesome Icons |
 | Database           | MySQL with JPA/Hibernate ORM |
-| API docs           | OpenAPI 3.0 (`src/main/resources/static/openapi.yaml`) |
-| Deployment         | GlassFish 8 (see `deploy.ps1` for example) |
-| Build              | Maven (`war` artifact `jobfinder.war`) |
+| Deployment         | GlassFish 8 (see `deploy.ps1` for Windows deployment) |
 | UI Framework        | Custom responsive design with CSS Grid & Flexbox |
 
 ---
@@ -70,15 +68,16 @@ Maven standard layout with base package **`com.jakartaee.jobfinder`**.
 src/main/java/com/jakartaee/jobfinder/
 ├── HomeServlet.java          # Welcome page with modern hero section
 ├── DatabaseTrigger.java      # DB lifecycle hook
-├── entity/                   # JPA entities (User, Company, Job, Application, Review, …)
+├── models/                   # JPA entities (User, Company, Job, Application, Review, …)
 │   ├── role/                 # Role enum (APPLICANT, SYSTEM_ADMIN, COMPANY_ADMIN)
 │   └── status/               # Status enum (PENDING, APPROVED, REJECTED)
 ├── dao/                      # Data access layer with JPA repositories
 ├── dto/                      # Data transfer objects for API responses
-├── service/                  # Business logic layer (AuthService, application services)
-├── security/                 # JWT authentication and authorization
-│   ├── utils/                # JWT utilities and password hashing
-│   └── JwtAuthenticationMechanism (disabled - using filter-based auth)
+├── services/                 # Business logic layer (AuthService, EmailService, etc.)
+├── security/                 # Security configuration and utilities
+│   ├── config/               # Security configuration
+│   ├── session/              # Session management
+│   └── utils/                # Password hashing utilities
 └── servlet/                  # @WebServlet controllers (login, jobs, companies, …)
 
 src/main/webapp/
@@ -90,17 +89,16 @@ src/main/webapp/
 │       ├── login.jsp
 │       └── …
 ├── css/                      # Modern responsive stylesheets
-│   ├── index.css          # Main stylesheet with modern design
-│   └── responsive.css    # Mobile-first responsive design
+│   └── index.css             # Main stylesheet with modern design
 ├── images/                   # Static images and assets
 └── js/                       # Client-side scripts (optional; folder reserved)
 
 src/main/resources/
 ├── META-INF/
 │   ├── persistence.xml       # JPA database configuration
-│   └── beans.xml           # CDI configuration
+│   └── beans.xml             # CDI configuration
 ├── db/migrations/            # SQL migrations (Flyway/Liquibase-style naming)
-└── static/                   # OpenAPI, Swagger HTML documentation
+└── static/                   # Static resources
 ```
 
 Servlets forward to **`/WEB-INF/views/...`** so pages live under `WEB-INF` as recommended in Jakarta EE best practices.
@@ -119,8 +117,6 @@ Servlets forward to **`/WEB-INF/views/...`** so pages live under `WEB-INF` as re
 | `/jobs` | JobsServlet | GET | Job listings page |
 | `/job/*` | JobDetailServlet | GET | Job details page (e.g., /job/123) |
 | `/companies` | CompaniesServlet | GET | Company listings page |
-| `/reviews` | ReviewsServlet | GET | Company reviews page |
-| `/internships` | InternshipsServlet | GET | Internship listings |
 | `/signup-options` | RegistrationOptionsServlet | GET | Registration type selection |
 | `/user-signup` | UserRegistrationServlet | GET, POST | Applicant registration |
 | `/company-register` | CompanyRegistrationServlet | GET, POST | Company registration |
@@ -152,7 +148,6 @@ Servlets forward to **`/WEB-INF/views/...`** so pages live under `WEB-INF` as re
 | `/company/edit-job` | CompanyEditJobServlet | GET, POST | Edit existing job |
 | `/company/applicants` | CompanyApplicantsServlet | GET, POST | View/manage applicants |
 | `/company/analytics` | CompanyAnalyticsServlet | GET | Company analytics |
-| `/company/reviews` | CompanyReviewsServlet | GET | Company reviews management |
 
 ### Admin Endpoints (Requires SYSTEM_ADMIN Role)
 
@@ -180,15 +175,7 @@ Servlets forward to **`/WEB-INF/views/...`** so pages live under `WEB-INF` as re
 | Document | Purpose |
 |----------|---------|
 | **[jobfinder-v1.md](jobfinder-v1.md)** | **Comprehensive system documentation** - Detailed technical reference |
-| [Git-Workflow-Guide.md](docs/Git-Workflow-Guide.md) | Branches, `develop` vs `main`, PR workflow |
-| [Project Contribution.md](Project%20Contribution.md) | Contributing and Git Flow |
-| [DAO & DTO Team.md](DAO%20&%20DTO%20Team.md) | Handbook: DAO/DTO, entities, UI layer |
-| [DataBase-Dev-Team.md](docs/DataBase-Dev-Team.md) | Database team, `resources/db` layout |
-| [Business-Logic team.md](Business-Logic%20team.md) | Services layer (CDI beans) |
-| [UI & Presentation Team.md](UI%20&%20Presentation%20Team.md) | Modern JSP/CSS design system |
-| [Security Guide.md](Security%20Guide.md) | Security practices and JWT implementation |
-| [MySQL Setup in GlassFish Guide.md](MySQL%20Setup%20in%20GlassFish%20Guide.md) | Datasource + persistence |
-| [SRS.md](SRS.md) | Software requirements |
+| **[README.md](README.md)** | This file - Setup and usage guide |
 
 ---
 
@@ -204,10 +191,10 @@ Servlets forward to **`/WEB-INF/views/...`** so pages live under `WEB-INF` as re
 - **Admins:** User/company management with workflow automation, flagged content monitoring, system analytics with real-time reporting.
 
 ### Security Implementation
-- JWT-based stateless authentication with refresh tokens.
-- Role-based authorization with method-level security.
+- Jakarta Security with database identity store and form-based authentication.
+- Role-based authorization with security annotations.
 - Secure password storage with bcrypt hashing.
-- Session management with automatic cleanup.
+- Session-based authentication with proper session management.
 
 ---
 
@@ -245,13 +232,119 @@ mvn glassfish:run
 
 ### Production Deployment
 1. Configure database connection in `src/main/resources/META-INF/persistence.xml`
-2. Set JWT_SECRET environment variable for token security
+2. Configure SMTP environment variables (see Section 11)
 3. Deploy generated `target/jobfinder.war` to GlassFish 8
 4. Use `deploy.ps1` script for automated deployment after path adjustment
 
 ---
 
-## 11. Expected Outcomes
+## 11. SMTP Configuration (Required for Email Features)
+
+> ⚠️ **IMPORTANT:** You must configure your own SMTP server before running the application. Email features (verification, password reset, notifications) will not work without valid SMTP credentials.
+
+### Setup Instructions
+
+1. **Copy the example environment file:**
+   ```bash
+   cp .env .env
+   ```
+
+2. **Edit `.env` with your SMTP server details:**
+   ```bash
+   # Required SMTP Settings
+   SMTP_HOST=smtp.gmail.com          # Your SMTP server host
+   SMTP_PORT=587                     # Your SMTP server port
+   SMTP_USERNAME=your-email@gmail.com # Your SMTP username/email
+   SMTP_PASSWORD=your-app-password   # Your SMTP password or app password
+
+   # Optional: Display name for sent emails
+   SMTP_FROM_NAME=JobFinder
+   ```
+
+3. **Load environment variables** before starting the application:
+   - **Windows (PowerShell):**
+     ```powershell
+     $env:SMTP_HOST="smtp.gmail.com"
+     $env:SMTP_PORT="587"
+     $env:SMTP_USERNAME="your-email@gmail.com"
+     $env:SMTP_PASSWORD="your-app-password"
+     ```
+   - **Linux/macOS:**
+     ```bash
+     export SMTP_HOST=smtp.gmail.com
+     export SMTP_PORT=587
+     export SMTP_USERNAME=your-email@gmail.com
+     export SMTP_PASSWORD=your-app-password
+     ```
+
+4. **For GlassFish deployment:** Configure environment variables in GlassFish:
+
+   **Option A: Using GlassFish Admin Console (GUI)**
+   1. Open `http://localhost:4848` in browser
+   2. Navigate to **Configurations** → **server-config** → **JVM Settings**
+   3. Click **JVM Options** tab
+   4. Click **Add JVM Option**
+   5. Add each SMTP variable (e.g., `-DSMTP_HOST=smtp.gmail.com`)
+   6. Click **Save**, then restart GlassFish
+
+   **Option B: Using asadmin CLI:**
+   ```bash
+   # Navigate to GlassFish bin directory
+   cd C:\glassfish8\glassfish\bin
+
+   # Add SMTP configuration
+   asadmin create-jvm-options -DSMTP_HOST=smtp.gmail.com
+   asadmin create-jvm-options -DSMTP_PORT=587
+   asadmin create-jvm-options -DSMTP_USERNAME=your-email@gmail.com
+   asadmin create-jvm-options -DSMTP_PASSWORD=your-app-password
+   asadmin create-jvm-options -DSMTP_FROM_NAME=JobFinder
+
+   # Restart GlassFish
+   asadmin stop-domain
+   asadmin start-domain
+   ```
+
+   **Option C: Using domain.xml (Advanced)**
+   Edit `glassfish/domains/domain1/config/domain.xml` and add to `<java-config>`:
+   ```xml
+   <jvm-options>-DSMTP_HOST=smtp.gmail.com</jvm-options>
+   <jvm-options>-DSMTP_PORT=587</jvm-options>
+   <jvm-options>-DSMTP_USERNAME=your-email@gmail.com</jvm-options>
+   <jvm-options>-DSMTP_PASSWORD=your-app-password</jvm-options>
+   ```
+
+   **Option D: Using asadmin System Properties (Recommended)**
+   ```bash
+   # Configure SMTP as system properties (persisted across restarts)
+   asadmin create-system-properties SMTP_HOST=smtp.gmail.com
+   asadmin create-system-properties SMTP_PORT=587
+   asadmin create-system-properties SMTP_USERNAME=your-email@gmail.com
+   asadmin create-system-properties SMTP_PASSWORD=your-app-password
+   asadmin create-system-properties SMTP_FROM_NAME=JobFinder
+
+   # Restart GlassFish to apply changes
+   asadmin restart-domain domain1
+   ```
+
+5. **Configuration Priority:** The application checks for SMTP settings in this order:
+   1. GlassFish JVM/System Properties (`System.getProperty()`)
+   2. System Environment Variables (`System.getenv()`)
+   3. `.env` file (development fallback)
+
+6. **Verify configuration:** The application will fail to start with a clear error message if required SMTP variables are missing.
+
+### SMTP Provider Examples
+
+| Provider | SMTP_HOST | SMTP_PORT | Notes |
+|----------|-----------|-----------|-------|
+| Gmail | smtp.gmail.com | 587 | Use App Password (16 chars, no spaces/hyphens) |
+| Outlook | smtp.office365.com | 587 | Use App Password |
+| SendGrid | smtp.sendgrid.net | 587 | Use API key as password |
+| Mailgun | smtp.mailgun.org | 587 | Use SMTP credentials |
+
+---
+
+## 12. Expected Outcomes
 
 - A trusted, modern platform for youth employment and internships.
 - Reduced risk of fraudulent job postings through company vetting.
@@ -262,7 +355,7 @@ mvn glassfish:run
 
 ---
 
-## 12. Recent Enhancements (v2.0)
+## 13. Recent Enhancements (v2.0)
 
 ### UI/UX Modernization
 - **Complete redesign** with modern gradient backgrounds and card-based layouts
@@ -273,7 +366,7 @@ mvn glassfish:run
 - **Smooth animations** and micro-interactions throughout
 
 ### Technical Improvements
-- **JWT authentication system** with refresh tokens and revocation
+- **Jakarta Security integration** with database identity store and form authentication
 - **Enhanced security** with proper error handling and validation
 - **Optimized database layer** with JPA entities and relationships
 - **Responsive CSS Grid** layouts for all screen sizes

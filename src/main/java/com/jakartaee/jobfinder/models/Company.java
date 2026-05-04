@@ -131,6 +131,9 @@ public class Company {
     }
 
     public void setCompanyAdmin(User companyAdmin) {
+        if (companyAdmin == null) {
+            throw new IllegalArgumentException("Company must have at least one admin");
+        }
         this.companyAdmin = companyAdmin;
     }
 
@@ -219,6 +222,10 @@ public class Company {
     @PrePersist
     @PreUpdate
     public void prePersist() {
+        // Validate that company always has an admin
+        if (companyAdmin == null) {
+            throw new IllegalStateException("Company must have at least one admin");
+        }
         if (created_at == null) {
             created_at = LocalDateTime.now();
         }
