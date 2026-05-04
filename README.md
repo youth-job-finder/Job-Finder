@@ -13,12 +13,11 @@ The **Youth Job & Internship Finder** is a modern, responsive web platform desig
 
 ## 2. User Roles & Permissions
 
-### Students
-- Register with a valid student/personal email.
+### Applicants
+- Register with a valid personal email.
 - Upload and update CVs with modern file management.
 - Apply for jobs/internships and track application status with real-time updates.
-- Review companies and flag suspicious behavior.
-- Personalized dashboard with AI-powered recommendations.
+
 
 ### Companies
 - Register with company details (registration number, email, URL).
@@ -28,17 +27,15 @@ The **Youth Job & Internship Finder** is a modern, responsive web platform desig
 
 ### Admins
 - Approve/reject company registrations with workflow management.
-- Monitor flagged companies and suspicious activity with advanced reporting.
 - Access system-wide analytics and platform health metrics.
 - Manage platform integrity and user governance.
-
 ---
 
 ## 3. Core Features
 
 - **Role-Based Access Control (RBAC):** Distinct permissions for students, companies, and admins.
 - **Modern Authentication & Authorization:** Jakarta Security with database identity store and bcrypt password hashing.
-- **Advanced Job Search & Filtering:** Filter by category, location, duration, and requirements with real-time search.
+- **Advanced Job Search & Filtering:** Filter by category, location with real-time search.
 - **Company Vetting Workflow:** Automated checks (email domain, URL validation) + admin approval.
 - **Analytics Dashboards:**
     - Students: application history, success rates, personalized insights.
@@ -182,17 +179,17 @@ Servlets forward to **`/WEB-INF/views/...`** so pages live under `WEB-INF` as re
 ## 8. System Architecture (Logic Flow)
 
 ### Registration & Vetting
-- **Students:** Register → immediate email verification → dashboard access.
+- **Applicants:** Register → immediate email verification → dashboard access.
 - **Companies:** Register → automated vetting → admin approval → dashboard access.
 
 ### Modern User Dashboards
-- **Students:** CV management with drag-drop upload, job search with advanced filters, application tracking, personalized recommendations, company reviews.
+- **Applicants:** CV management with drag-drop upload, job search with advanced filters, application tracking, company reviews.
 - **Companies:** Job posting with rich text editor, applicant management with status tracking, analytics dashboard with engagement metrics.
 - **Admins:** User/company management with workflow automation, flagged content monitoring, system analytics with real-time reporting.
 
 ### Security Implementation
 - Jakarta Security with database identity store and form-based authentication.
-- Role-based authorization with security annotations.
+- Role-based authorization with custom filter for protected endpoints.
 - Secure password storage with bcrypt hashing.
 - Session-based authentication with proper session management.
 
