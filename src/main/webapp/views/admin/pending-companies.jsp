@@ -14,7 +14,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pending Company Approvals - Admin - JobFinder</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/index.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/index.css?v=4">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/admin.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/responsive.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/mobile-responsive.css">

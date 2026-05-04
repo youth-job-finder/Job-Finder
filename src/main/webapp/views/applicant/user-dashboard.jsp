@@ -13,7 +13,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Dashboard - Youth Job & Internship Finder</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/index.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/index.css?v=4">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/responsive.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/mobile-responsive.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/user-dashboard.css">
@@ -202,7 +202,7 @@
         <!-- Recommended Jobs -->
         <div class="dashboard-card">
             <div class="card-header">
-                <h3><i class="fas fa-star"></i> Recommended Jobs</h3>
+                <h3><i class="fas fa-clock"></i> Recent Job Listings</h3>
                 <a href="${pageContext.request.contextPath}/jobs" class="view-all-link">View All Jobs</a>
             </div>
             <div class="job-recommendations">
@@ -210,7 +210,7 @@
                     <c:when test="${empty recommendedJobs}">
                         <div class="no-jobs">
                             <i class="fas fa-search"></i>
-                            <p>No job recommendations available yet. Complete your profile to get personalized recommendations!</p>
+                            <p>No recent job listings available. Check back later for new opportunities!</p>
                         </div>
                     </c:when>
                     <c:otherwise>

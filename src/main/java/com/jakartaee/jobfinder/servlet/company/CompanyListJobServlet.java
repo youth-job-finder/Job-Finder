@@ -1,8 +1,8 @@
 package com.jakartaee.jobfinder.servlet.company;
 
-import com.jakartaee.jobfinder.entity.Job;
-import com.jakartaee.jobfinder.entity.User;
-import com.jakartaee.jobfinder.entity.role.Role;
+import com.jakartaee.jobfinder.models.Job;
+import com.jakartaee.jobfinder.models.User;
+import com.jakartaee.jobfinder.models.role.Role;
 import com.jakartaee.jobfinder.logging.MainLogger;
 import com.jakartaee.jobfinder.services.AuthService;
 import com.jakartaee.jobfinder.services.JobService;
@@ -14,7 +14,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.util.List;
 
 /**
  * Servlet for listing new jobs by company administrators.

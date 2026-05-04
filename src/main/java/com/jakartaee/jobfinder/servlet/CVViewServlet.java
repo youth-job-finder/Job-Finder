@@ -2,9 +2,9 @@ package com.jakartaee.jobfinder.servlet;
 
 import com.jakartaee.jobfinder.dao.CVDAO;
 import com.jakartaee.jobfinder.dao.UserDAO;
-import com.jakartaee.jobfinder.entity.Application;
-import com.jakartaee.jobfinder.entity.CV;
-import com.jakartaee.jobfinder.entity.User;
+import com.jakartaee.jobfinder.models.Application;
+import com.jakartaee.jobfinder.models.CV;
+import com.jakartaee.jobfinder.models.User;
 import com.jakartaee.jobfinder.logging.MainLogger;
 import com.jakartaee.jobfinder.services.ApplicationService;
 import jakarta.inject.Inject;
@@ -62,10 +62,10 @@ public class CVViewServlet extends HttpServlet {
             }
 
             // Check user role and handle accordingly
-            if (currentUser.getRole() == com.jakartaee.jobfinder.entity.role.Role.APPLICANT) {
+            if (currentUser.getRole() == com.jakartaee.jobfinder.models.role.Role.APPLICANT) {
                 // Applicant viewing their own CV
                 handleApplicantViewOwnCV(req, resp, currentUser);
-            } else if (currentUser.getRole() == com.jakartaee.jobfinder.entity.role.Role.COMPANY_ADMIN) {
+            } else if (currentUser.getRole() == com.jakartaee.jobfinder.models.role.Role.COMPANY_ADMIN) {
                 if (applicationId != null && !applicationId.trim().isEmpty()) {
                     handleCompanyViewApplicationCV(req, resp, currentUser, applicationId.trim());
                 } else if (applicantId != null && !applicantId.trim().isEmpty()) {

@@ -1,11 +1,10 @@
 package com.jakartaee.jobfinder.servlet.admin;
 
 import com.jakartaee.jobfinder.dao.UserDAO;
-import com.jakartaee.jobfinder.entity.User;
-import com.jakartaee.jobfinder.entity.role.Role;
+import com.jakartaee.jobfinder.models.User;
+import com.jakartaee.jobfinder.models.role.Role;
 import com.jakartaee.jobfinder.logging.MainLogger;
 import jakarta.inject.Inject;
-import jakarta.annotation.security.RolesAllowed;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;

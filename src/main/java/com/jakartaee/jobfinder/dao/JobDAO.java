@@ -7,8 +7,7 @@
 
 package com.jakartaee.jobfinder.dao;
 
-import com.jakartaee.jobfinder.entity.Job;
-import com.jakartaee.jobfinder.entity.Company;
+import com.jakartaee.jobfinder.models.Job;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -187,7 +186,7 @@ public class JobDAO {
      * @param company the Company entity
      * @return a list of Job entities posted by the company
      */
-    public List<Job> findByCompany(com.jakartaee.jobfinder.entity.Company company) {
+    public List<Job> findByCompany(com.jakartaee.jobfinder.models.Company company) {
         TypedQuery<Job> query = em.createQuery(
                 "SELECT j FROM Job j WHERE j.company = :company",
                 Job.class

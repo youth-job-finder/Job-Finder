@@ -1,6 +1,6 @@
-package com.jakartaee.jobfinder.entity;
+package com.jakartaee.jobfinder.models;
 
-import com.jakartaee.jobfinder.entity.role.Role;
+import com.jakartaee.jobfinder.models.role.Role;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;

@@ -1,7 +1,7 @@
 package com.jakartaee.jobfinder.dao;
 
-import com.jakartaee.jobfinder.entity.CV;
-import com.jakartaee.jobfinder.entity.User;
+import com.jakartaee.jobfinder.models.CV;
+import com.jakartaee.jobfinder.models.User;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;

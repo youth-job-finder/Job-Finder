@@ -85,10 +85,12 @@
 document.addEventListener('DOMContentLoaded', function() {
     const hamburger = document.getElementById('hamburger-menu');
     const navMenu = document.getElementById('nav-menu');
+    const navActions = document.querySelector('.nav-actions');
     
     hamburger.addEventListener('click', function() {
         hamburger.classList.toggle('active');
         navMenu.classList.toggle('active');
+        if (navActions) navActions.classList.toggle('active');
     });
     
     // Close menu when clicking on a link
@@ -96,22 +98,26 @@ document.addEventListener('DOMContentLoaded', function() {
         link.addEventListener('click', () => {
             hamburger.classList.remove('active');
             navMenu.classList.remove('active');
+            if (navActions) navActions.classList.remove('active');
         });
     });
     
-    // Close menu when clicking on logout button
-    document.querySelectorAll('.nav-links button').forEach(button => {
+    // Close menu when clicking on logout button in nav-links or nav-actions
+    document.querySelectorAll('.nav-links button, .nav-actions button').forEach(button => {
         button.addEventListener('click', () => {
             hamburger.classList.remove('active');
             navMenu.classList.remove('active');
+            if (navActions) navActions.classList.remove('active');
         });
     });
     
     // Close menu when clicking outside
     document.addEventListener('click', function(event) {
-        if (!hamburger.contains(event.target) && !navMenu.contains(event.target)) {
+        if (!hamburger.contains(event.target) && !navMenu.contains(event.target) && 
+            !(navActions && navActions.contains(event.target))) {
             hamburger.classList.remove('active');
             navMenu.classList.remove('active');
+            if (navActions) navActions.classList.remove('active');
         }
     });
 });

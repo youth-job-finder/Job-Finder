@@ -2,11 +2,13 @@ package com.jakartaee.jobfinder.servlet;
 
 import com.jakartaee.jobfinder.dao.SavedJobDAO;
 import com.jakartaee.jobfinder.dao.UserDAO;
-import com.jakartaee.jobfinder.entity.Job;
-import com.jakartaee.jobfinder.entity.SavedJob;
-import com.jakartaee.jobfinder.entity.User;
+import com.jakartaee.jobfinder.models.Job;
+import com.jakartaee.jobfinder.models.SavedJob;
+import com.jakartaee.jobfinder.models.User;
+import com.jakartaee.jobfinder.dto.PaginationDTO;
 import com.jakartaee.jobfinder.logging.BusinessLogger;
 import com.jakartaee.jobfinder.services.JobService;
+import com.jakartaee.jobfinder.utils.PaginationUtil;
 import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -15,7 +17,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -109,9 +110,14 @@ public class JobsServlet extends HttpServlet {
                 jobs = hasSearch ? jobService.searchJobs(searchQuery) : jobService.getAllJobs();
             }
 
-            BusinessLogger.logDataAccess(SERVLET_NAME, "Job", jobs.size(), username);
+            // Pagination
+            int page = PaginationUtil.parsePageParameter(req.getParameter("page"));
+            PaginationDTO<Job> pagination = PaginationUtil.paginate(jobs, page, 9);
+            
+            BusinessLogger.logDataAccess(SERVLET_NAME, "Job", pagination.getTotalItems(), username);
 
-            req.setAttribute("jobs", jobs);
+            req.setAttribute("jobs", pagination.getItems());
+            req.setAttribute("pagination", pagination);
 
             // If applicant is logged in, get their saved job IDs for the save/unsave buttons
             if (isAuthenticated && "APPLICANT".equals(userRole)) {

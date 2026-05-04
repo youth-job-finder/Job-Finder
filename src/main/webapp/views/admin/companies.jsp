@@ -1,12 +1,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Company Management - JobFinder Admin</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/index.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/index.css?v=4">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/admin-management.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/responsive.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/mobile-responsive.css">
@@ -140,6 +141,62 @@
                 <p style="text-align: center; padding: 2rem; color: #666;">
                     <i class="fas fa-info-circle"></i> No companies found matching your criteria.
                 </p>
+            </c:if>
+            
+            <!-- Pagination -->
+            <c:if test="${pagination.totalPages > 1}">
+                <div class="pagination" style="display: flex; justify-content: center; align-items: center; gap: 0.5rem; margin-top: 2rem;">
+                    <c:url var="baseUrl" value="/admin/companies">
+                        <c:if test="${not empty param.status}"><c:param name="status" value="${param.status}"/></c:if>
+                        <c:if test="${not empty param.search}"><c:param name="search" value="${param.search}"/></c:if>
+                    </c:url>
+                    <c:set var="pageSeparator" value="${fn:contains(baseUrl, '?') ? '&' : '?'}"></c:set>
+                    
+                    <!-- Previous Page -->
+                    <c:choose>
+                        <c:when test="${pagination.hasPreviousPage}">
+                            <a href="${baseUrl}${pageSeparator}page=${pagination.currentPage - 1}" class="pagination-btn" style="padding: 0.5rem 1rem; border-radius: 8px; background: rgba(255,255,255,0.05); color: #d4af37; text-decoration: none; border: 1px solid rgba(212,175,55,0.3);">
+                                <i class="fas fa-chevron-left"></i>
+                            </a>
+                        </c:when>
+                        <c:otherwise>
+                            <span class="pagination-btn disabled" style="padding: 0.5rem 1rem; border-radius: 8px; background: rgba(255,255,255,0.03); color: #666; border: 1px solid rgba(212,175,55,0.2); cursor: not-allowed;">
+                                <i class="fas fa-chevron-left"></i>
+                            </span>
+                        </c:otherwise>
+                    </c:choose>
+                    
+                    <!-- Page Numbers -->
+                    <c:forEach begin="1" end="${pagination.totalPages}" var="pageNum">
+                        <c:choose>
+                            <c:when test="${pageNum == pagination.currentPage}">
+                                <span class="pagination-btn active" style="padding: 0.5rem 1rem; border-radius: 8px; background: #d4af37; color: #0f172a; font-weight: 700; min-width: 40px; text-align: center;">${pageNum}</span>
+                            </c:when>
+                            <c:otherwise>
+                                <a href="${baseUrl}${pageSeparator}page=${pageNum}" class="pagination-btn" style="padding: 0.5rem 1rem; border-radius: 8px; background: rgba(255,255,255,0.05); color: #d4af37; text-decoration: none; border: 1px solid rgba(212,175,55,0.3); min-width: 40px; text-align: center;">${pageNum}</a>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:forEach>
+                    
+                    <!-- Next Page -->
+                    <c:choose>
+                        <c:when test="${pagination.hasNextPage}">
+                            <a href="${baseUrl}${pageSeparator}page=${pagination.currentPage + 1}" class="pagination-btn" style="padding: 0.5rem 1rem; border-radius: 8px; background: rgba(255,255,255,0.05); color: #d4af37; text-decoration: none; border: 1px solid rgba(212,175,55,0.3);">
+                                <i class="fas fa-chevron-right"></i>
+                            </a>
+                        </c:when>
+                        <c:otherwise>
+                            <span class="pagination-btn disabled" style="padding: 0.5rem 1rem; border-radius: 8px; background: rgba(255,255,255,0.03); color: #666; border: 1px solid rgba(212,175,55,0.2); cursor: not-allowed;">
+                                <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+                
+                <!-- Showing X of Y results -->
+                <div style="text-align: center; margin-top: 1rem; color: #94a3b8; font-size: 0.9rem;">
+                    Showing ${pagination.startIndex} - ${pagination.endIndex} of ${pagination.totalItems} companies
+                </div>
             </c:if>
         </div>
 

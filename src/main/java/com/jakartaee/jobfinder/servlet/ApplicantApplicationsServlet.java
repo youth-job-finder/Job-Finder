@@ -1,9 +1,11 @@
 package com.jakartaee.jobfinder.servlet;
 
-import com.jakartaee.jobfinder.entity.Application;
-import com.jakartaee.jobfinder.entity.User;
+import com.jakartaee.jobfinder.dto.PaginationDTO;
+import com.jakartaee.jobfinder.models.Application;
+import com.jakartaee.jobfinder.models.User;
 import com.jakartaee.jobfinder.services.ApplicationService;
 import com.jakartaee.jobfinder.services.AuthService;
+import com.jakartaee.jobfinder.utils.PaginationUtil;
 import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -45,7 +47,10 @@ public class ApplicantApplicationsServlet extends HttpServlet {
 
         // Get user's applications using ApplicationService
         List<Application> applications = applicationService.getApplicationsByApplicant(user);
-        req.setAttribute("applications", applications);
+        int page = PaginationUtil.parsePageParameter(req.getParameter("page"));
+        PaginationDTO<Application> pagination = PaginationUtil.paginate(applications, page, 6);
+        req.setAttribute("applications", pagination.getItems());
+        req.setAttribute("pagination", pagination);
 
         // Set authentication attributes for navbar
         req.setAttribute("isAuthenticated", true);

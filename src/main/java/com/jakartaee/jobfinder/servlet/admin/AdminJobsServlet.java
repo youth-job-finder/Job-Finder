@@ -2,11 +2,13 @@ package com.jakartaee.jobfinder.servlet.admin;
 
 import com.jakartaee.jobfinder.dao.JobDAO;
 import com.jakartaee.jobfinder.dao.UserDAO;
-import com.jakartaee.jobfinder.entity.Job;
-import com.jakartaee.jobfinder.entity.User;
-import com.jakartaee.jobfinder.entity.role.Role;
+import com.jakartaee.jobfinder.dto.PaginationDTO;
+import com.jakartaee.jobfinder.models.Job;
+import com.jakartaee.jobfinder.models.User;
+import com.jakartaee.jobfinder.models.role.Role;
 import com.jakartaee.jobfinder.logging.MainLogger;
 import com.jakartaee.jobfinder.services.JobService;
+import com.jakartaee.jobfinder.utils.PaginationUtil;
 import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -80,7 +82,12 @@ public class AdminJobsServlet extends HttpServlet {
                     .toList();
             }
 
-            req.setAttribute("jobs", jobs);
+            // Pagination
+            int page = PaginationUtil.parsePageParameter(req.getParameter("page"));
+            PaginationDTO<Job> pagination = PaginationUtil.paginate(jobs, page, 10);
+            
+            req.setAttribute("jobs", pagination.getItems());
+            req.setAttribute("pagination", pagination);
             req.setAttribute("jobCount", jobs.size());
             req.setAttribute("adminId", currentUserId);
             req.setAttribute("currentUri", req.getRequestURI());

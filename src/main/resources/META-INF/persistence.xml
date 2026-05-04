@@ -5,11 +5,11 @@
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <jta-data-source>jdbc/MySQLPool</jta-data-source>
     <!-- Explicitly list your entity classes -->
-    <class>com.jakartaee.jobfinder.entity.Company</class>
-    <class>com.jakartaee.jobfinder.entity.User</class>
-    <class>com.jakartaee.jobfinder.entity.Job</class>
-    <class>com.jakartaee.jobfinder.entity.Application</class>
-    <class>com.jakartaee.jobfinder.entity.Review</class>
+    <class>com.jakartaee.jobfinder.models.Company</class>
+    <class>com.jakartaee.jobfinder.models.User</class>
+    <class>com.jakartaee.jobfinder.models.Job</class>
+    <class>com.jakartaee.jobfinder.models.Application</class>
+    <class>com.jakartaee.jobfinder.models.Review</class>
     <properties>
       <property name="jakarta.persistence.schema-generation.database.action" value="drop-and-create"/>
       <!-- Optional: show SQL in logs -->

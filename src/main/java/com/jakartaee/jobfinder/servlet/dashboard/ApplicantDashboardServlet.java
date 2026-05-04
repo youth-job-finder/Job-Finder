@@ -2,9 +2,9 @@ package com.jakartaee.jobfinder.servlet.dashboard;
 
 import com.jakartaee.jobfinder.dao.SavedJobDAO;
 import com.jakartaee.jobfinder.dao.UserDAO;
-import com.jakartaee.jobfinder.entity.SavedJob;
-import com.jakartaee.jobfinder.entity.User;
-import com.jakartaee.jobfinder.entity.role.Role;
+import com.jakartaee.jobfinder.models.SavedJob;
+import com.jakartaee.jobfinder.models.User;
+import com.jakartaee.jobfinder.models.role.Role;
 import com.jakartaee.jobfinder.logging.MainLogger;
 import com.jakartaee.jobfinder.services.ApplicantService;
 import jakarta.inject.Inject;
@@ -81,8 +81,8 @@ public class ApplicantDashboardServlet extends HttpServlet {
             List<Map<String, String>> recentActivities = applicantService.getRecentActivities(user);
             req.setAttribute("recentActivities", recentActivities);
 
-            // Recommended jobs
-            List<Map<String, String>> recommendedJobs = applicantService.getRecommendedJobs(6);
+            // Recent job listings (10 most recent)
+            List<Map<String, String>> recommendedJobs = applicantService.getRecommendedJobs(10);
             req.setAttribute("recommendedJobs", recommendedJobs);
 
             // Saved jobs - fetch actual saved jobs from database

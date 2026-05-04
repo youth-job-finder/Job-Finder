@@ -2,9 +2,9 @@ package com.jakartaee.jobfinder.servlet;
 
 import com.jakartaee.jobfinder.dao.CVDAO;
 import com.jakartaee.jobfinder.dao.UserDAO;
-import com.jakartaee.jobfinder.entity.CV;
-import com.jakartaee.jobfinder.entity.User;
-import com.jakartaee.jobfinder.entity.role.Role;
+import com.jakartaee.jobfinder.models.CV;
+import com.jakartaee.jobfinder.models.User;
+import com.jakartaee.jobfinder.models.role.Role;
 import com.jakartaee.jobfinder.logging.MainLogger;
 import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;

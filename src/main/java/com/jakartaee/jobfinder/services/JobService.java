@@ -4,12 +4,12 @@ import com.jakartaee.jobfinder.dao.ApplicationDAO;
 import com.jakartaee.jobfinder.dao.CompanyDAO;
 import com.jakartaee.jobfinder.dao.JobDAO;
 import com.jakartaee.jobfinder.dao.SavedJobDAO;
-import com.jakartaee.jobfinder.entity.Application;
-import com.jakartaee.jobfinder.entity.Company;
-import com.jakartaee.jobfinder.entity.Job;
-import com.jakartaee.jobfinder.entity.User;
+import com.jakartaee.jobfinder.models.Application;
+import com.jakartaee.jobfinder.models.Company;
+import com.jakartaee.jobfinder.models.Job;
+import com.jakartaee.jobfinder.models.User;
 import com.jakartaee.jobfinder.logging.MainLogger;
-import com.jakartaee.jobfinder.util.SalaryFormatter;
+import com.jakartaee.jobfinder.utils.SalaryFormatter;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 

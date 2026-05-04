@@ -1,4 +1,4 @@
-package com.jakartaee.jobfinder.entity;
+package com.jakartaee.jobfinder.models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,7 +12,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.PrePersist;
 import java.time.LocalDateTime;
 
-import com.jakartaee.jobfinder.util.SalaryFormatter;
+import com.jakartaee.jobfinder.utils.SalaryFormatter;
 
 @Entity
 @Table(name = "jobs")

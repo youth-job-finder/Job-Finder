@@ -2,10 +2,10 @@ package com.jakartaee.jobfinder.servlet;
 
 import com.jakartaee.jobfinder.dao.SavedJobDAO;
 import com.jakartaee.jobfinder.dao.UserDAO;
-import com.jakartaee.jobfinder.entity.Job;
-import com.jakartaee.jobfinder.entity.SavedJob;
-import com.jakartaee.jobfinder.entity.User;
-import com.jakartaee.jobfinder.entity.role.Role;
+import com.jakartaee.jobfinder.models.Job;
+import com.jakartaee.jobfinder.models.SavedJob;
+import com.jakartaee.jobfinder.models.User;
+import com.jakartaee.jobfinder.models.role.Role;
 import com.jakartaee.jobfinder.logging.MainLogger;
 import com.jakartaee.jobfinder.services.JobService;
 import jakarta.inject.Inject;
@@ -17,8 +17,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @WebServlet("/job/*")
 public class JobDetailServlet extends HttpServlet {

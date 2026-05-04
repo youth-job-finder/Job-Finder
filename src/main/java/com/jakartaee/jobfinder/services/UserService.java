@@ -1,8 +1,8 @@
 package com.jakartaee.jobfinder.services;
 
 import com.jakartaee.jobfinder.dao.UserDAO;
-import com.jakartaee.jobfinder.entity.User;
-import com.jakartaee.jobfinder.entity.role.Role;
+import com.jakartaee.jobfinder.models.User;
+import com.jakartaee.jobfinder.models.role.Role;
 import com.jakartaee.jobfinder.security.utils.BCryptHashAlgorithm;
 import com.jakartaee.jobfinder.logging.MainLogger;
 import jakarta.enterprise.context.ApplicationScoped;

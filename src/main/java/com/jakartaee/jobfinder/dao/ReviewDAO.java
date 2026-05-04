@@ -7,8 +7,8 @@
 
 package com.jakartaee.jobfinder.dao;
 
-import com.jakartaee.jobfinder.entity.Review;
-import com.jakartaee.jobfinder.entity.Company;
+import com.jakartaee.jobfinder.models.Review;
+import com.jakartaee.jobfinder.models.Company;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
